@@ -4,11 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <script type="text/javascript" src="main.js"></script>
+  <script type="text/javascript" src="Matrix.js"></script>
 
   <title></title>
 </head>
-<body>
-  <canvas id="my-canvas" width="500" height="500"></canvas>
+<body style="display: flex;">
+  <div>
+    <canvas id="my-canvas" width="500" height="500"></canvas>
+  </div>
+  <div>
+    <form>
+      <label>zoom</label><input type="number" name="zoom" onchange="((event) => {setZoom(parseInt(event.target.value));})(event)">
+    </form>
+  </div>
+
+  <script type="text/javascript" src="main.js"></script>
 </body>
 </html>
