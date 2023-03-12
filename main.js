@@ -123,6 +123,7 @@ let movementMatrix = [
   0, 0, 1, 0,
   0, 0, -5, 1
 ];
+// -5 è lo zoom iniziale rispetto all'origine degli assi
 
 let time_old = 0;
 
@@ -150,17 +151,17 @@ function getProjection(angle, a, zMin, zMax) {
 
 // Credit: Giulio Casciola
 function rotateZ(m, angle) {
-let c = Math.cos(angle);
-let s = Math.sin(angle);
-let mv0 = m[0];
-let mv4 = m[4];
-let mv8 = m[8];
-m[0] = c * m[0] - s * m[1];
-m[4] = c * m[4] - s * m[5];
-m[8] = c * m[8] - s * m[9];
-m[1] = c * m[1] + s * mv0;
-m[5] = c * m[5] + s * mv4;
-m[9] = c * m[9] + s * mv8;
+  let c = Math.cos(angle);
+  let s = Math.sin(angle);
+  let mv0 = m[0];
+  let mv4 = m[4];
+  let mv8 = m[8];
+  m[0] = c * m[0] - s * m[1];
+  m[4] = c * m[4] - s * m[5];
+  m[8] = c * m[8] - s * m[9];
+  m[1] = c * m[1] + s * mv0;
+  m[5] = c * m[5] + s * mv4;
+  m[9] = c * m[9] + s * mv8;
 }
 
 // Credit: Giulio Casciola
@@ -224,4 +225,3 @@ function animate(time) {
 
 // Animazione momentaneamente disabilitata
 animate(0);
-// refresh();
