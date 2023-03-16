@@ -107,7 +107,7 @@ function changeHandler2() {
     var gc_phi = document.getElementById("range2").value;
     $("#upload2").text(gc_phi+" ");
     phi=degToRad(gc_phi);
-    render();
+    render();myFunction5
   }
 
 function define_gui(){
