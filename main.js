@@ -1,186 +1,259 @@
-////////////////////////////// canvas //////////////////////////////
+////////////////////////////// global variables //////////////////////////////
 
-var canvas = document.getElementById('my-canvas');
-gl = canvas.getContext('webgl');
+// canvas
+var canvas;
+// contesto grafico
+var gl;
 
-////////////////////////////// geometria //////////////////////////////
+// matrice dei vertici
+var vertexMatrix;
+// matrice dei colori
+var colorMatrix;
+// array di vertici da passare a webgl
+var vertexArr;
+// array di colori da passare a webgl
+var colorArr;
 
-// definizione dei vertici
-var vertices = [
-   -1,-1,-1,   1,-1,-1,   1,1,-1,   -1,1,-1,
-   -1,-1,1,   1,-1,1,   1,1,1,   -1,1,1,
-   -1,-1,-1,   -1,1,-1,   -1, 1,1,   -1,-1,1,
-   1,-1,-1,   1,1,-1,   1,1,1,   1,-1,1,
-   -1,-1,-1,   -1,-1,1,   1,-1,1,   1,-1,-1,
-   -1,1,-1,   -1,1,1,   1,1,1,   1,1,-1
-];
+// campo visivo rispetto all'asse y
+var fovy;
+// aspect ratio della viewport\
+var aspectRatio;
+// XXX TODO DSE
+var near;
+// XXX TODO DSE
+var far;
+// distanza della camera
+var D;
+// angolo rispetto all'asse x
+var theta;
+// angolo rispetto all'asse z
+var phi;
+// obiettivo della camera
+var at;
+// vettore view up
+var up;
 
-// definizione delle facce
-var indices = [
-   0,1,2,   0,2,3,
-   4,5,6,   4,6,7,
-   8,9,10,   8,10,11,
-   12,13,14,   12,14,15,
-   16,17,18,   16,18,19,
-   20,21,22,   20,22,23
-];
+// projection matrix
+var pMatrix;
+// posizione della camera
+var eye;
+// matrice della camera
+var cameraMatrix;
+// view matrix e model matrix
+var vMMatrix;
 
-// definizione dei colori
-var colors = [
-   1,0,1,    1,0,1,    1,0,1,    1,0,1,
-   1,0,0,    1,0,0,    1,0,0,    1,0,0,
-   0,0,1,    0,0,1,    0,0,1,    0,0,1,
-   0,1,1,    0,1,1,    0,1,1,    0,1,1,
-   1,1,0,    1,1,0,    1,1,0,    1,1,0,
-   0,1,0,    0,1,0,    0,1,0,    0,1,0
-];
-
-////////////////////////////// buffer //////////////////////////////
-
-// creazione vertex buffer
-var vertex_buffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
-// creazione index buffer
-var index_buffer = gl.createBuffer();
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
-gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
-
-// creazione color buffer
-var color_buffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-
-////////////////////////////// programma //////////////////////////////
-
-// creazione shader program
-var shaderprogram = webglUtils.createProgramFromScripts(gl, ["vertex-shader", "fragment-shader"]);
-
-////////////////////////////// variabili webgl //////////////////////////////
-    
-// associazione attributi al vertex shader
-var _Pmatrix = gl.getUniformLocation(shaderprogram, "Pmatrix");
-var _Vmatrix = gl.getUniformLocation(shaderprogram, "Vmatrix");
-var _Mmatrix = gl.getUniformLocation(shaderprogram, "Mmatrix");
-
-gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-var _position = gl.getAttribLocation(shaderprogram, "position");
-gl.vertexAttribPointer(_position, 3, gl.FLOAT, false,0,0); 
-gl.enableVertexAttribArray(_position);
-
-// associazione attributi al fragment shader
-gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-var _color = gl.getAttribLocation(shaderprogram, "color");
-gl.vertexAttribPointer(_color, 3, gl.FLOAT, false,0,0);
-gl.enableVertexAttribArray(_color);
-
-gl.useProgram(shaderprogram);
+// shader program
+var shaderProgram;
+// XXX TODO DSE
+var vertexBuffer;
+// XXX TODO DSE
+var shaderVertexPosition;
+// projection matrix nello shader program
+var shaderPMatrix;
+// view matrix e model matrix nello shader program
+var shaderVMMatrix;
+// XXX TODO DSE
+var colorBuffer;
+// XXX TODO DSE
+var shaderVertexColor;
 
 ////////////////////////////// utility //////////////////////////////
 
-// conversione gradi a radianti
-function degToRad(angle) {
-   return angle * Math.PI / 180;
+// credit: CG
+function degToRad(d) {
+  return d * Math.PI / 180;
 }
 
-////////////////////////////// variabili globali //////////////////////////////
+// credit: CG
+function radToDeg(r) {
+  return r * 180 / Math.PI;
+}
 
-var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-var zNear = 1;
-var zFar = 100;
-// campo visivo
-var fov = 40;
-// definizione della projection matrix tramite libreria m4.js
-var proj_matrix = m4.perspective(degToRad(fov), aspect, zNear, zFar);
-
-var THETA = 0;
-var PHI = 0;
-var D = 5;
-// posizione della camera
-var camera = [
-   D * Math.sin(PHI) * Math.cos(THETA),
-   D * Math.sin(PHI) * Math.sin(THETA),
-   D * Math.cos(PHI)
-];
-// target della camera
-var target = [0, 0, 0];
-// view up vector
-var up = [0, 1, 0];
-// definizione della view matrix tramite m4.js
-var view_matrix = m4.inverse(m4.lookAt(camera, target, up));
-
-// rotazione rispetto all'asse y
-var yRotationAngle = 0;
-// rotazione rispetto all'asse x
-var xRotationAngle = 0;
-// rotazione rispetto all'asse z
-var zRotationAngle = 0;
-
-gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix);
-gl.uniformMatrix4fv(_Vmatrix, false, view_matrix);
-
-////////////////////////////// button handlers //////////////////////////////
+////////////////////////////// handlers //////////////////////////////
 
 var interval;
 var intervalDelta = 10;
 var angleDelta = 1;
 
 function buttonOnMouseDown(fn, paramArr) {
-   fn(...paramArr);
-   interval = setInterval(fn, intervalDelta, ...paramArr);
+  fn(...paramArr);
+  interval = setInterval(fn, intervalDelta, ...paramArr);
 }
 
 function buttonOnMouseUp() {
-   clearInterval(interval);
+  clearInterval(interval);
 }
 
-function rotateYButtonOnClick(direction) {
-   yRotationAngle += (direction * degToRad(angleDelta));
+function rotateThetaButtonOnClick(direction) {
+  theta = (theta + (direction * degToRad(angleDelta))) % degToRad(360);
+  render();
 }
 
-function rotateXButtonOnClick(direction) {
-   xRotationAngle += (direction * degToRad(angleDelta));
+function rotatePhiButtonOnClick(direction) {
+  // XXX TODO DSE per il momento è limitato tra 1 e 179, successivamente bisogna rendere consona la trasformazione
+  phi += (direction * degToRad(angleDelta));
+  if(phi > degToRad(179)) {
+    phi = degToRad(179);
+  } else if(phi < degToRad(1)) {
+    phi = degToRad(1);
+  }
+  render();
 }
 
-function rotateZButtonOnClick(direction) {
-   zRotationAngle += (direction * degToRad(angleDelta));
+////////////////////////////// inizializzazione contesto grafico //////////////////////////////
+
+canvas = document.getElementById('my-canvas');
+gl = canvas.getContext('webgl');
+if(!gl) {
+  alert('WebGL isn\'t available');
+} 
+gl.viewport(0, 0, canvas.width, canvas.height);
+
+gl.clearColor(0.9, 0.9, 0.9, 1.0);
+
+// XXX TODO DSE questo bisogna capire cosa voglia dire
+//gl.enable(gl.CULL_FACE,null);
+gl.enable(gl.DEPTH_TEST);
+
+////////////////////////////// inizializzazione geometria //////////////////////////////
+
+vertexArr = [];
+
+colorArr = [];
+
+vertexMatrix = [
+  [ 0.5, -0.5, -0.5, 1.0],
+  [ 0.5, -0.5,  0.5, 1.0],
+  [ 0.5,  0.5,  0.5, 1.0],
+  [ 0.5,  0.5, -0.5, 1.0],
+  [-0.5, -0.5, -0.5, 1.0],
+  [-0.5, -0.5,  0.5, 1.0],
+  [-0.5,  0.5,  0.5, 1.0],
+  [-0.5,  0.5, -0.5, 1.0]
+];
+
+colorMatrix = [
+  [0.0, 0.0, 0.0, 0.5,], // black
+  [1.0, 0.0, 0.0, 0.5,], // red
+  [1.0, 1.0, 0.0, 0.5,], // yellow
+  [0.0, 1.0, 0.0, 0.5,], // green
+  [0.0, 0.0, 1.0, 0.5,], // blue
+  [1.0, 0.0, 1.0, 0.5,], // magenta
+  [0.0, 1.0, 1.0, 0.5,], // cyan
+  [1.0, 1.0, 1.0, 0.5,]  // white
+];
+
+// creazione di un quadrato
+function quad(a, b, c, d) {
+  vertexArr.push(vertexMatrix[a]); 
+  colorArr.push(colorMatrix[a]); 
+  vertexArr.push(vertexMatrix[b]); 
+  colorArr.push(colorMatrix[a]); 
+  vertexArr.push(vertexMatrix[c]); 
+  colorArr.push(colorMatrix[a]);     
+  vertexArr.push(vertexMatrix[a]); 
+  colorArr.push(colorMatrix[a]); 
+  vertexArr.push(vertexMatrix[c]); 
+  colorArr.push(colorMatrix[a]); 
+  vertexArr.push(vertexMatrix[d]); 
+  colorArr.push(colorMatrix[a]);  
 }
 
-////////////////////////////// render //////////////////////////////
-
-var time_old = 0;
-
-function render(time) {
-   var dt = time - time_old;
-      // if (!drag) {
-      //    dX*=AMORTIZATION, dY*=AMORTIZATION;
-      //    THETA+=dX, PHI+=dY;
-      // }
-
-   // definizione delle rotazioni tramite la libreria m4.js
-   var mo_matrix = [];
-   m4.identity(mo_matrix);
-   m4.yRotate(mo_matrix, yRotationAngle, mo_matrix);
-   m4.xRotate(mo_matrix, xRotationAngle, mo_matrix);
-   m4.zRotate(mo_matrix, zRotationAngle, mo_matrix);
-
-   time_old = time;
-   gl.enable(gl.DEPTH_TEST);
-   // gl.depthFunc(gl.LEQUAL); 
-   gl.clearColor(0.75, 0.75, 0.75, 1); 
-   gl.clearDepth(1.0);
-   gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-   // gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix);
-   // gl.uniformMatrix4fv(_Vmatrix, false, view_matrix);
-   gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
-
-   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
-
-   gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
-
-   window.requestAnimationFrame(render);
+// creazione del cubo
+function colorCube(){
+  quad(1, 0, 3, 2);
+  quad(2, 3, 7, 6);
+  quad(3, 0, 4, 7);
+  quad(6, 5, 1, 2);
+  quad(4, 5, 6, 7);
+  quad(5, 4, 0, 1);
 }
 
-render(0);
+colorCube();
+
+// asse x
+vertexArr.push([0.0, 0.0, 0.0, 1.0]);
+vertexArr.push([1.0, 0.0, 0.0, 1.0]);
+colorArr.push([1.0, 0.0, 0.0, 1.0,]);
+colorArr.push([1.0, 0.0, 0.0, 1.0,]);
+
+// asse y
+vertexArr.push([0.0, 0.0, 0.0, 1.0]);
+vertexArr.push([0.0, 1.0, 0.0, 1.0]);
+colorArr.push([0.0, 1.0, 0.0, 1.0,]);
+colorArr.push([0.0, 1.0, 0.0, 1.0,]);
+
+// asse z
+vertexArr.push([0.0, 0.0, 0.0, 1.0]);
+vertexArr.push([0.0, 0.0, 1.0, 1.0]);
+colorArr.push([0.0, 0.0, 1.0, 1.0,]);
+colorArr.push([0.0, 0.0, 1.0, 1.0,]);
+
+// tipizzazione array tramite m4.js
+vertexArr = m4.flatten(vertexArr);
+colorArr = m4.flatten(colorArr);
+
+////////////////////////////// inizializzazione vista //////////////////////////////
+
+fovy = degToRad(40);
+aspectRatio = canvas.width / canvas.height;
+near = 1;
+far = 100;
+
+D = 5;
+theta = degToRad(45);
+phi = degToRad(45);
+at = [0, 0, 0];
+up = [0, 0, 1];
+
+////////////////////////////// shader program //////////////////////////////
+
+shaderProgram = webglUtils.createProgramFromScripts(gl, ['vertex-shader', 'fragment-shader']);
+gl.useProgram(shaderProgram);
+
+vertexBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, vertexArr, gl.STATIC_DRAW);
+
+shaderVertexPosition = gl.getAttribLocation(shaderProgram, 'vertexPosition');
+gl.vertexAttribPointer(shaderVertexPosition, 4, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(shaderVertexPosition);
+
+shaderPMatrix = gl.getUniformLocation(shaderProgram, 'PMatrix');
+shaderVMMatrix = gl.getUniformLocation(shaderProgram, 'VMMatrix');
+
+colorBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, colorArr, gl.STATIC_DRAW);
+
+shaderVertexColor = gl.getAttribLocation( shaderProgram, 'vertexColor');
+gl.vertexAttribPointer(shaderVertexColor, 4, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(shaderVertexColor);
+
+////////////////////////////// rendering //////////////////////////////
+
+var render = function(){
+    // conversione da clip space a pixel
+    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
+
+    // calcolo della matrice P tramite m4.js
+    pMatrix = m4.perspective(fovy, aspectRatio, near, far);
+
+    eye = [
+      D * Math.sin(phi) * Math.cos(theta), 
+      D * Math.sin(phi) * Math.sin(theta),
+      D * Math.cos(phi)
+    ];
+    // calcolo della posizione della camera tramite m4.js
+    cameraMatrix = m4.lookAt(eye, at, up);
+    // calcolo della matrice MV dalla matrice della camera tramite m4.js
+    vMMatrix = m4.inverse(cameraMatrix);
+
+    gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
+    gl.uniformMatrix4fv(shaderVMMatrix, false, vMMatrix);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 36);
+    gl.drawArrays(gl.LINES, 36, 6);
+}
+
+render();

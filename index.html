@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="resources/bootstrap.min.css">
   <!-- bootstrap icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" type="text/css" href="resources/bootstrap-icons.css">
 
   <title></title>
 </head>
@@ -20,23 +20,16 @@
       <div class="col">
         <div class="row">
           <div class="col">
-            <span>rotate y</span>
-            <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateYButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-            <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateYButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+            <span>theta</span>
+            <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+            <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
           </div>
         </div>
         <div class="row mt-1">
           <div class="col">
-            <span>rotate x</span>
-            <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateXButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-            <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateXButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-          </div>
-        </div>
-        <div class="row mt-1">
-          <div class="col">
-            <span>rotate z</span>
-            <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateZButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-            <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateZButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+            <span>phi</span>
+            <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+            <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
           </div>
         </div>
       </div>
@@ -44,30 +37,32 @@
   </div>
 
   <!-- bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="resources/bootstrap.bundle.min.js"></script>
 
   <!-- vertex shader -->
-  <script id="vertex-shader" type="not-javascript">
-    attribute vec3 position;
-    uniform mat4 Pmatrix; 
-    uniform mat4 Vmatrix;
-    uniform mat4 Mmatrix;
-    attribute vec3 color; //the color of the point
-    varying vec3 vColor;
+  <script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 vertexPosition;
+    attribute vec4 vertexColor;
 
-    void main(void){ //pre-built function
-      gl_Position = Pmatrix*Vmatrix*Mmatrix*vec4(position, 1.);
-      vColor=color;
-    }
+    uniform mat4 PMatrix;
+    uniform mat4 VMMatrix;
+
+    varying vec4 fragmentColor;
+
+    void main(){
+      gl_Position = PMatrix*VMMatrix*vertexPosition;
+      fragmentColor = vertexColor;
+    } 
   </script>
 
   <!-- fragment shader -->
-  <script id="fragment-shader" type="not-javascript">
-    precision mediump float; 
-    varying vec3 vColor;
+  <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    
+    varying vec4 fragmentColor;
 
-    void main(void) {
-      gl_FragColor = vec4(vColor, 1.);
+    void main(){
+      gl_FragColor = fragmentColor;
     }
   </script>
 
