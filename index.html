@@ -45,12 +45,13 @@
     attribute vec4 vertexColor;
 
     uniform mat4 PMatrix;
-    uniform mat4 VMMatrix;
+    uniform mat4 VMatrix;
+    uniform mat4 MMatrix;
 
     varying vec4 fragmentColor;
 
     void main(){
-      gl_Position = PMatrix*VMMatrix*vertexPosition;
+      gl_Position = PMatrix*VMatrix*MMatrix*vertexPosition;
       fragmentColor = vertexColor;
     } 
   </script>
@@ -58,7 +59,7 @@
   <!-- fragment shader -->
   <script id="fragment-shader" type="x-shader/x-fragment">
     precision mediump float;
-    
+
     varying vec4 fragmentColor;
 
     void main(){
