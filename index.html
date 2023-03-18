@@ -25,14 +25,14 @@
             <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateYButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
           </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-1">
           <div class="col">
             <span>rotate x</span>
             <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateXButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
             <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateXButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
           </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-1">
           <div class="col">
             <span>rotate z</span>
             <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateZButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
@@ -52,7 +52,7 @@
     uniform mat4 Pmatrix; 
     uniform mat4 Vmatrix;
     uniform mat4 Mmatrix;
-    attribute vec3 color;//the color of the point 
+    attribute vec3 color; //the color of the point
     varying vec3 vColor;
 
     void main(void){ //pre-built function
