@@ -88,20 +88,42 @@ function buttonOnMouseUp() {
   clearInterval(interval);
 }
 
-function rotateThetaButtonOnClick(direction) {
-  theta = (theta + (direction * degToRad(angleDelta))) % degToRad(360);
-  render();
+// XXX TODO DSE estrarre le funzioni di rotazione per rendere più smooth la transizione soprattutto in verticale
+function rotateThetaButtonOnClick(direction, delta=angleDelta) {
+  theta = (theta + (direction * degToRad(delta))) % degToRad(360);
 }
 
-function rotatePhiButtonOnClick(direction) {
+function rotatePhiButtonOnClick(direction, delta=angleDelta) {
   // XXX TODO DSE per il momento è limitato tra 1 e 179, successivamente bisogna rendere consona la trasformazione
-  phi += (direction * degToRad(angleDelta));
+  phi += (direction * degToRad(delta));
   if(phi > degToRad(179)) {
     phi = degToRad(179);
   } else if(phi < degToRad(1)) {
     phi = degToRad(1);
   }
-  render();
+}
+
+var isMouseDown = false;
+var mouseDownX;
+var mouseDownY;
+
+function canvasOnMouseDown(event) {
+  isMouseDown = true;
+  mouseDownX = event.offsetX;
+  mouseDownY = event.offsetY;
+}
+
+function canvasOnMouseMove(event) {
+  if(isMouseDown) {
+    rotateThetaButtonOnClick(-1, (event.offsetX - mouseDownX) * 180 / canvas.width);
+    rotatePhiButtonOnClick(-1, (event.offsetY - mouseDownY) * 180 / canvas.height);
+    mouseDownX = event.offsetX;
+    mouseDownY = event.offsetY;
+  }
+}
+
+function canvasOnMouseUp(event) {
+  isMouseDown = false;
 }
 
 ////////////////////////////// inizializzazione contesto grafico //////////////////////////////
@@ -137,33 +159,34 @@ vertexObj = {
 };
 
 colorObj = {
-  black: [0.0, 0.0, 0.0, 0.5,],
-  red: [1.0, 0.0, 0.0, 0.5,],
-  yellow: [1.0, 1.0, 0.0, 0.5,],
-  green: [0.0, 1.0, 0.0, 0.5,],
-  blue: [0.0, 0.0, 1.0, 0.5,],
-  magenta: [1.0, 0.0, 1.0, 0.5,],
-  cyan: [0.0, 1.0, 1.0, 0.5,],
-  white: [1.0, 1.0, 1.0, 0.5,]
+  red: [1, 0, 0, 1],
+  red05: [1, 0, 0, 0.5],
+  green: [0, 1, 0, 1],
+  green05: [0, 1, 0, 0.5],
+  blue: [0, 0, 1, 1],
+  blue05: [0, 0, 1, 0.5],
+  yellow05: [1, 1, 0, 0.5],
+  magenta05: [1, 0, 1, 0.5],
+  cyan05: [0, 1, 1, 0.5]
 };
 
 // asse x
 vertexArr.push([0.0, 0.0, 0.0, 1.0]);
 vertexArr.push([2.0, 0.0, 0.0, 1.0]);
-colorArr.push([1.0, 0.0, 0.0, 1.0,]);
-colorArr.push([1.0, 0.0, 0.0, 1.0,]);
+colorArr.push(colorObj.red);
+colorArr.push(colorObj.red);
 
 // asse y
 vertexArr.push([0.0, 0.0, 0.0, 1.0]);
 vertexArr.push([0.0, 2.0, 0.0, 1.0]);
-colorArr.push([0.0, 1.0, 0.0, 1.0,]);
-colorArr.push([0.0, 1.0, 0.0, 1.0,]);
+colorArr.push(colorObj.green);
+colorArr.push(colorObj.green);
 
 // asse z
 vertexArr.push([0.0, 0.0, 0.0, 1.0]);
 vertexArr.push([0.0, 0.0, 2.0, 1.0]);
-colorArr.push([0.0, 0.0, 1.0, 1.0,]);
-colorArr.push([0.0, 0.0, 1.0, 1.0,]);
+colorArr.push(colorObj.blue);
+colorArr.push(colorObj.blue);
 
 // credit: CG [updated] creazione di un quadrato
 function quad(a, b, c, d, color) {
@@ -183,8 +206,8 @@ function quad(a, b, c, d, color) {
 
 // credit: CG [updated] creazione del cubo
 function colorCube(){
-  quad('A', 'B', 'C', 'D', 'magenta');
-  quad('A1', 'B1', 'C1', 'D1', 'cyan');
+  quad('A', 'B', 'C', 'D', 'magenta05');
+  quad('A1', 'B1', 'C1', 'D1', 'cyan05');
 }
 
 colorCube();
@@ -233,7 +256,7 @@ gl.enableVertexAttribArray(shaderVertexColor);
 
 ////////////////////////////// rendering //////////////////////////////
 
-var render = function(){
+function render(time) {
   // conversione da clip space a pixel
   gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
 
@@ -249,6 +272,7 @@ var render = function(){
   cameraMatrix = m4.lookAt(eye, at, up);
   // calcolo della matrice MV dalla matrice della camera tramite m4.js
   vMatrix = m4.inverse(cameraMatrix);
+
   // model matrix identità tramite m4.js
   mMatrix = m4.identity();
 
@@ -258,6 +282,8 @@ var render = function(){
 
   gl.drawArrays(gl.LINES, 0, 6);
   gl.drawArrays(gl.TRIANGLES, 6, 12);
+
+  requestAnimationFrame(render);
 }
 
-render();
+render(0);
