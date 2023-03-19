@@ -63,6 +63,21 @@ var shaderVertexColor;
 
 ////////////////////////////// utility //////////////////////////////
 
+var logArr = [];
+var logArrLength = 100;
+var consolePreElement = document.getElementById('console-pre');
+
+function refreshConsolePreElement() {
+  consolePreElement.innerHTML = logArr.join('\n');
+  consolePreElement.scrollTop = consolePreElement.scrollHeight;
+}
+
+function log(text) {
+  logArr.push(` [${new Date().toISOString()}] ${text}`);
+  logArr = logArr.slice(-logArrLength);
+  refreshConsolePreElement();
+}
+
 // credit: CG
 function degToRad(d) {
   return d * Math.PI / 180;
@@ -73,34 +88,62 @@ function radToDeg(r) {
   return r * 180 / Math.PI;
 }
 
+////////////////////////////// values setters //////////////////////////////
+
+var thetaTdElement =  document.getElementById('theta-td');
+var phiTdElement =  document.getElementById('phi-td');
+
+function setTheta(newTheta) {
+  log(`setTheta(${newTheta})`);
+  theta = degToRad(newTheta);
+  thetaTdElement.innerHTML = `${radToDeg(theta).toFixed(2)}°`;
+}
+
+function changeTheta(deltaTheta) {
+  log(`changeTheta(${deltaTheta})`);
+  theta = (theta + degToRad(deltaTheta)) % degToRad(360);
+  thetaTdElement.innerHTML = `${radToDeg(theta).toFixed(2)}°`;
+}
+
+function setPhi(newPhi) {
+  log(`setPhi(${newPhi})`);
+  phi = degToRad(newPhi);
+  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)°}`;
+}
+
+function changePhi(deltaPhi) {
+  // XXX TODO DSE per il momento è limitato tra 1 e 179, successivamente bisogna rendere consona la trasformazione
+  log(`changePhi(${deltaPhi})`);
+  phi += degToRad(deltaPhi);
+  if(phi > degToRad(179)) {
+    phi = degToRad(179);
+  } else if(phi < degToRad(1)) {
+    phi = degToRad(1);
+  }
+  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)°}`;
+}
+
 ////////////////////////////// handlers //////////////////////////////
 
 var interval;
-var intervalDelta = 10;
-var angleDelta = 1;
+var deltaInterval = 10;
+var deltaAngle = 1;
 
 function buttonOnMouseDown(fn, paramArr) {
   fn(...paramArr);
-  interval = setInterval(fn, intervalDelta, ...paramArr);
+  interval = setInterval(fn, deltaInterval, ...paramArr);
 }
 
 function buttonOnMouseUp() {
   clearInterval(interval);
 }
 
-// XXX TODO DSE estrarre le funzioni di rotazione per rendere più smooth la transizione soprattutto in verticale
-function rotateThetaButtonOnClick(direction, delta=angleDelta) {
-  theta = (theta + (direction * degToRad(delta))) % degToRad(360);
+function rotateThetaButtonOnClick(direction) {
+  changeTheta(direction * deltaAngle);
 }
 
-function rotatePhiButtonOnClick(direction, delta=angleDelta) {
-  // XXX TODO DSE per il momento è limitato tra 1 e 179, successivamente bisogna rendere consona la trasformazione
-  phi += (direction * degToRad(delta));
-  if(phi > degToRad(179)) {
-    phi = degToRad(179);
-  } else if(phi < degToRad(1)) {
-    phi = degToRad(1);
-  }
+function rotatePhiButtonOnClick(direction) {
+  changePhi(direction * deltaAngle)
 }
 
 var isMouseDown = false;
@@ -115,8 +158,8 @@ function canvasOnMouseDown(event) {
 
 function canvasOnMouseMove(event) {
   if(isMouseDown) {
-    rotateThetaButtonOnClick(-1, (event.offsetX - mouseDownX) * 180 / canvas.width);
-    rotatePhiButtonOnClick(-1, (event.offsetY - mouseDownY) * 180 / canvas.height);
+    changeTheta(-(event.offsetX - mouseDownX) * 180 / canvas.width);
+    changePhi(-(event.offsetY - mouseDownY) * 180 / canvas.height);
     mouseDownX = event.offsetX;
     mouseDownY = event.offsetY;
   }
@@ -224,8 +267,8 @@ near = 1;
 far = 100;
 
 D = 10;
-theta = degToRad(45);
-phi = degToRad(45);
+setTheta(45);
+setPhi(45);
 at = [0, 0, 0];
 up = [0, 0, 1];
 

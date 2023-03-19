@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-100 d-flex flex-column">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
 
   <title></title>
 </head>
-<body style="display: flex;">
+<body class="d-flex flex-column flex-grow-1 overflow-auto">
   <div class="container-fluid my-3">
     <div class="row">
       <div class="col">
@@ -20,21 +20,39 @@
       <div class="col">
         <div class="row">
           <div class="col">
-            <span>theta</span>
-            <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-            <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-          </div>
-        </div>
-        <div class="row mt-1">
-          <div class="col">
-            <span>phi</span>
-            <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-            <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="w-25" scope="col"></th>
+                  <th class="w-25" scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>theta</td>
+                  <td>
+                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="theta-td"></td>
+                </tr>
+                <tr>
+                  <td>phi</td>
+                  <td>
+                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="phi-td"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <pre id="console-pre" class="d-flex flex-column flex-grow-1 overflow-y-scroll bg-dark text-light p-3 mx-3"></pre>
 
   <!-- bootstrap -->
   <script type="text/javascript" src="resources/bootstrap.bundle.min.js"></script>
