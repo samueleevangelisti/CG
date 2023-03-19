@@ -23,7 +23,7 @@ var near;
 // XXX TODO DSE
 var far;
 // distanza della camera
-var D;
+var distance;
 // angolo rispetto all'asse x
 var theta;
 // angolo rispetto all'asse z
@@ -91,7 +91,6 @@ function radToDeg(r) {
 ////////////////////////////// values setters //////////////////////////////
 
 var thetaTdElement =  document.getElementById('theta-td');
-var phiTdElement =  document.getElementById('phi-td');
 
 function setTheta(newTheta) {
   log(`setTheta(${newTheta})`);
@@ -105,10 +104,12 @@ function changeTheta(deltaTheta) {
   thetaTdElement.innerHTML = `${radToDeg(theta).toFixed(2)}°`;
 }
 
+var phiTdElement =  document.getElementById('phi-td');
+
 function setPhi(newPhi) {
   log(`setPhi(${newPhi})`);
   phi = degToRad(newPhi);
-  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)°}`;
+  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)}°`;
 }
 
 function changePhi(deltaPhi) {
@@ -120,7 +121,24 @@ function changePhi(deltaPhi) {
   } else if(phi < degToRad(1)) {
     phi = degToRad(1);
   }
-  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)°}`;
+  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)}°`;
+}
+
+var distanceTdElement = document.getElementById('distance-td');
+
+function setDistance(newDistance) {
+  log(`setDistance(${newDistance})`);
+  distance = newDistance;
+  distanceTdElement.innerHTML = distance;
+}
+
+function changeDistance(deltaDistance) {
+  log(`changeDistance(${deltaDistance})`);
+  distance += deltaDistance;
+  if(distance < 1) {
+    distance = 1;
+  }
+  distanceTdElement.innerHTML = distance;
 }
 
 ////////////////////////////// handlers //////////////////////////////
@@ -128,6 +146,7 @@ function changePhi(deltaPhi) {
 var interval;
 var deltaInterval = 10;
 var deltaAngle = 1;
+var deltaDistance = 1;
 
 function buttonOnMouseDown(fn, paramArr) {
   fn(...paramArr);
@@ -138,12 +157,16 @@ function buttonOnMouseUp() {
   clearInterval(interval);
 }
 
-function rotateThetaButtonOnClick(direction) {
+function thetaButtonOnClick(direction) {
   changeTheta(direction * deltaAngle);
 }
 
-function rotatePhiButtonOnClick(direction) {
-  changePhi(direction * deltaAngle)
+function phiButtonOnClick(direction) {
+  changePhi(direction * deltaAngle);
+}
+
+function distanceButtonOnClick(direction) {
+  changeDistance(direction * deltaDistance);
 }
 
 var isMouseDown = false;
@@ -167,6 +190,10 @@ function canvasOnMouseMove(event) {
 
 function canvasOnMouseUp(event) {
   isMouseDown = false;
+}
+
+function canvasOnMouseWheel(event) {
+  changeDistance((event.deltaY > 0 ? 1 : -1) * deltaDistance);
 }
 
 ////////////////////////////// inizializzazione contesto grafico //////////////////////////////
@@ -266,7 +293,7 @@ aspectRatio = canvas.width / canvas.height;
 near = 1;
 far = 100;
 
-D = 10;
+setDistance(10);
 setTheta(45);
 setPhi(45);
 at = [0, 0, 0];
@@ -307,9 +334,9 @@ function render(time) {
   pMatrix = m4.perspective(fovy, aspectRatio, near, far);
 
   eye = [
-    D * Math.sin(phi) * Math.cos(theta), 
-    D * Math.sin(phi) * Math.sin(theta),
-    D * Math.cos(phi)
+    distance * Math.sin(phi) * Math.cos(theta), 
+    distance * Math.sin(phi) * Math.sin(theta),
+    distance * Math.cos(phi)
   ];
   // calcolo della posizione della camera tramite m4.js
   cameraMatrix = m4.lookAt(eye, at, up);

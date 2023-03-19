@@ -15,7 +15,7 @@
   <div class="container-fluid my-3">
     <div class="row">
       <div class="col">
-        <canvas id="my-canvas" width="512" height="512" onmousedown="canvasOnMouseDown(event)" onmousemove="canvasOnMouseMove(event)" onmouseup="canvasOnMouseUp(event)" onmouseleave="canvasOnMouseUp(event)"></canvas>
+        <canvas id="my-canvas" width="512" height="512" onmousedown="canvasOnMouseDown(event)" onmousemove="canvasOnMouseMove(event)" onmouseup="canvasOnMouseUp(event)" onmouseleave="canvasOnMouseUp(event)" onmousewheel="canvasOnMouseWheel(event)"></canvas>
       </div>
       <div class="col">
         <div class="row">
@@ -32,18 +32,26 @@
                 <tr>
                   <td>theta</td>
                   <td>
-                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotateThetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
                   <td id="theta-td"></td>
                 </tr>
                 <tr>
                   <td>phi</td>
                   <td>
-                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(rotatePhiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
                   <td id="phi-td"></td>
+                </tr>
+                <tr>
+                  <td>distance</td>
+                  <td>
+                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="distance-td"></td>
                 </tr>
               </tbody>
             </table>
