@@ -30,28 +30,76 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>theta</td>
-                  <td>
-                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  <td class="p-1">fovy</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(fovyButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(fovyButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="theta-td"></td>
+                  <td id="fovy-td" class="p-1"></td>
                 </tr>
                 <tr>
-                  <td>phi</td>
-                  <td>
-                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  <td class="p-1">near</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(nearButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(nearButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="phi-td"></td>
+                  <td id="near-td" class="p-1"></td>
                 </tr>
                 <tr>
-                  <td>distance</td>
-                  <td>
-                    <button class="btn btn-primary bi bi-plus-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
-                    <button class="btn btn-primary bi bi-dash-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  <td class="p-1">far</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(farButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(farButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="distance-td"></td>
+                  <td id="far-td" class="p-1"></td>
+                </tr>
+                <tr>
+                  <td class="p-1">theta</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="theta-td" class="p-1"></td>
+                </tr>
+                <tr>
+                  <td class="p-1">phi</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="phi-td" class="p-1"></td>
+                </tr>
+                <tr>
+                  <td class="p-1">distance</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="distance-td" class="p-1"></td>
+                </tr>
+                <tr>
+                  <td class="p-1">y rotation</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(yRotationButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(yRotationButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="y-rotation-td" class="p-1"></td>
+                </tr>
+                <tr>
+                  <td class="p-1">z rotation</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(zRotationButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(zRotationButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="z-rotation-td" class="p-1"></td>
+                </tr>
+                <tr>
+                  <td class="p-1">x rotation</td>
+                  <td class="p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(xRotationButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(xRotationButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="x-rotation-td" class="p-1"></td>
                 </tr>
               </tbody>
             </table>
@@ -97,7 +145,17 @@
   <script type="text/javascript" src="resources/webgl-utils.js"></script>
   <script type="text/javascript" src="resources/m4.js"></script>
 
-  <!-- script personale -->
+  <!-- variabili globali -->
+  <script type="text/javascript" src="globals.js"></script>
+  <!-- log su console simulata -->
+  <script type="text/javascript" src="logs.js"></script>
+  <!-- funzioni di utilità -->
+  <script type="text/javascript" src="utils.js"></script>
+  <!-- settaggio delle variabili globali -->
+  <script type="text/javascript" src="setters.js"></script>
+  <!-- handler per bottoni e gesture -->
+  <script type="text/javascript" src="handlers.js"></script>
+  <!-- script per la grafica -->
   <script type="text/javascript" src="main.js"></script>
 </body>
 </html>

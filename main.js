@@ -1,201 +1,3 @@
-////////////////////////////// global variables //////////////////////////////
-
-// canvas
-var canvas;
-// contesto grafico
-var gl;
-
-// vertici
-var vertexObj;
-// colori
-var colorObj;
-// array di vertici da passare a webgl
-var vertexArr;
-// array di colori da passare a webgl
-var colorArr;
-
-// campo visivo rispetto all'asse y
-var fovy;
-// aspect ratio della viewport\
-var aspectRatio;
-// XXX TODO DSE
-var near;
-// XXX TODO DSE
-var far;
-// distanza della camera
-var distance;
-// angolo rispetto all'asse x
-var theta;
-// angolo rispetto all'asse z
-var phi;
-// obiettivo della camera
-var at;
-// vettore view up
-var up;
-
-// projection matrix
-var pMatrix;
-// posizione della camera
-var eye;
-// matrice della camera
-var cameraMatrix;
-// view matrix
-var vMatrix;
-// model matrix
-var mMatrix;
-
-// shader program
-var shaderProgram;
-// vertex buffer
-var vertexBuffer;
-// vertex position nello shader program
-var shaderVertexPosition;
-// projection matrix nello shader program
-var shaderPMatrix;
-// view matrix nello shader program
-var shaderVMatrix;
-// model matrix nello shader program
-var shaderMMatrix;
-// color buffer
-var colorBuffer;
-// vertex color nello shader program
-var shaderVertexColor;
-
-////////////////////////////// utility //////////////////////////////
-
-var logArr = [];
-var logArrLength = 100;
-var consolePreElement = document.getElementById('console-pre');
-
-function refreshConsolePreElement() {
-  consolePreElement.innerHTML = logArr.join('\n');
-  consolePreElement.scrollTop = consolePreElement.scrollHeight;
-}
-
-function log(text) {
-  logArr.push(` [${new Date().toISOString()}] ${text}`);
-  logArr = logArr.slice(-logArrLength);
-  refreshConsolePreElement();
-}
-
-// credit: CG
-function degToRad(d) {
-  return d * Math.PI / 180;
-}
-
-// credit: CG
-function radToDeg(r) {
-  return r * 180 / Math.PI;
-}
-
-////////////////////////////// values setters //////////////////////////////
-
-var thetaTdElement =  document.getElementById('theta-td');
-
-function setTheta(newTheta) {
-  log(`setTheta(${newTheta})`);
-  theta = degToRad(newTheta);
-  thetaTdElement.innerHTML = `${radToDeg(theta).toFixed(2)}°`;
-}
-
-function changeTheta(deltaTheta) {
-  log(`changeTheta(${deltaTheta})`);
-  theta = (theta + degToRad(deltaTheta)) % degToRad(360);
-  thetaTdElement.innerHTML = `${radToDeg(theta).toFixed(2)}°`;
-}
-
-var phiTdElement =  document.getElementById('phi-td');
-
-function setPhi(newPhi) {
-  log(`setPhi(${newPhi})`);
-  phi = degToRad(newPhi);
-  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)}°`;
-}
-
-function changePhi(deltaPhi) {
-  // XXX TODO DSE per il momento è limitato tra 1 e 179, successivamente bisogna rendere consona la trasformazione
-  log(`changePhi(${deltaPhi})`);
-  phi += degToRad(deltaPhi);
-  if(phi > degToRad(179)) {
-    phi = degToRad(179);
-  } else if(phi < degToRad(1)) {
-    phi = degToRad(1);
-  }
-  phiTdElement.innerHTML = `${radToDeg(phi).toFixed(2)}°`;
-}
-
-var distanceTdElement = document.getElementById('distance-td');
-
-function setDistance(newDistance) {
-  log(`setDistance(${newDistance})`);
-  distance = newDistance;
-  distanceTdElement.innerHTML = distance;
-}
-
-function changeDistance(deltaDistance) {
-  log(`changeDistance(${deltaDistance})`);
-  distance += deltaDistance;
-  if(distance < 1) {
-    distance = 1;
-  }
-  distanceTdElement.innerHTML = distance;
-}
-
-////////////////////////////// handlers //////////////////////////////
-
-var interval;
-var deltaInterval = 10;
-var deltaAngle = 1;
-var deltaDistance = 1;
-
-function buttonOnMouseDown(fn, paramArr) {
-  fn(...paramArr);
-  interval = setInterval(fn, deltaInterval, ...paramArr);
-}
-
-function buttonOnMouseUp() {
-  clearInterval(interval);
-}
-
-function thetaButtonOnClick(direction) {
-  changeTheta(direction * deltaAngle);
-}
-
-function phiButtonOnClick(direction) {
-  changePhi(direction * deltaAngle);
-}
-
-function distanceButtonOnClick(direction) {
-  changeDistance(direction * deltaDistance);
-}
-
-var isMouseDown = false;
-var mouseDownX;
-var mouseDownY;
-
-function canvasOnMouseDown(event) {
-  isMouseDown = true;
-  mouseDownX = event.offsetX;
-  mouseDownY = event.offsetY;
-}
-
-function canvasOnMouseMove(event) {
-  if(isMouseDown) {
-    changeTheta(-(event.offsetX - mouseDownX) * 180 / canvas.width);
-    changePhi(-(event.offsetY - mouseDownY) * 180 / canvas.height);
-    mouseDownX = event.offsetX;
-    mouseDownY = event.offsetY;
-  }
-}
-
-function canvasOnMouseUp(event) {
-  isMouseDown = false;
-}
-
-function canvasOnMouseWheel(event) {
-  changeDistance((event.deltaY > 0 ? 1 : -1) * deltaDistance);
-}
-
 ////////////////////////////// inizializzazione contesto grafico //////////////////////////////
 
 canvas = document.getElementById('my-canvas');
@@ -213,11 +15,8 @@ gl.enable(gl.DEPTH_TEST);
 
 ////////////////////////////// inizializzazione geometria //////////////////////////////
 
-vertexArr = [];
-
-colorArr = [];
-
 vertexObj = {
+  O: [0, 0, 0, 1],
   A: [1, 1, -1, 1],
   B: [1, -1, -1, 1],
   C: [-1, -1, -1, 1],
@@ -240,47 +39,11 @@ colorObj = {
   cyan05: [0, 1, 1, 0.5]
 };
 
-// asse x
-vertexArr.push([0.0, 0.0, 0.0, 1.0]);
-vertexArr.push([2.0, 0.0, 0.0, 1.0]);
-colorArr.push(colorObj.red);
-colorArr.push(colorObj.red);
+vertexArr = [];
+colorArr = [];
 
-// asse y
-vertexArr.push([0.0, 0.0, 0.0, 1.0]);
-vertexArr.push([0.0, 2.0, 0.0, 1.0]);
-colorArr.push(colorObj.green);
-colorArr.push(colorObj.green);
-
-// asse z
-vertexArr.push([0.0, 0.0, 0.0, 1.0]);
-vertexArr.push([0.0, 0.0, 2.0, 1.0]);
-colorArr.push(colorObj.blue);
-colorArr.push(colorObj.blue);
-
-// credit: CG [updated] creazione di un quadrato
-function quad(a, b, c, d, color) {
-  vertexArr.push(vertexObj[a]); 
-  colorArr.push(colorObj[color]); 
-  vertexArr.push(vertexObj[b]); 
-  colorArr.push(colorObj[color]); 
-  vertexArr.push(vertexObj[c]); 
-  colorArr.push(colorObj[color]);     
-  vertexArr.push(vertexObj[a]); 
-  colorArr.push(colorObj[color]); 
-  vertexArr.push(vertexObj[c]); 
-  colorArr.push(colorObj[color]); 
-  vertexArr.push(vertexObj[d]); 
-  colorArr.push(colorObj[color]);  
-}
-
-// credit: CG [updated] creazione del cubo
-function colorCube(){
-  quad('A', 'B', 'C', 'D', 'magenta05');
-  quad('A1', 'B1', 'C1', 'D1', 'cyan05');
-}
-
-colorCube();
+axis(vertexObj.O, 'red', 'green', 'blue', 3);
+colorCube(vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1, 'magenta05', 'cyan05', 'red05', 'green05', 'blue05', 'yellow05');
 
 // tipizzazione array tramite m4.js
 vertexArr = m4.flatten(vertexArr);
@@ -288,16 +51,20 @@ colorArr = m4.flatten(colorArr);
 
 ////////////////////////////// inizializzazione vista //////////////////////////////
 
-fovy = degToRad(40);
+setFovy(40);
 aspectRatio = canvas.width / canvas.height;
-near = 1;
-far = 100;
+setNear(1);
+setFar(100);
 
 setDistance(10);
-setTheta(45);
-setPhi(45);
+setTheta(30);
+setPhi(60);
 at = [0, 0, 0];
 up = [0, 0, 1];
+
+setYRotationAngle(0);
+setZRotationAngle(0);
+setXRotationAngle(0);
 
 ////////////////////////////// shader program //////////////////////////////
 
@@ -345,13 +112,21 @@ function render(time) {
 
   // model matrix identità tramite m4.js
   mMatrix = m4.identity();
+  m4.yRotate(mMatrix, yRotationAngle, mMatrix);
+  m4.zRotate(mMatrix, zRotationAngle, mMatrix);
+  m4.xRotate(mMatrix, xRotationAngle, mMatrix);
 
   gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
   gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
-  gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+
+  gl.uniformMatrix4fv(shaderMMatrix, false, m4.identity());
 
   gl.drawArrays(gl.LINES, 0, 6);
-  gl.drawArrays(gl.TRIANGLES, 6, 12);
+
+  gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+
+  gl.drawArrays(gl.TRIANGLES, 6, 36);
+  gl.drawArrays(gl.LINES, 42, 6);
 
   requestAnimationFrame(render);
 }
