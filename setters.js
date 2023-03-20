@@ -94,6 +94,24 @@ function changePhi(deltaPhi) {
 
 ////////////////////////////////////////////////////////////
 
+var targetTdElement = document.getElementById('target-td');
+
+function setTarget(newTarget) {
+  log(`setTarget(${JSON.stringify(newTarget)})`);
+  target = newTarget;
+  targetTdElement.innerHTML = JSON.stringify(target);
+}
+
+function changeTarget(deltaTarget) {
+  log(`changeTarget(${deltaTarget})`);
+  target[0] += deltaTarget[0];
+  target[1] += deltaTarget[1];
+  target[2] += deltaTarget[2];
+  targetTdElement.innerHTML = JSON.stringify(target);
+}
+
+////////////////////////////////////////////////////////////
+
 var distanceTdElement = document.getElementById('distance-td');
 
 function setDistance(newDistance) {
@@ -159,4 +177,13 @@ function changeXRotationAngle(deltaXRotationAngle) {
   log(`changeXRotationAngle(${deltaXRotationAngle})`);
   xRotationAngle = ((xRotationAngle + degToRad(deltaXRotationAngle)) + degToRad(360)) % degToRad(360);
   xRotationTdElement.innerHTML = `${radToDeg(xRotationAngle).toFixed(2)}°`;
+}
+
+////////////////////////////////////////////////////////////
+
+var cameraTdElement = document.getElementById('camera-td');
+
+function setCameraPosition(newCameraPosition) {
+  cameraPosition = newCameraPosition;
+  cameraTdElement.innerHTML = JSON.stringify(cameraPosition);
 }

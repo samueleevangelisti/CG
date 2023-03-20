@@ -14,92 +14,111 @@
 <body class="d-flex flex-column flex-grow-1 overflow-auto">
   <div class="container-fluid my-3">
     <div class="row">
-      <div class="col">
+      <div class="col-6">
         <canvas id="my-canvas" width="512" height="512" onmousedown="canvasOnMouseDown(event)" onmousemove="canvasOnMouseMove(event)" onmouseup="canvasOnMouseUp(event)" onmouseleave="canvasOnMouseUp(event)" onmousewheel="canvasOnMouseWheel(event)"></canvas>
       </div>
-      <div class="col">
+      <div class="col-6">
         <div class="row">
           <div class="col">
             <table class="table">
               <thead>
                 <tr>
-                  <th class="w-25" scope="col"></th>
-                  <th class="w-25" scope="col"></th>
+                  <th scope="col" style="width: 1%;"></th>
+                  <th scope="col" style="width: 1%;"></th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td class="p-1">fovy</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">fovy</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(fovyButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(fovyButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="fovy-td" class="p-1"></td>
+                  <td id="fovy-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">near</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">near</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(nearButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(nearButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="near-td" class="p-1"></td>
+                  <td id="near-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">far</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">far</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(farButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(farButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="far-td" class="p-1"></td>
+                  <td id="far-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">theta</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">theta</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(thetaButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="theta-td" class="p-1"></td>
+                  <td id="theta-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">phi</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">phi</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(phiButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="phi-td" class="p-1"></td>
+                  <td id="phi-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">distance</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">target</td>
+                  <td class="text-nowrap p-1">
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(targetXButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    x
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(targetXButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(targetYButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    y
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(targetYButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(targetZButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                    z
+                    <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(targetZButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
+                  </td>
+                  <td id="target-td" class="text-nowrap p-1"></td>
+                </tr>
+                <tr>
+                  <td class="text-nowrap p-1">distance</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(distanceButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="distance-td" class="p-1"></td>
+                  <td id="distance-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">y rotation</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">y rotation</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(yRotationButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(yRotationButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="y-rotation-td" class="p-1"></td>
+                  <td id="y-rotation-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">z rotation</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">z rotation</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(zRotationButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(zRotationButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="z-rotation-td" class="p-1"></td>
+                  <td id="z-rotation-td" class="text-nowrap p-1"></td>
                 </tr>
                 <tr>
-                  <td class="p-1">x rotation</td>
-                  <td class="p-1">
+                  <td class="text-nowrap p-1">x rotation</td>
+                  <td class="text-nowrap p-1">
                     <button class="btn btn-primary btn-sm bi bi-plus-lg" onmousedown="buttonOnMouseDown(xRotationButtonOnClick, [1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                     <button class="btn btn-primary btn-sm bi bi-dash-lg" onmousedown="buttonOnMouseDown(xRotationButtonOnClick, [-1])" onmouseup="buttonOnMouseUp()" onmouseleave="buttonOnMouseUp()"></button>
                   </td>
-                  <td id="x-rotation-td" class="p-1"></td>
+                  <td id="x-rotation-td" class="text-nowrap p-1"></td>
+                </tr>
+                <tr>
+                  <td class="text-nowrap p-1">camera</td>
+                  <td id="camera-td" class="text-nowrap p-1" colspan="2"></td>
                 </tr>
               </tbody>
             </table>

@@ -27,7 +27,7 @@ var theta;
 // angolo rispetto all'asse z
 var phi;
 // obiettivo della camera
-var at;
+var target;
 // vettore view up
 var up;
 // angolo di rotazione rispetto a y
@@ -37,10 +37,14 @@ var zRotationAngle;
 // angolo di rotazione rispetto a x
 var xRotationAngle;
 
+// XXX TODO DSE ancora il flag è in fase di test
+// spostamento del target invece che della camera
+var isRotateCamera;
+
 // projection matrix
 var pMatrix;
 // posizione della camera
-var eye;
+var cameraPosition;
 // matrice della camera
 var cameraMatrix;
 // view matrix

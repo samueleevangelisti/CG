@@ -1,6 +1,7 @@
 ////////////////////////////// inizializzazione contesto grafico //////////////////////////////
 
 canvas = document.getElementById('my-canvas');
+
 gl = canvas.getContext('webgl');
 if(!gl) {
   alert('WebGL isn\'t available');
@@ -59,7 +60,7 @@ setFar(100);
 setDistance(10);
 setTheta(30);
 setPhi(60);
-at = [0, 0, 0];
+setTarget([0, 0, 0]);
 up = [0, 0, 1];
 
 setYRotationAngle(0);
@@ -100,13 +101,15 @@ function render(time) {
   // calcolo della matrice P tramite m4.js
   pMatrix = m4.perspective(fovy, aspectRatio, near, far);
 
-  eye = [
+  // XXX TODO DSE, non si può più dipendere da un angolo fisso, ogni volta che c'è una variazione visogna leggere la variazione
+  setCameraPosition([
     distance * Math.sin(phi) * Math.cos(theta), 
     distance * Math.sin(phi) * Math.sin(theta),
     distance * Math.cos(phi)
-  ];
+  ]);
+
   // calcolo della posizione della camera tramite m4.js
-  cameraMatrix = m4.lookAt(eye, at, up);
+  cameraMatrix = m4.lookAt(cameraPosition, target, up);
   // calcolo della matrice MV dalla matrice della camera tramite m4.js
   vMatrix = m4.inverse(cameraMatrix);
 

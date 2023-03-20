@@ -32,6 +32,18 @@ function phiButtonOnClick(direction) {
   changePhi(direction * deltaAngle);
 }
 
+function targetXButtonOnClick(direction) {
+  changeTarget([direction * deltaDistance, 0, 0]);
+}
+
+function targetYButtonOnClick(direction) {
+  changeTarget([0, direction * deltaDistance, 0]);
+}
+
+function targetZButtonOnClick(direction) {
+  changeTarget([0, 0, direction * deltaDistance]);
+}
+
 function distanceButtonOnClick(direction) {
   changeDistance(direction * deltaDistance);
 }
