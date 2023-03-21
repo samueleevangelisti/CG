@@ -18,14 +18,22 @@ gl.enable(gl.DEPTH_TEST);
 
 vertexObj = {
   O: [0, 0, 0, 1],
-  A: [1, 1, -1, 1],
-  B: [1, -1, -1, 1],
-  C: [-1, -1, -1, 1],
-  D: [-1, 1, -1, 1],
-  A1: [1, 1, 1, 1],
-  B1: [1, -1, 1, 1],
-  C1: [-1, -1, 1, 1],
-  D1: [-1, 1, 1, 1]
+  // A: [1, 1, -1, 1],
+  // B: [1, -1, -1, 1],
+  // C: [-1, -1, -1, 1],
+  // D: [-1, 1, -1, 1],
+  // A1: [1, 1, 1, 1],
+  // B1: [1, -1, 1, 1],
+  // C1: [-1, -1, 1, 1],
+  // D1: [-1, 1, 1, 1]
+  A: [0, 0, 0, 1],
+  B: [1, 0, 0, 1],
+  C: [1, 1, 0, 1],
+  D: [0, 1, 0, 1],
+  A1: [0, 0, 1, 1],
+  B1: [1, 0, 1, 1],
+  C1: [1, 1, 1, 1],
+  D1: [0, 1, 1, 1]
 };
 
 colorObj = {
@@ -115,9 +123,10 @@ function render(time) {
 
   // model matrix identità tramite m4.js
   mMatrix = m4.identity();
-  m4.yRotate(mMatrix, yRotationAngle, mMatrix);
-  m4.zRotate(mMatrix, zRotationAngle, mMatrix);
-  m4.xRotate(mMatrix, xRotationAngle, mMatrix);
+  let m = center([vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1]);
+  mMatrix = m4.yRotate(mMatrix, yRotationAngle);
+  mMatrix = m4.zRotate(mMatrix, zRotationAngle);
+  mMatrix = m4.xRotate(mMatrix, xRotationAngle);
 
   gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
   gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);

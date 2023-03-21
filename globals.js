@@ -30,11 +30,11 @@ var phi;
 var target;
 // vettore view up
 var viewUp;
-// angolo di rotazione rispetto a y
+// angolo di rotazione intorno a y
 var yRotationAngle;
-// angolo di rotazione rispetto a z
+// angolo di rotazione intorno a z
 var zRotationAngle;
-// angolo di rotazione rispetto a x
+// angolo di rotazione intorno a x
 var xRotationAngle;
 
 // XXX TODO DSE ancora il flag è in fase di test

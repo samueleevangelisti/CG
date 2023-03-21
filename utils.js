@@ -40,6 +40,21 @@ function axis(o, color1, color2, color3, axisLength) {
   colorArr.push(colorObj[color3]);
 }
 
+function center(pointArr) {
+  return [
+    pointArr.reduce((returnValue, currentValue) => {
+      return returnValue + currentValue[0];
+    }, 0) / pointArr.length,
+      pointArr.reduce((returnValue, currentValue) => {
+      return returnValue + currentValue[1];
+    }, 0) / pointArr.length,
+    pointArr.reduce((returnValue, currentValue) => {
+      return returnValue + currentValue[2];
+    }, 0) / pointArr.length,
+    1
+  ];
+}
+
 // credit: CG [updated] creazione di un quadrato
 function quad(a, b, c, d, color) {
   vertexArr.push(a);
@@ -65,22 +80,13 @@ function colorCube(a, b, c, d, a1, b1, c1, d1, color1, color2, color3, color4, c
   quad(c, d, d1, c1, color5);
   quad(d, a, a1, d1, color6);
   let pointArr = [a, b, c, d, a1, b1, c1, d1];
-  let mX = pointArr.reduce((returnValue, currentValue) => {
-    return returnValue + currentValue[0];
-  }, 0) / 8;
-  let mY = pointArr.reduce((returnValue, currentValue) => {
-    return returnValue + currentValue[1];
-  }, 0) / 8;
-  let mZ = pointArr.reduce((returnValue, currentValue) => {
-    return returnValue + currentValue[2];
-  }, 0) / 8;
-  let m = [mX, mY, mZ, 1];
+  let m = center(pointArr);
   let axisLength = pointArr.reduce((returnValue, currentValue) => {
-    return (Math.abs(currentValue[0] - mX) > returnValue ? Math.abs(currentValue[0] - mX) : returnValue);
+    return Math.max(Math.abs(currentValue[0] - m[0]), returnValue);
   }, pointArr.reduce((returnValue, currentValue) => {
-    return (Math.abs(currentValue[1] - mY) > returnValue ? Math.abs(currentValue[1] - mY) : returnValue);
+    return Math.max(Math.abs(currentValue[1] - m[1]), returnValue);
   }, pointArr.reduce((returnValue, currentValue) => {
-    return (Math.abs(currentValue[2] - mZ) > returnValue ? Math.abs(currentValue[2] - mZ) : returnValue);
+    return Math.max(Math.abs(currentValue[2] - m[2]), returnValue);
   }, 0))) + 1;
 
   axis(m, 'red', 'green', 'blue', axisLength);
