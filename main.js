@@ -61,7 +61,7 @@ setDistance(10);
 setTheta(30);
 setPhi(60);
 setTarget([0, 0, 0]);
-up = [0, 0, 1];
+setViewUp([0, 0, 1]);
 
 setYRotationAngle(0);
 setZRotationAngle(0);
@@ -109,7 +109,7 @@ function render(time) {
   ]);
 
   // calcolo della posizione della camera tramite m4.js
-  cameraMatrix = m4.lookAt(cameraPosition, target, up);
+  cameraMatrix = m4.lookAt(cameraPosition, target, viewUp);
   // calcolo della matrice MV dalla matrice della camera tramite m4.js
   vMatrix = m4.inverse(cameraMatrix);
 

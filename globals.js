@@ -29,7 +29,7 @@ var phi;
 // obiettivo della camera
 var target;
 // vettore view up
-var up;
+var viewUp;
 // angolo di rotazione rispetto a y
 var yRotationAngle;
 // angolo di rotazione rispetto a z

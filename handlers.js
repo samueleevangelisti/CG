@@ -1,67 +1,49 @@
-var interval;
-var deltaInterval = 10;
-var deltaAngle = 1;
-var deltaDistance = 0.5;
-
-function buttonOnMouseDown(fn, paramArr) {
-  fn(...paramArr);
-  interval = setInterval(fn, deltaInterval, ...paramArr);
-}
-
-function buttonOnMouseUp() {
-  clearInterval(interval);
-}
-
-function fovyButtonOnClick(direction) {
-  changeFovy(direction * deltaAngle);
-}
-
-function nearButtonOnClick(direction) {
-  changeNear(direction * deltaDistance);
-}
-
-function farButtonOnClick(direction) {
-  changeFar(direction * deltaDistance);
-}
-
-function thetaButtonOnClick(direction) {
-  changeTheta(direction * deltaAngle);
-}
-
-function phiButtonOnClick(direction) {
-  changePhi(direction * deltaAngle);
-}
-
-function targetXButtonOnClick(direction) {
-  changeTarget([direction * deltaDistance, 0, 0]);
-}
-
-function targetYButtonOnClick(direction) {
-  changeTarget([0, direction * deltaDistance, 0]);
-}
-
-function targetZButtonOnClick(direction) {
-  changeTarget([0, 0, direction * deltaDistance]);
-}
-
-function distanceButtonOnClick(direction) {
-  changeDistance(direction * deltaDistance);
-}
-
-function yRotationButtonOnClick(direction) {
-  changeYRotationAngle(direction * deltaAngle);
-}
-
-function zRotationButtonOnClick(direction) {
-  changeZRotationAngle(direction * deltaAngle);
-}
-
-function xRotationButtonOnClick(direction) {
-  changeXRotationAngle(direction * deltaAngle);
+function globalsInputOnChange(event) {
+  switch(event.target.name) {
+    case 'fovy':
+      setFovy(parseFloat(event.target.value));
+      break;
+    case 'near':
+      setNear(parseFloat(event.target.value));
+      break;
+    case 'far':
+      setFar(parseFloat(event.target.value));
+      break;
+    case 'distance':
+      setDistance(parseFloat(event.target.value));
+      break;
+    case 'theta':
+      setTheta(parseFloat(event.target.value));
+      break;
+    case 'phi':
+      setPhi(parseFloat(event.target.value));
+      break;
+    case 'target':
+      setTarget(JSON.parse(event.target.value));
+      break;
+    case 'viewUp':
+      setViewUp(JSON.parse(event.target.value));
+      break;
+    case 'yRotation':
+      setYRotationAngle(parseFloat(event.target.value));
+      break;
+    case 'zRotation':
+      setZRotationAngle(parseFloat(event.target.value));
+      break;
+    case 'xRotation':
+      setXRotationAngle(parseFloat(event.target.value));
+      break;
+    case 'camera':
+      setCamera(JSON.parse(event.target.value));
+      break;
+    default:
+      break;
+  }
 }
 
 ////////////////////////////////////////////////////////////
 
+var deltaDistance = 0.5;
 var isMouseDown = false;
 var mouseDownX;
 var mouseDownY;
@@ -74,8 +56,8 @@ function canvasOnMouseDown(event) {
 
 function canvasOnMouseMove(event) {
   if(isMouseDown) {
-    changeTheta(-(event.offsetX - mouseDownX) * 180 / canvas.width);
-    changePhi(-(event.offsetY - mouseDownY) * 180 / canvas.height);
+    setTheta(radToDeg(theta) - ((event.offsetX - mouseDownX) * 180 / canvas.width));
+    setPhi(radToDeg(phi) - ((event.offsetY - mouseDownY) * 180 / canvas.height));
     mouseDownX = event.offsetX;
     mouseDownY = event.offsetY;
   }
@@ -86,5 +68,5 @@ function canvasOnMouseUp(event) {
 }
 
 function canvasOnMouseWheel(event) {
-  changeDistance((event.deltaY > 0 ? 1 : -1) * deltaDistance);
+  setDistance(distance + ((event.deltaY > 0 ? 1 : -1) * deltaDistance));
 }
