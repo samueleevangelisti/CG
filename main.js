@@ -124,9 +124,11 @@ function render(time) {
   // model matrix identità tramite m4.js
   mMatrix = m4.identity();
   let m = center([vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1]);
+  mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
   mMatrix = m4.yRotate(mMatrix, yRotationAngle);
   mMatrix = m4.zRotate(mMatrix, zRotationAngle);
   mMatrix = m4.xRotate(mMatrix, xRotationAngle);
+  mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
 
   gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
   gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
