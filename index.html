@@ -20,88 +20,118 @@
       <div class="col-6">
         <div class="row">
           <div class="col">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col" style="width: 1%;"></th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="text-nowrap p-1">fovy</td>
-                  <td class="text-nowrap p-1">
-                    <input id="fovy-input" type="number" name="fovy" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">near</td>
-                  <td class="text-nowrap p-1">
-                    <input id="near-input" type="number" name="near" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">far</td>
-                  <td class="text-nowrap p-1">
-                    <input id="far-input" type="number" name="far" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">distance</td>
-                  <td class="text-nowrap p-1">
-                    <input id="distance-input" type="number" name="distance" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">theta</td>
-                  <td class="text-nowrap p-1">
-                    <input id="theta-input" type="number" name="theta" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">phi</td>
-                  <td class="text-nowrap p-1">
-                    <input id="phi-input" type="number" name="phi" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">target</td>
-                  <td class="text-nowrap p-1">
-                    <input id="target-input" type="text" name="target" class="form-control p-1" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">view-up</td>
-                  <td class="text-nowrap p-1">
-                    <input id="view-up-input" type="text" name="viewUp" class="form-control p-1" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">y rotation</td>
-                  <td id="y-rotation-td" class="text-nowrap p-1">
-                    <input id="y-rotation-input" type="number" name="yRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">z rotation</td>
-                  <td class="text-nowrap p-1">
-                    <input id="z-rotation-input" type="number" name="zRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">x rotation</td>
-                  <td class="text-nowrap p-1">
-                    <input id="x-rotation-input" type="number" name="xRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap p-1">camera</td>
-                  <td class="text-nowrap p-1" colspan="2">
-                    <input id="camera-input" type="text" name="camera" class="form-control p-1" onchange="globalsInputOnChange(event)">
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="item-accordion" class="accordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#global-expansion-panel">Globals</button>
+                </h2>
+                <div id="global-expansion-panel" class="accordion-collapse collapse">
+                  <div class="accordion-body">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col" style="width: 1%;"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="text-nowrap p-1">fovy</td>
+                          <td class="text-nowrap p-1">
+                            <input id="fovy-input" type="number" name="fovy" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">near</td>
+                          <td class="text-nowrap p-1">
+                            <input id="near-input" type="number" name="near" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">far</td>
+                          <td class="text-nowrap p-1">
+                            <input id="far-input" type="number" name="far" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">distance</td>
+                          <td class="text-nowrap p-1">
+                            <input id="distance-input" type="number" name="distance" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">theta</td>
+                          <td class="text-nowrap p-1">
+                            <input id="theta-input" type="number" name="theta" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">phi</td>
+                          <td class="text-nowrap p-1">
+                            <input id="phi-input" type="number" name="phi" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">target</td>
+                          <td class="text-nowrap p-1">
+                            <input id="target-input" type="text" name="target" class="form-control p-1" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">view-up</td>
+                          <td class="text-nowrap p-1">
+                            <input id="view-up-input" type="text" name="viewUp" class="form-control p-1" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">camera</td>
+                          <td class="text-nowrap p-1" colspan="2">
+                            <input id="camera-input" type="text" name="camera" class="form-control p-1" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">cube1</button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse">
+                  <div class="accordion-body">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col" style="width: 1%;"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="text-nowrap p-1">y rotation</td>
+                          <td class="text-nowrap p-1">
+                            <input id="cube1-y-rotation-input" type="number" name="cube1-yRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">z rotation</td>
+                          <td class="text-nowrap p-1">
+                            <input id="cube1-z-rotation-input" type="number" name="cube1-zRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">x rotation</td>
+                          <td class="text-nowrap p-1">
+                            <input id="cube1-x-rotation-input" type="number" name="cube1-xRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

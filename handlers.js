@@ -1,5 +1,5 @@
 function globalsInputOnChange(event) {
-  switch(event.target.name) {
+  switch(event.target.name.split('-').slice(-1).join('-')) {
     case 'fovy':
       setFovy(parseFloat(event.target.value));
       break;
@@ -25,13 +25,13 @@ function globalsInputOnChange(event) {
       setViewUp(JSON.parse(event.target.value));
       break;
     case 'yRotation':
-      setYRotationAngle(parseFloat(event.target.value));
+      setYRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;
     case 'zRotation':
-      setZRotationAngle(parseFloat(event.target.value));
+      setZRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;
     case 'xRotation':
-      setXRotationAngle(parseFloat(event.target.value));
+      setXRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;
     case 'camera':
       setCamera(JSON.parse(event.target.value));

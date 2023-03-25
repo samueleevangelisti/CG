@@ -99,32 +99,26 @@ function setViewUp(newViewUp) {
 
 ////////////////////////////////////////////////////////////
 
-var yRotationInputElement = document.getElementById('y-rotation-input');
-
-function setYRotationAngle(newYRotationAngle) {
-  log(`setYRotationAngle(${newYRotationAngle})`);
-  yRotationAngle = (degToRad(newYRotationAngle) + degToRad(360)) % degToRad(360);
-  yRotationInputElement.value = radToDeg(yRotationAngle).toFixed(2);
+function setYRotationAngle(itemId, newYRotationAngle) {
+  log(`setYRotationAngle(${itemId}, ${newYRotationAngle})`);
+  itemObj[itemId].yRotationAngle = (degToRad(newYRotationAngle) + degToRad(360)) % degToRad(360);
+  document.getElementById(`${itemId}-y-rotation-input`).value = radToDeg(itemObj[itemId].yRotationAngle).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
 
-var zRotationInputElement = document.getElementById('z-rotation-input');
-
-function setZRotationAngle(newZRotationAngle) {
-  log(`setZRotationAngle(${newZRotationAngle})`);
-  zRotationAngle = (degToRad(newZRotationAngle) + degToRad(360)) % degToRad(360);
-  zRotationInputElement.value = radToDeg(zRotationAngle).toFixed(2);
+function setZRotationAngle(itemId, newZRotationAngle) {
+  log(`setZRotationAngle(${itemId}, ${newZRotationAngle})`);
+  itemObj[itemId].zRotationAngle = (degToRad(newZRotationAngle) + degToRad(360)) % degToRad(360);
+  document.getElementById(`${itemId}-z-rotation-input`).value = radToDeg(itemObj[itemId].zRotationAngle).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
 
-var xRotationInputElement = document.getElementById('x-rotation-input');
-
-function setXRotationAngle(newXRotationAngle) {
-  log(`setXRotationAngle(${newXRotationAngle})`);
-  xRotationAngle = (degToRad(newXRotationAngle) + degToRad(360)) % degToRad(360);
-  xRotationInputElement.value = radToDeg(xRotationAngle).toFixed(2);
+function setXRotationAngle(itemId, newXRotationAngle) {
+  log(`setXRotationAngle(${itemId}, ${newXRotationAngle})`);
+  itemObj[itemId].xRotationAngle = (degToRad(newXRotationAngle) + degToRad(360)) % degToRad(360);
+  document.getElementById(`${itemId}-x-rotation-input`).value = radToDeg(itemObj[itemId].xRotationAngle).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////

@@ -18,14 +18,6 @@ gl.enable(gl.DEPTH_TEST);
 
 vertexObj = {
   O: [0, 0, 0, 1],
-  // A: [1, 1, -1, 1],
-  // B: [1, -1, -1, 1],
-  // C: [-1, -1, -1, 1],
-  // D: [-1, 1, -1, 1],
-  // A1: [1, 1, 1, 1],
-  // B1: [1, -1, 1, 1],
-  // C1: [-1, -1, 1, 1],
-  // D1: [-1, 1, 1, 1]
   A: [0, 0, 0, 1],
   B: [1, 0, 0, 1],
   C: [1, 1, 0, 1],
@@ -48,11 +40,14 @@ colorObj = {
   cyan05: [0, 1, 1, 0.5]
 };
 
+// XXX TODO DSE bisogna avere la possibilità di disegnare figure tridimensionali arbitrarie
+itemObj = {};
+
 vertexArr = [];
 colorArr = [];
 
 axis(vertexObj.O, 'red', 'green', 'blue', 3);
-colorCube(vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1, 'magenta05', 'cyan05', 'red05', 'green05', 'blue05', 'yellow05');
+colorCube('cube1', vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1, 'magenta05', 'cyan05', 'red05', 'green05', 'blue05', 'yellow05');
 
 // tipizzazione array tramite m4.js
 vertexArr = m4.flatten(vertexArr);
@@ -71,9 +66,9 @@ setPhi(60);
 setTarget([0, 0, 0]);
 setViewUp([0, 0, 1]);
 
-setYRotationAngle(0);
-setZRotationAngle(0);
-setXRotationAngle(0);
+setYRotationAngle('cube1', 0);
+setZRotationAngle('cube1', 0);
+setXRotationAngle('cube1', 0);
 
 ////////////////////////////// shader program //////////////////////////////
 
@@ -109,7 +104,6 @@ function render(time) {
   // calcolo della matrice P tramite m4.js
   pMatrix = m4.perspective(fovy, aspectRatio, near, far);
 
-  // XXX TODO DSE, non si può più dipendere da un angolo fisso, ogni volta che c'è una variazione visogna leggere la variazione
   setCameraPosition([
     distance * Math.sin(phi) * Math.cos(theta), 
     distance * Math.sin(phi) * Math.sin(theta),
@@ -121,26 +115,27 @@ function render(time) {
   // calcolo della matrice MV dalla matrice della camera tramite m4.js
   vMatrix = m4.inverse(cameraMatrix);
 
-  // model matrix identità tramite m4.js
-  mMatrix = m4.identity();
-  let m = center([vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1]);
-  mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
-  mMatrix = m4.yRotate(mMatrix, yRotationAngle);
-  mMatrix = m4.zRotate(mMatrix, zRotationAngle);
-  mMatrix = m4.xRotate(mMatrix, xRotationAngle);
-  mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
-
   gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
   gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
-
   gl.uniformMatrix4fv(shaderMMatrix, false, m4.identity());
 
   gl.drawArrays(gl.LINES, 0, 6);
 
-  gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+  Object.entries(itemObj).forEach(([key, value]) => {
+    // model matrix identità tramite m4.js
+    mMatrix = m4.identity();
+    let m = center(value.vertexArr);
+    mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
+    mMatrix = m4.xRotate(mMatrix, value.xRotationAngle);
+    mMatrix = m4.zRotate(mMatrix, value.zRotationAngle);
+    mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
+    mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
 
-  gl.drawArrays(gl.TRIANGLES, 6, 36);
-  gl.drawArrays(gl.LINES, 42, 6);
+    gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+
+    gl.drawArrays(gl.LINES, 6, 6);
+    gl.drawArrays(gl.TRIANGLES, 12, 36);
+  });
 
   requestAnimationFrame(render);
 }

@@ -7,6 +7,8 @@ var gl;
 var vertexObj;
 // colori
 var colorObj;
+// oggetti da visualizzare
+var itemObj;
 // array di vertici da passare a webgl
 var vertexArr;
 // array di colori da passare a webgl
@@ -30,6 +32,7 @@ var phi;
 var target;
 // vettore view up
 var viewUp;
+// XXX TODO DSE forse si può rimuovere da qui
 // angolo di rotazione intorno a y
 var yRotationAngle;
 // angolo di rotazione intorno a z
