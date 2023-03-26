@@ -1,18 +1,18 @@
 ////////////////////////////// inizializzazione contesto grafico //////////////////////////////
 
-canvas = document.getElementById('my-canvas');
+globals.canvas = document.getElementById('my-canvas');
 
-gl = canvas.getContext('webgl');
-if(!gl) {
+globals.gl = globals.canvas.getContext('webgl');
+if(!globals.gl) {
   alert('WebGL isn\'t available');
 } 
-gl.viewport(0, 0, canvas.width, canvas.height);
+globals.gl.viewport(0, 0, globals.canvas.width, globals.canvas.height);
 
-gl.clearColor(0.9, 0.9, 0.9, 1.0);
+globals.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
 // XXX TODO DSE questo bisogna capire cosa voglia dire
-//gl.enable(gl.CULL_FACE,null);
-gl.enable(gl.DEPTH_TEST);
+//globals.gl.enable(gl.CULL_FACE,null);
+globals.gl.enable(globals.gl.DEPTH_TEST);
 
 ////////////////////////////// inizializzazione geometria //////////////////////////////
 
@@ -25,7 +25,15 @@ vertexObj = {
   A1: [0, 0, 1, 1],
   B1: [1, 0, 1, 1],
   C1: [1, 1, 1, 1],
-  D1: [0, 1, 1, 1]
+  D1: [0, 1, 1, 1],
+  E: [0, 2, 0, 1],
+  F: [1, 2, 0, 1],
+  G: [1, 3, 0, 1],
+  H: [0, 3, 0, 1],
+  E1: [0, 2, 1, 1],
+  F1: [1, 2, 1, 1],
+  G1: [1, 3, 1, 1],
+  H1: [0, 3, 1, 1],
 };
 
 colorObj = {
@@ -40,23 +48,29 @@ colorObj = {
   cyan05: [0, 1, 1, 0.5]
 };
 
-// XXX TODO DSE bisogna avere la possibilità di disegnare figure tridimensionali arbitrarie
-itemObj = {};
-
 vertexArr = [];
 colorArr = [];
 
 axis(vertexObj.O, 'red', 'green', 'blue', 3);
 colorCube('cube1', vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1, 'magenta05', 'cyan05', 'red05', 'green05', 'blue05', 'yellow05');
+colorCube('cube2', vertexObj.E, vertexObj.F, vertexObj.G, vertexObj.H, vertexObj.E1, vertexObj.F1, vertexObj.G1, vertexObj.H1, 'magenta05', 'cyan05', 'red05', 'green05', 'blue05', 'yellow05');
 
 // tipizzazione array tramite m4.js
 vertexArr = m4.flatten(vertexArr);
 colorArr = m4.flatten(colorArr);
 
+////////////////////////////// inizializzazione elementi interfaccia //////////////////////////////
+
+Object.keys(globals.itemObj).forEach((key) => {
+  document.getElementById('item-accordion').append(graphicUtils.AccordionItem.fromConfigObj({
+    itemId: key
+  }).element);
+});
+
 ////////////////////////////// inizializzazione vista //////////////////////////////
 
 setFovy(40);
-aspectRatio = canvas.width / canvas.height;
+aspectRatio = globals.canvas.width / globals.canvas.height;
 setNear(1);
 setFar(100);
 
@@ -66,40 +80,42 @@ setPhi(60);
 setTarget([0, 0, 0]);
 setViewUp([0, 0, 1]);
 
-setYRotationAngle('cube1', 0);
-setZRotationAngle('cube1', 0);
-setXRotationAngle('cube1', 0);
+Object.keys(globals.itemObj).forEach((key) => {
+  setYRotationAngle(key, 0);
+  setZRotationAngle(key, 0);
+  setXRotationAngle(key, 0);
+})
 
 ////////////////////////////// shader program //////////////////////////////
 
-shaderProgram = webglUtils.createProgramFromScripts(gl, ['vertex-shader', 'fragment-shader']);
-gl.useProgram(shaderProgram);
+shaderProgram = webglUtils.createProgramFromScripts(globals.gl, ['vertex-shader', 'fragment-shader']);
+globals.gl.useProgram(shaderProgram);
 
-vertexBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, vertexArr, gl.STATIC_DRAW);
+vertexBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, vertexBuffer);
+globals.gl.bufferData(globals.gl.ARRAY_BUFFER, vertexArr, globals.gl.STATIC_DRAW);
 
-shaderVertexPosition = gl.getAttribLocation(shaderProgram, 'vertexPosition');
-gl.vertexAttribPointer(shaderVertexPosition, 4, gl.FLOAT, false, 0, 0);
-gl.enableVertexAttribArray(shaderVertexPosition);
+shaderVertexPosition = globals.gl.getAttribLocation(shaderProgram, 'vertexPosition');
+globals.gl.vertexAttribPointer(shaderVertexPosition, 4, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(shaderVertexPosition);
 
-shaderPMatrix = gl.getUniformLocation(shaderProgram, 'PMatrix');
-shaderVMatrix = gl.getUniformLocation(shaderProgram, 'VMatrix');
-shaderMMatrix = gl.getUniformLocation(shaderProgram, 'MMatrix');
+shaderPMatrix = globals.gl.getUniformLocation(shaderProgram, 'PMatrix');
+shaderVMatrix = globals.gl.getUniformLocation(shaderProgram, 'VMatrix');
+shaderMMatrix = globals.gl.getUniformLocation(shaderProgram, 'MMatrix');
 
-colorBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, colorArr, gl.STATIC_DRAW);
+colorBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, colorBuffer);
+globals.gl.bufferData(globals.gl.ARRAY_BUFFER, colorArr, globals.gl.STATIC_DRAW);
 
-shaderVertexColor = gl.getAttribLocation( shaderProgram, 'vertexColor');
-gl.vertexAttribPointer(shaderVertexColor, 4, gl.FLOAT, false, 0, 0);
-gl.enableVertexAttribArray(shaderVertexColor);
+shaderVertexColor = globals.gl.getAttribLocation(shaderProgram, 'vertexColor');
+globals.gl.vertexAttribPointer(shaderVertexColor, 4, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(shaderVertexColor);
 
 ////////////////////////////// rendering //////////////////////////////
 
 function render(time) {
   // conversione da clip space a pixel
-  gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); 
+  globals.gl.clear(globals.gl.COLOR_BUFFER_BIT | globals.gl.DEPTH_BUFFER_BIT); 
 
   // calcolo della matrice P tramite m4.js
   pMatrix = m4.perspective(fovy, aspectRatio, near, far);
@@ -115,13 +131,13 @@ function render(time) {
   // calcolo della matrice MV dalla matrice della camera tramite m4.js
   vMatrix = m4.inverse(cameraMatrix);
 
-  gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
-  gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
-  gl.uniformMatrix4fv(shaderMMatrix, false, m4.identity());
+  globals.gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
+  globals.gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
+  globals.gl.uniformMatrix4fv(shaderMMatrix, false, m4.identity());
 
-  gl.drawArrays(gl.LINES, 0, 6);
+  globals.gl.drawArrays(globals.gl.LINES, 0, 6);
 
-  Object.entries(itemObj).forEach(([key, value]) => {
+  Object.entries(globals.itemObj).forEach(([key, value]) => {
     // model matrix identità tramite m4.js
     mMatrix = m4.identity();
     let m = center(value.vertexArr);
@@ -131,10 +147,10 @@ function render(time) {
     mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
     mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
 
-    gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+    globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
 
-    gl.drawArrays(gl.LINES, 6, 6);
-    gl.drawArrays(gl.TRIANGLES, 12, 36);
+    globals.gl.drawArrays(globals.gl.LINES, value.vertexArrStart, 6);
+    globals.gl.drawArrays(globals.gl.TRIANGLES, value.vertexArrStart + 6, 36);
   });
 
   requestAnimationFrame(render);

@@ -1,14 +1,13 @@
-// canvas
-var canvas;
-// contesto grafico
-var gl;
+var globals = {
+  canvas: null,
+  gl: null,
+  itemObj: {}
+};
 
 // vertici
 var vertexObj;
 // colori
 var colorObj;
-// oggetti da visualizzare
-var itemObj;
 // array di vertici da passare a webgl
 var vertexArr;
 // array di colori da passare a webgl
@@ -32,17 +31,6 @@ var phi;
 var target;
 // vettore view up
 var viewUp;
-// XXX TODO DSE forse si può rimuovere da qui
-// angolo di rotazione intorno a y
-var yRotationAngle;
-// angolo di rotazione intorno a z
-var zRotationAngle;
-// angolo di rotazione intorno a x
-var xRotationAngle;
-
-// XXX TODO DSE ancora il flag è in fase di test
-// spostamento del target invece che della camera
-var isRotateCamera;
 
 // projection matrix
 var pMatrix;

@@ -101,24 +101,24 @@ function setViewUp(newViewUp) {
 
 function setYRotationAngle(itemId, newYRotationAngle) {
   log(`setYRotationAngle(${itemId}, ${newYRotationAngle})`);
-  itemObj[itemId].yRotationAngle = (degToRad(newYRotationAngle) + degToRad(360)) % degToRad(360);
-  document.getElementById(`${itemId}-y-rotation-input`).value = radToDeg(itemObj[itemId].yRotationAngle).toFixed(2);
+  globals.itemObj[itemId].yRotationAngle = (degToRad(newYRotationAngle) + degToRad(360)) % degToRad(360);
+  document.getElementById(`${itemId}-y-rotation-input`).value = radToDeg(globals.itemObj[itemId].yRotationAngle).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
 
 function setZRotationAngle(itemId, newZRotationAngle) {
   log(`setZRotationAngle(${itemId}, ${newZRotationAngle})`);
-  itemObj[itemId].zRotationAngle = (degToRad(newZRotationAngle) + degToRad(360)) % degToRad(360);
-  document.getElementById(`${itemId}-z-rotation-input`).value = radToDeg(itemObj[itemId].zRotationAngle).toFixed(2);
+  globals.itemObj[itemId].zRotationAngle = (degToRad(newZRotationAngle) + degToRad(360)) % degToRad(360);
+  document.getElementById(`${itemId}-z-rotation-input`).value = radToDeg(globals.itemObj[itemId].zRotationAngle).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
 
 function setXRotationAngle(itemId, newXRotationAngle) {
   log(`setXRotationAngle(${itemId}, ${newXRotationAngle})`);
-  itemObj[itemId].xRotationAngle = (degToRad(newXRotationAngle) + degToRad(360)) % degToRad(360);
-  document.getElementById(`${itemId}-x-rotation-input`).value = radToDeg(itemObj[itemId].xRotationAngle).toFixed(2);
+  globals.itemObj[itemId].xRotationAngle = (degToRad(newXRotationAngle) + degToRad(360)) % degToRad(360);
+  document.getElementById(`${itemId}-x-rotation-input`).value = radToDeg(globals.itemObj[itemId].xRotationAngle).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////

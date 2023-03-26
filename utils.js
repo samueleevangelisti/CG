@@ -48,7 +48,7 @@ function axis(o, color1, color2, color3, axisLength) {
   vertexArr.push(o);
   vertexArr.push((() => {
     let oTmp = JSON.parse(JSON.stringify(o));
-    oTmp[0] = axisLength;
+    oTmp[0] += axisLength;
     return oTmp;
   })());
   colorArr.push(colorObj[color1]);
@@ -58,7 +58,7 @@ function axis(o, color1, color2, color3, axisLength) {
   vertexArr.push(o);
   vertexArr.push((() => {
     let oTmp = JSON.parse(JSON.stringify(o));
-    oTmp[1] = axisLength;
+    oTmp[1] += axisLength;
     return oTmp;
   })());
   colorArr.push(colorObj[color2]);
@@ -68,7 +68,7 @@ function axis(o, color1, color2, color3, axisLength) {
   vertexArr.push(o);
   vertexArr.push((() => {
     let oTmp = JSON.parse(JSON.stringify(o));
-    oTmp[2] = axisLength;
+    oTmp[2] += axisLength;
     return oTmp;
   })());
   colorArr.push(colorObj[color3]);
@@ -109,11 +109,8 @@ function quad(a, b, c, d, color) {
 // credit: CG [updated] creazione del cubo
 function colorCube(itemId, a, b, c, d, a1, b1, c1, d1, color1, color2, color3, color4, color5, color6){
   let pointArr = [a, b, c, d, a1, b1, c1, d1];
-  itemObj[itemId] = {
+  globals.itemObj[itemId] = {
     vertexArr: pointArr,
-    yRotationAngle: 0,
-    zRotationAngle: 0,
-    xRotationAngle: 0,
     vertexArrStart: vertexArr.length,
     colorArrStart: colorArr.length
   };
@@ -132,8 +129,8 @@ function colorCube(itemId, a, b, c, d, a1, b1, c1, d1, color1, color2, color3, c
   quad(b, c, c1, b1, color4);
   quad(c, d, d1, c1, color5);
   quad(d, a, a1, d1, color6);
-  itemObj[itemId] = {
-    ...itemObj[itemId],
+  globals.itemObj[itemId] = {
+    ...globals.itemObj[itemId],
     vertexArrStop: vertexArr.length,
     colorArrStop: colorArr.length
   };

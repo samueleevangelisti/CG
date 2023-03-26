@@ -49,24 +49,28 @@ var mouseDownX;
 var mouseDownY;
 
 function canvasOnMouseDown(event) {
+  event.preventDefault();
   isMouseDown = true;
   mouseDownX = event.offsetX;
   mouseDownY = event.offsetY;
 }
 
 function canvasOnMouseMove(event) {
+  event.preventDefault();
   if(isMouseDown) {
-    setTheta(radToDeg(theta) - ((event.offsetX - mouseDownX) * 180 / canvas.width));
-    setPhi(radToDeg(phi) - ((event.offsetY - mouseDownY) * 180 / canvas.height));
+    setTheta(radToDeg(theta) - ((event.offsetX - mouseDownX) * 180 / globals.canvas.width));
+    setPhi(radToDeg(phi) - ((event.offsetY - mouseDownY) * 180 / globals.canvas.height));
     mouseDownX = event.offsetX;
     mouseDownY = event.offsetY;
   }
 }
 
 function canvasOnMouseUp(event) {
+  event.preventDefault();
   isMouseDown = false;
 }
 
 function canvasOnMouseWheel(event) {
+  event.preventDefault();
   setDistance(distance + ((event.deltaY > 0 ? 1 : -1) * deltaDistance));
 }

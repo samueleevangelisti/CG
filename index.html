@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-100 d-flex flex-column">
+<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,13 +11,13 @@
 
   <title></title>
 </head>
-<body class="d-flex flex-column flex-grow-1 overflow-auto">
+<body>
   <div class="container-fluid my-3">
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-6">
         <canvas id="my-canvas" width="512" height="512" onmousedown="canvasOnMouseDown(event)" onmousemove="canvasOnMouseMove(event)" onmouseup="canvasOnMouseUp(event)" onmouseleave="canvasOnMouseUp(event)" onmousewheel="canvasOnMouseWheel(event)"></canvas>
       </div>
-      <div class="col-6">
+      <div class="col-md-6">
         <div class="row">
           <div class="col">
             <div id="item-accordion" class="accordion">
@@ -94,50 +94,12 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">cube1</button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse">
-                  <div class="accordion-body">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col" style="width: 1%;"></th>
-                          <th scope="col"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="text-nowrap p-1">y rotation</td>
-                          <td class="text-nowrap p-1">
-                            <input id="cube1-y-rotation-input" type="number" name="cube1-yRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="text-nowrap p-1">z rotation</td>
-                          <td class="text-nowrap p-1">
-                            <input id="cube1-z-rotation-input" type="number" name="cube1-zRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="text-nowrap p-1">x rotation</td>
-                          <td class="text-nowrap p-1">
-                            <input id="cube1-x-rotation-input" type="number" name="cube1-xRotation" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <pre id="console-pre" class="d-flex flex-column flex-grow-1 overflow-y-scroll bg-dark text-light p-3 mx-3"></pre>
 
   <!-- bootstrap -->
   <script type="text/javascript" src="resources/bootstrap.bundle.min.js"></script>
@@ -176,7 +138,8 @@
 
   <!-- variabili globali -->
   <script type="text/javascript" src="globals.js"></script>
-  <!-- log su console simulata -->
+  <!-- TODO DSE integrare la vecchia libreria collaudata per i log -->
+  <!-- log su console -->
   <script type="text/javascript" src="logs.js"></script>
   <!-- funzioni di utilità -->
   <script type="text/javascript" src="utils.js"></script>
@@ -184,6 +147,8 @@
   <script type="text/javascript" src="setters.js"></script>
   <!-- handler per bottoni e gesture -->
   <script type="text/javascript" src="handlers.js"></script>
+  <!-- script per la gestione della grafica -->
+  <script type="text/javascript" src="graphicUtils.js"></script>
   <!-- script per la grafica -->
   <script type="text/javascript" src="main.js"></script>
 </body>
