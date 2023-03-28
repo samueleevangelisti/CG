@@ -25,7 +25,7 @@
                 <h2 class="accordion-header">
                   <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#global-expansion-panel">Globals</button>
                 </h2>
-                <div id="global-expansion-panel" class="accordion-collapse collapse">
+                <div id="global-expansion-panel" class="accordion-collapse collapse" data-bs-parent="#item-accordion">
                   <div class="accordion-body">
                     <table class="table">
                       <thead>
@@ -108,16 +108,19 @@
   <script id="vertex-shader" type="x-shader/x-vertex">
     attribute vec4 vertexPosition;
     attribute vec4 vertexColor;
+    attribute vec2 vertexTexture;
 
     uniform mat4 PMatrix;
     uniform mat4 VMatrix;
     uniform mat4 MMatrix;
 
     varying vec4 fragmentColor;
+    varying vec2 fragmentTexture;
 
     void main(){
       gl_Position = PMatrix*VMatrix*MMatrix*vertexPosition;
       fragmentColor = vertexColor;
+      fragmentTexture = vertexTexture;
     } 
   </script>
 
@@ -125,10 +128,13 @@
   <script id="fragment-shader" type="x-shader/x-fragment">
     precision mediump float;
 
+    uniform sampler2D texture;
+
     varying vec4 fragmentColor;
+    varying vec2 fragmentTexture;
 
     void main(){
-      gl_FragColor = fragmentColor;
+      gl_FragColor = true ? texture2D(texture, fragmentTexture) : fragmentColor;
     }
   </script>
 

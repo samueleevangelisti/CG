@@ -16,48 +16,50 @@ globals.gl.enable(globals.gl.DEPTH_TEST);
 
 ////////////////////////////// inizializzazione geometria //////////////////////////////
 
-vertexObj = {
-  O: [0, 0, 0, 1],
-  A: [0, 0, 0, 1],
-  B: [1, 0, 0, 1],
-  C: [1, 1, 0, 1],
-  D: [0, 1, 0, 1],
-  A1: [0, 0, 1, 1],
-  B1: [1, 0, 1, 1],
-  C1: [1, 1, 1, 1],
-  D1: [0, 1, 1, 1],
-  E: [0, 2, 0, 1],
-  F: [1, 2, 0, 1],
-  G: [1, 3, 0, 1],
-  H: [0, 3, 0, 1],
-  E1: [0, 2, 1, 1],
-  F1: [1, 2, 1, 1],
-  G1: [1, 3, 1, 1],
-  H1: [0, 3, 1, 1],
-};
+axis(globals.vertexObj.O, globals.colorObj.red, globals.colorObj.green, globals.colorObj.blue, 3);
+// colorCube('cube1', globals.vertexObj.A, globals.vertexObj.B, globals.vertexObj.C, globals.vertexObj.D, globals.vertexObj.A1, globals.vertexObj.B1, globals.vertexObj.C1, globals.vertexObj.D1, globals.colorObj.magenta05, globals.colorObj.cyan05, globals.colorObj.red05, globals.colorObj.green05, globals.colorObj.blue05, globals.colorObj.yellow05);
+// colorCube('cube2', globals.vertexObj.E, globals.vertexObj.F, globals.vertexObj.G, globals.vertexObj.H, globals.vertexObj.E1, globals.vertexObj.F1, globals.vertexObj.G1, globals.vertexObj.H1, globals.colorObj.magenta05, globals.colorObj.cyan05, globals.colorObj.red05, globals.colorObj.green05, globals.colorObj.blue05, globals.colorObj.yellow05);
 
-colorObj = {
-  red: [1, 0, 0, 1],
-  red05: [1, 0, 0, 0.5],
-  green: [0, 1, 0, 1],
-  green05: [0, 1, 0, 0.5],
-  blue: [0, 0, 1, 1],
-  blue05: [0, 0, 1, 0.5],
-  yellow05: [1, 1, 0, 0.5],
-  magenta05: [1, 0, 1, 0.5],
-  cyan05: [0, 1, 1, 0.5]
-};
+// TODO DSE
+globals.vertexArr = [
+  ...globals.vertexArr,
+  [0, 0, 0, 1],
+  [0, 1, 0, 1],
+  [0, 1, 1, 1],
+  [0, 0, 0, 1],
+  [0, 1, 1, 1],
+  [0, 0, 1, 1]
+];
 
-vertexArr = [];
-colorArr = [];
+globals.colorArr = [
+  ...globals.colorArr,
+  [1, 0, 0, 1],
+  [1, 0, 0, 1],
+  [1, 0, 0, 1],
+  [1, 0, 0, 1],
+  [1, 0, 0, 1],
+  [1, 0, 0, 1]
+];
 
-axis(vertexObj.O, 'red', 'green', 'blue', 3);
-colorCube('cube1', vertexObj.A, vertexObj.B, vertexObj.C, vertexObj.D, vertexObj.A1, vertexObj.B1, vertexObj.C1, vertexObj.D1, 'magenta05', 'cyan05', 'red05', 'green05', 'blue05', 'yellow05');
-colorCube('cube2', vertexObj.E, vertexObj.F, vertexObj.G, vertexObj.H, vertexObj.E1, vertexObj.F1, vertexObj.G1, vertexObj.H1, 'magenta05', 'cyan05', 'red05', 'green05', 'blue05', 'yellow05');
+globals.textureArr = [
+  [0, 0],
+  [0, 0],
+  [0, 0],
+  [0, 0],
+  [0, 0],
+  [0, 0],
+  [0, 0.5],
+  [0.25, 0.5],
+  [0.25, 0],
+  [0, 0.5],
+  [0.25, 0],
+  [0, 0]
+];
 
 // tipizzazione array tramite m4.js
-vertexArr = m4.flatten(vertexArr);
-colorArr = m4.flatten(colorArr);
+globals.vertexArr = m4.flatten(globals.vertexArr);
+globals.colorArr = m4.flatten(globals.colorArr);
+globals.textureArr = m4.flatten(globals.textureArr);
 
 ////////////////////////////// inizializzazione elementi interfaccia //////////////////////////////
 
@@ -84,7 +86,7 @@ Object.keys(globals.itemObj).forEach((key) => {
   setYRotationAngle(key, 0);
   setZRotationAngle(key, 0);
   setXRotationAngle(key, 0);
-})
+});
 
 ////////////////////////////// shader program //////////////////////////////
 
@@ -93,23 +95,56 @@ globals.gl.useProgram(shaderProgram);
 
 vertexBuffer = globals.gl.createBuffer();
 globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, vertexBuffer);
-globals.gl.bufferData(globals.gl.ARRAY_BUFFER, vertexArr, globals.gl.STATIC_DRAW);
+globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.vertexArr, globals.gl.STATIC_DRAW);
 
 shaderVertexPosition = globals.gl.getAttribLocation(shaderProgram, 'vertexPosition');
 globals.gl.vertexAttribPointer(shaderVertexPosition, 4, globals.gl.FLOAT, false, 0, 0);
 globals.gl.enableVertexAttribArray(shaderVertexPosition);
 
-shaderPMatrix = globals.gl.getUniformLocation(shaderProgram, 'PMatrix');
-shaderVMatrix = globals.gl.getUniformLocation(shaderProgram, 'VMatrix');
-shaderMMatrix = globals.gl.getUniformLocation(shaderProgram, 'MMatrix');
-
 colorBuffer = globals.gl.createBuffer();
 globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, colorBuffer);
-globals.gl.bufferData(globals.gl.ARRAY_BUFFER, colorArr, globals.gl.STATIC_DRAW);
+globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.colorArr, globals.gl.STATIC_DRAW);
 
 shaderVertexColor = globals.gl.getAttribLocation(shaderProgram, 'vertexColor');
 globals.gl.vertexAttribPointer(shaderVertexColor, 4, globals.gl.FLOAT, false, 0, 0);
 globals.gl.enableVertexAttribArray(shaderVertexColor);
+
+textureBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, textureBuffer);
+globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.textureArr, globals.gl.STATIC_DRAW);
+
+shaderVertexTexture = globals.gl.getAttribLocation(shaderProgram, 'vertexTexture');
+globals.gl.vertexAttribPointer(shaderVertexTexture, 2, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(shaderVertexTexture);
+
+shaderPMatrix = globals.gl.getUniformLocation(shaderProgram, 'PMatrix');
+shaderVMatrix = globals.gl.getUniformLocation(shaderProgram, 'VMatrix');
+shaderMMatrix = globals.gl.getUniformLocation(shaderProgram, 'MMatrix');
+
+shaderTexture = globals.gl.getUniformLocation(shaderProgram, 'texture');
+
+// XXX TODO DSE controllare se il caricamento avviene correttamente
+function isPowerOf2(value) {
+  return (value & (value - 1)) === 0;
+}
+var texture = globals.gl.createTexture();
+var image = new Image();
+image.src = 'resources/noodles.jpg';
+image.addEventListener('load', (event) => {
+  globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
+  globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
+  // Check if the image is a power of 2 in both dimensions.
+  if(isPowerOf2(image.width) && isPowerOf2(image.height)) {
+    // Yes, it's a power of 2. Generate mips.
+    globals.gl.generateMipmap(globals.gl.TEXTURE_2D);
+//       console.log('mipmap');
+  } else {
+     // No, it's not a power of 2. Turn of mips and set wrapping to clamp to edge
+    globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_S, globals.gl.CLAMP_TO_EDGE);
+    globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_T, globals.gl.CLAMP_TO_EDGE);
+    globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_MIN_FILTER, globals.gl.LINEAR);
+  }
+});
 
 ////////////////////////////// rendering //////////////////////////////
 
@@ -135,23 +170,31 @@ function render(time) {
   globals.gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
   globals.gl.uniformMatrix4fv(shaderMMatrix, false, m4.identity());
 
+  globals.gl.uniform1i(shaderTexture, 0);
+
   globals.gl.drawArrays(globals.gl.LINES, 0, 6);
 
-  Object.entries(globals.itemObj).forEach(([key, value]) => {
-    // model matrix identità tramite m4.js
-    mMatrix = m4.identity();
-    let m = center(value.vertexArr);
-    mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
-    mMatrix = m4.xRotate(mMatrix, value.xRotationAngle);
-    mMatrix = m4.zRotate(mMatrix, value.zRotationAngle);
-    mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
-    mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
+  // TODO DSE riabilitare questo passaggio
+  // Object.entries(globals.itemObj).forEach(([key, value]) => {
+  //   // model matrix identità tramite m4.js
+  //   mMatrix = m4.identity();
+  //   let m = center(value.vertexArr);
+  //   mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
+  //   mMatrix = m4.xRotate(mMatrix, value.xRotationAngle);
+  //   mMatrix = m4.zRotate(mMatrix, value.zRotationAngle);
+  //   mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
+  //   mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
 
-    globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+  //   globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
 
-    globals.gl.drawArrays(globals.gl.LINES, value.vertexArrStart, 6);
-    globals.gl.drawArrays(globals.gl.TRIANGLES, value.vertexArrStart + 6, 36);
-  });
+  //   // disegna gli assi dell'oggetto
+  //   globals.gl.drawArrays(globals.gl.LINES, value.vertexArrStart, 6);
+  //   // disegna l'ogetto
+  //   globals.gl.drawArrays(globals.gl.TRIANGLES, value.vertexArrStart + 6, 36);
+  // });
+
+  // TODO DSE questo serve solo per i test
+  globals.gl.drawArrays(globals.gl.TRIANGLES, 6, 6);
 
   requestAnimationFrame(render);
 }

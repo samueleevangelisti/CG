@@ -45,34 +45,34 @@ function radToDeg(r) {
 
 function axis(o, color1, color2, color3, axisLength) {
   // asse x
-  vertexArr.push(o);
-  vertexArr.push((() => {
+  globals.vertexArr.push(o);
+  globals.vertexArr.push((() => {
     let oTmp = JSON.parse(JSON.stringify(o));
     oTmp[0] += axisLength;
     return oTmp;
   })());
-  colorArr.push(colorObj[color1]);
-  colorArr.push(colorObj[color1]);
+  globals.colorArr.push(color1);
+  globals.colorArr.push(color1);
 
   // asse y
-  vertexArr.push(o);
-  vertexArr.push((() => {
+  globals.vertexArr.push(o);
+  globals.vertexArr.push((() => {
     let oTmp = JSON.parse(JSON.stringify(o));
     oTmp[1] += axisLength;
     return oTmp;
   })());
-  colorArr.push(colorObj[color2]);
-  colorArr.push(colorObj[color2]);
+  globals.colorArr.push(color2);
+  globals.colorArr.push(color2);
 
   // asse z
-  vertexArr.push(o);
-  vertexArr.push((() => {
+  globals.vertexArr.push(o);
+  globals.vertexArr.push((() => {
     let oTmp = JSON.parse(JSON.stringify(o));
     oTmp[2] += axisLength;
     return oTmp;
   })());
-  colorArr.push(colorObj[color3]);
-  colorArr.push(colorObj[color3]);
+  globals.colorArr.push(color3);
+  globals.colorArr.push(color3);
 }
 
 function center(pointArr) {
@@ -92,18 +92,18 @@ function center(pointArr) {
 
 // credit: CG [updated] creazione di un quadrato
 function quad(a, b, c, d, color) {
-  vertexArr.push(a);
-  vertexArr.push(b);
-  vertexArr.push(c);
-  vertexArr.push(a);
-  vertexArr.push(c);
-  vertexArr.push(d);
-  colorArr.push(colorObj[color]);
-  colorArr.push(colorObj[color]);
-  colorArr.push(colorObj[color]);
-  colorArr.push(colorObj[color]);
-  colorArr.push(colorObj[color]);
-  colorArr.push(colorObj[color]);
+  globals.vertexArr.push(a);
+  globals.vertexArr.push(b);
+  globals.vertexArr.push(c);
+  globals.vertexArr.push(a);
+  globals.vertexArr.push(c);
+  globals.vertexArr.push(d);
+  globals.colorArr.push(color);
+  globals.colorArr.push(color);
+  globals.colorArr.push(color);
+  globals.colorArr.push(color);
+  globals.colorArr.push(color);
+  globals.colorArr.push(color);
 }
 
 // credit: CG [updated] creazione del cubo
@@ -111,8 +111,8 @@ function colorCube(itemId, a, b, c, d, a1, b1, c1, d1, color1, color2, color3, c
   let pointArr = [a, b, c, d, a1, b1, c1, d1];
   globals.itemObj[itemId] = {
     vertexArr: pointArr,
-    vertexArrStart: vertexArr.length,
-    colorArrStart: colorArr.length
+    vertexArrStart: globals.vertexArr.length,
+    colorArrStart: globals.colorArr.length
   };
   let m = center(pointArr);
   let axisLength = pointArr.reduce((returnValue, currentValue) => {
@@ -122,7 +122,7 @@ function colorCube(itemId, a, b, c, d, a1, b1, c1, d1, color1, color2, color3, c
   }, pointArr.reduce((returnValue, currentValue) => {
     return Math.max(Math.abs(currentValue[2] - m[2]), returnValue);
   }, 0))) + 1;
-  axis(m, 'red', 'green', 'blue', axisLength);
+  axis(m, globals.colorObj.red, globals.colorObj.green, globals.colorObj.blue, axisLength);
   quad(a, b, c, d, color1);
   quad(a1, b1, c1, d1, color2);
   quad(a, b, b1, a1, color3);
@@ -131,7 +131,7 @@ function colorCube(itemId, a, b, c, d, a1, b1, c1, d1, color1, color2, color3, c
   quad(d, a, a1, d1, color6);
   globals.itemObj[itemId] = {
     ...globals.itemObj[itemId],
-    vertexArrStop: vertexArr.length,
-    colorArrStop: colorArr.length
+    vertexArrStop: globals.vertexArr.length,
+    colorArrStop: globals.colorArr.length
   };
 }

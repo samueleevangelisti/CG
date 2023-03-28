@@ -39,6 +39,9 @@ var graphicUtils = {
               'accordion-collapse',
               'collapse'
             ],
+            attributeObj: {
+              'data-bs-parent': '#item-accordion'
+            },
             childElementArr: [
               elementFromConfigObj({
                 tag: 'div',
