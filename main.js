@@ -11,7 +11,7 @@ globals.gl.viewport(0, 0, globals.canvas.width, globals.canvas.height);
 globals.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
 // XXX TODO DSE questo bisogna capire cosa voglia dire
-//globals.gl.enable(gl.CULL_FACE,null);
+// globals.gl.enable(globals.gl.CULL_FACE);
 globals.gl.enable(globals.gl.DEPTH_TEST);
 
 ////////////////////////////// inizializzazione geometria //////////////////////////////
@@ -23,12 +23,12 @@ axis(globals.vertexObj.O, globals.colorObj.red, globals.colorObj.green, globals.
 // TODO DSE
 globals.vertexArr = [
   ...globals.vertexArr,
-  [0, 0, 0, 1],
-  [0, 1, 0, 1],
-  [0, 1, 1, 1],
-  [0, 0, 0, 1],
-  [0, 1, 1, 1],
-  [0, 0, 1, 1]
+  [2, 0, 0, 1],
+  [2, 2, 0, 1],
+  [0, 2, 0, 1],
+  [2, 0, 0, 1],
+  [0, 2, 0, 1],
+  [0, 0, 0, 1]
 ];
 
 globals.colorArr = [
@@ -48,11 +48,11 @@ globals.textureArr = [
   [0, 0],
   [0, 0],
   [0, 0],
-  [0, 0.5],
-  [0.25, 0.5],
-  [0.25, 0],
-  [0, 0.5],
-  [0.25, 0],
+  [0, 2],
+  [2, 2],
+  [2, 0],
+  [0, 2],
+  [2, 0],
   [0, 0]
 ];
 
@@ -128,8 +128,10 @@ function isPowerOf2(value) {
   return (value & (value - 1)) === 0;
 }
 var texture = globals.gl.createTexture();
+globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
+globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, 1, 1, 0, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
 var image = new Image();
-image.src = 'resources/noodles.jpg';
+image.src = 'resources/gioconda.jpg';
 image.addEventListener('load', (event) => {
   globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
   globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
