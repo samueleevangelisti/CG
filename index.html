@@ -132,13 +132,14 @@
   <script id="fragment-shader" type="x-shader/x-fragment">
     precision mediump float;
 
+    uniform bool isTexture;
     uniform sampler2D texture;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
 
     void main(){
-      gl_FragColor = true ? texture2D(texture, fragmentTexture) : fragmentColor;
+      gl_FragColor = isTexture ? texture2D(texture, fragmentTexture) : fragmentColor;
     }
   </script>
 

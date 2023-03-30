@@ -43,36 +43,9 @@ function radToDeg(r) {
   return r * 180 / Math.PI;
 }
 
-function axis(o, color1, color2, color3, axisLength) {
-  // asse x
-  globals.vertexArr.push(o);
-  globals.vertexArr.push((() => {
-    let oTmp = JSON.parse(JSON.stringify(o));
-    oTmp[0] += axisLength;
-    return oTmp;
-  })());
-  globals.colorArr.push(color1);
-  globals.colorArr.push(color1);
-
-  // asse y
-  globals.vertexArr.push(o);
-  globals.vertexArr.push((() => {
-    let oTmp = JSON.parse(JSON.stringify(o));
-    oTmp[1] += axisLength;
-    return oTmp;
-  })());
-  globals.colorArr.push(color2);
-  globals.colorArr.push(color2);
-
-  // asse z
-  globals.vertexArr.push(o);
-  globals.vertexArr.push((() => {
-    let oTmp = JSON.parse(JSON.stringify(o));
-    oTmp[2] += axisLength;
-    return oTmp;
-  })());
-  globals.colorArr.push(color3);
-  globals.colorArr.push(color3);
+// credit: CG
+function isPowerOf2(value) {
+  return (value & (value - 1)) === 0;
 }
 
 function center(pointArr) {
@@ -88,50 +61,4 @@ function center(pointArr) {
     }, 0) / pointArr.length,
     1
   ];
-}
-
-// credit: CG [updated] creazione di un quadrato
-function quad(a, b, c, d, color) {
-  globals.vertexArr.push(a);
-  globals.vertexArr.push(b);
-  globals.vertexArr.push(c);
-  globals.vertexArr.push(a);
-  globals.vertexArr.push(c);
-  globals.vertexArr.push(d);
-  globals.colorArr.push(color);
-  globals.colorArr.push(color);
-  globals.colorArr.push(color);
-  globals.colorArr.push(color);
-  globals.colorArr.push(color);
-  globals.colorArr.push(color);
-}
-
-// credit: CG [updated] creazione del cubo
-function colorCube(itemId, a, b, c, d, a1, b1, c1, d1, color1, color2, color3, color4, color5, color6){
-  let pointArr = [a, b, c, d, a1, b1, c1, d1];
-  globals.itemObj[itemId] = {
-    vertexArr: pointArr,
-    vertexArrStart: globals.vertexArr.length,
-    colorArrStart: globals.colorArr.length
-  };
-  let m = center(pointArr);
-  let axisLength = pointArr.reduce((returnValue, currentValue) => {
-    return Math.max(Math.abs(currentValue[0] - m[0]), returnValue);
-  }, pointArr.reduce((returnValue, currentValue) => {
-    return Math.max(Math.abs(currentValue[1] - m[1]), returnValue);
-  }, pointArr.reduce((returnValue, currentValue) => {
-    return Math.max(Math.abs(currentValue[2] - m[2]), returnValue);
-  }, 0))) + 1;
-  axis(m, globals.colorObj.red, globals.colorObj.green, globals.colorObj.blue, axisLength);
-  quad(a, b, c, d, color1);
-  quad(a1, b1, c1, d1, color2);
-  quad(a, b, b1, a1, color3);
-  quad(b, c, c1, b1, color4);
-  quad(c, d, d1, c1, color5);
-  quad(d, a, a1, d1, color6);
-  globals.itemObj[itemId] = {
-    ...globals.itemObj[itemId],
-    vertexArrStop: globals.vertexArr.length,
-    colorArrStop: globals.colorArr.length
-  };
 }

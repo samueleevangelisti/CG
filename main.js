@@ -16,45 +16,72 @@ globals.gl.enable(globals.gl.DEPTH_TEST);
 
 ////////////////////////////// inizializzazione geometria //////////////////////////////
 
-axis(globals.vertexObj.O, globals.colorObj.red, globals.colorObj.green, globals.colorObj.blue, 3);
-// colorCube('cube1', globals.vertexObj.A, globals.vertexObj.B, globals.vertexObj.C, globals.vertexObj.D, globals.vertexObj.A1, globals.vertexObj.B1, globals.vertexObj.C1, globals.vertexObj.D1, globals.colorObj.magenta05, globals.colorObj.cyan05, globals.colorObj.red05, globals.colorObj.green05, globals.colorObj.blue05, globals.colorObj.yellow05);
-// colorCube('cube2', globals.vertexObj.E, globals.vertexObj.F, globals.vertexObj.G, globals.vertexObj.H, globals.vertexObj.E1, globals.vertexObj.F1, globals.vertexObj.G1, globals.vertexObj.H1, globals.colorObj.magenta05, globals.colorObj.cyan05, globals.colorObj.red05, globals.colorObj.green05, globals.colorObj.blue05, globals.colorObj.yellow05);
+globals.itemObj.sqare1 = {
+  isTexture: true,
+  vertexArr: [
+    [3, -3, 0, 1],
+    [3, 3, 0, 1],
+    [-3, 3, 0, 1],
+    [3, -3, 0, 1],
+    [-3, 3, 0, 1],
+    [-3, -3, 0, 1]
+  ],
+  colorArr: [
+    [0, 1, 0, 1],
+    [0, 1, 0, 1],
+    [0, 1, 0, 1],
+    [0, 1, 0, 1],
+    [0, 1, 0, 1],
+    [0, 1, 0, 1]
+  ],
+  textureArr: [
+    [0, 1],
+    [1, 1],
+    [1, 0],
+    [0, 1],
+    [1, 0],
+    [0, 0]
+  ]
+};
 
-// TODO DSE
-globals.vertexArr = [
-  ...globals.vertexArr,
-  [2, 0, 0, 1],
-  [2, 2, 0, 1],
-  [0, 2, 0, 1],
-  [2, 0, 0, 1],
-  [0, 2, 0, 1],
-  [0, 0, 0, 1]
-];
+globals.itemObj.cube1 = {
+  isTexture: false,
+  vertexArr: [
+    [1, -1, 0.001, 1], [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [1, -1, 0.001, 1], [-1, 1, 0.001, 1], [-1, -1, 0.001, 1],
+    [1, -1, 0.001, 1], [1, 1, 0.001, 1], [1, 1, 1, 1], [1, -1, 0.001, 1], [1, 1, 1, 1], [1, -1, 1, 1],
+    [-1, -1, 0.001, 1], [1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
+    [-1, 1, 0.001, 1], [-1, -1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
+    [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
+    [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1], [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1],
+  ],
+  colorArr: [
+    ...new Array(6).fill([1, 0, 0, 1]),
+    ...new Array(6).fill([0, 1, 0, 1]),
+    ...new Array(6).fill([0, 0, 1, 1]),
+    ...new Array(6).fill([0, 1, 0, 1]),
+    ...new Array(6).fill([0, 0, 1, 1]),
+    ...new Array(6).fill([1, 1, 1, 1])
+  ],
+  textureArr: new Array(36).fill([0, 0])
+};
 
-globals.colorArr = [
-  ...globals.colorArr,
-  [1, 0, 0, 1],
-  [1, 0, 0, 1],
-  [1, 0, 0, 1],
-  [1, 0, 0, 1],
-  [1, 0, 0, 1],
-  [1, 0, 0, 1]
-];
-
-globals.textureArr = [
-  [0, 0],
-  [0, 0],
-  [0, 0],
-  [0, 0],
-  [0, 0],
-  [0, 0],
-  [0, 2],
-  [2, 2],
-  [2, 0],
-  [0, 2],
-  [2, 0],
-  [0, 0]
-];
+Object.entries(globals.itemObj).forEach(([key, value]) => {
+  value.center = center(value.vertexArr);
+  value.vertexArrStart = globals.vertexArr.length;
+  globals.vertexArr = [
+    ...globals.vertexArr,
+    ...value.vertexArr
+  ];
+  globals.colorArr = [
+    ...globals.colorArr,
+    ...value.colorArr
+  ];
+  globals.textureArr = [
+    ...globals.textureArr,
+    ...value.textureArr
+  ];
+  value.vertexArrStop = globals.vertexArr.length;
+});
 
 // tipizzazione array tramite m4.js
 globals.vertexArr = m4.flatten(globals.vertexArr);
@@ -121,27 +148,20 @@ shaderPMatrix = globals.gl.getUniformLocation(shaderProgram, 'PMatrix');
 shaderVMatrix = globals.gl.getUniformLocation(shaderProgram, 'VMatrix');
 shaderMMatrix = globals.gl.getUniformLocation(shaderProgram, 'MMatrix');
 
+shaderIsTexture = globals.gl.getUniformLocation(shaderProgram, 'isTexture');
 shaderTexture = globals.gl.getUniformLocation(shaderProgram, 'texture');
 
-// XXX TODO DSE controllare se il caricamento avviene correttamente
-function isPowerOf2(value) {
-  return (value & (value - 1)) === 0;
-}
-var texture = globals.gl.createTexture();
+texture = globals.gl.createTexture();
 globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
 globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, 1, 1, 0, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
-var image = new Image();
-image.src = 'resources/gioconda.jpg';
+let image = new Image();
+image.src = 'resources/grass.avif';
 image.addEventListener('load', (event) => {
   globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
   globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
-  // Check if the image is a power of 2 in both dimensions.
   if(isPowerOf2(image.width) && isPowerOf2(image.height)) {
-    // Yes, it's a power of 2. Generate mips.
     globals.gl.generateMipmap(globals.gl.TEXTURE_2D);
-//       console.log('mipmap');
   } else {
-     // No, it's not a power of 2. Turn of mips and set wrapping to clamp to edge
     globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_S, globals.gl.CLAMP_TO_EDGE);
     globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_T, globals.gl.CLAMP_TO_EDGE);
     globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_MIN_FILTER, globals.gl.LINEAR);
@@ -172,31 +192,29 @@ function render(time) {
   globals.gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
   globals.gl.uniformMatrix4fv(shaderMMatrix, false, m4.identity());
 
+  globals.gl.uniform1i(shaderIsTexture, false);
   globals.gl.uniform1i(shaderTexture, 0);
 
   globals.gl.drawArrays(globals.gl.LINES, 0, 6);
 
   // TODO DSE riabilitare questo passaggio
-  // Object.entries(globals.itemObj).forEach(([key, value]) => {
-  //   // model matrix identità tramite m4.js
-  //   mMatrix = m4.identity();
-  //   let m = center(value.vertexArr);
-  //   mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
-  //   mMatrix = m4.xRotate(mMatrix, value.xRotationAngle);
-  //   mMatrix = m4.zRotate(mMatrix, value.zRotationAngle);
-  //   mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
-  //   mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
+  Object.entries(globals.itemObj).forEach(([key, value]) => {
+    // model matrix identità tramite m4.js
+    mMatrix = m4.identity();
+    let m = center(value.vertexArr);
+    mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
+    mMatrix = m4.xRotate(mMatrix, value.xRotationAngle);
+    mMatrix = m4.zRotate(mMatrix, value.zRotationAngle);
+    mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
+    mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
 
-  //   globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+    globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
 
-  //   // disegna gli assi dell'oggetto
-  //   globals.gl.drawArrays(globals.gl.LINES, value.vertexArrStart, 6);
-  //   // disegna l'ogetto
-  //   globals.gl.drawArrays(globals.gl.TRIANGLES, value.vertexArrStart + 6, 36);
-  // });
+    globals.gl.uniform1i(shaderIsTexture, value.isTexture);
 
-  // TODO DSE questo serve solo per i test
-  globals.gl.drawArrays(globals.gl.TRIANGLES, 6, 6);
+    // disegna l'ogetto
+    globals.gl.drawArrays(globals.gl.TRIANGLES, value.vertexArrStart, value.vertexArrStop - value.vertexArrStart);
+  });
 
   requestAnimationFrame(render);
 }
