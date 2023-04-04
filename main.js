@@ -17,7 +17,7 @@ globals.gl.enable(globals.gl.DEPTH_TEST);
 ////////////////////////////// inizializzazione geometria //////////////////////////////
 
 globals.itemObj.sqare1 = {
-  isTexture: true,
+  isTexture: false,
   vertexArr: [
     [3, -3, 0, 1],
     [3, 3, 0, 1],
@@ -27,12 +27,12 @@ globals.itemObj.sqare1 = {
     [-3, -3, 0, 1]
   ],
   colorArr: [
-    [0, 1, 0, 1],
-    [0, 1, 0, 1],
-    [0, 1, 0, 1],
-    [0, 1, 0, 1],
-    [0, 1, 0, 1],
-    [0, 1, 0, 1]
+    [0, 0.5, 0, 1],
+    [0, 0.5, 0, 1],
+    [0, 0.5, 0, 1],
+    [0, 0.5, 0, 1],
+    [0, 0.5, 0, 1],
+    [0, 0.5, 0, 1]
   ],
   textureArr: [
     [0, 1],
@@ -60,7 +60,7 @@ globals.itemObj.cube1 = {
     ...new Array(6).fill([0, 0, 1, 1]),
     ...new Array(6).fill([0, 1, 0, 1]),
     ...new Array(6).fill([0, 0, 1, 1]),
-    ...new Array(6).fill([1, 1, 1, 1])
+    ...new Array(6).fill([1, 0, 0, 1])
   ],
   textureArr: new Array(36).fill([0, 0])
 };
@@ -175,7 +175,7 @@ function render(time) {
   globals.gl.clear(globals.gl.COLOR_BUFFER_BIT | globals.gl.DEPTH_BUFFER_BIT); 
 
   // calcolo della matrice P tramite m4.js
-  pMatrix = m4.perspective(fovy, aspectRatio, near, far);
+  let pMatrix = m4.perspective(fovy, aspectRatio, near, far);
 
   setCameraPosition([
     distance * Math.sin(phi) * Math.cos(theta), 
@@ -184,13 +184,16 @@ function render(time) {
   ]);
 
   // calcolo della posizione della camera tramite m4.js
-  cameraMatrix = m4.lookAt(cameraPosition, target, viewUp);
-  // calcolo della matrice MV dalla matrice della camera tramite m4.js
-  vMatrix = m4.inverse(cameraMatrix);
+  let cameraMatrix = m4.lookAt(cameraPosition, target, viewUp);
+  // calcolo della matrice V dalla matrice della camera tramite m4.js
+  let vMatrix = m4.inverse(cameraMatrix);
+
+  // matrice M inizialmente come identitù
+  let mMatrix = m4.identity();
 
   globals.gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
   globals.gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
-  globals.gl.uniformMatrix4fv(shaderMMatrix, false, m4.identity());
+  globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
 
   globals.gl.uniform1i(shaderIsTexture, false);
   globals.gl.uniform1i(shaderTexture, 0);
@@ -201,12 +204,11 @@ function render(time) {
   Object.entries(globals.itemObj).forEach(([key, value]) => {
     // model matrix identità tramite m4.js
     mMatrix = m4.identity();
-    let m = center(value.vertexArr);
-    mMatrix = m4.translate(mMatrix, m[0], m[1], m[2])
+    mMatrix = m4.translate(mMatrix, value.center[0], value.center[1], value.center[2])
     mMatrix = m4.xRotate(mMatrix, value.xRotationAngle);
     mMatrix = m4.zRotate(mMatrix, value.zRotationAngle);
     mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
-    mMatrix = m4.translate(mMatrix, -m[0], -m[1], -m[2])
+    mMatrix = m4.translate(mMatrix, -value.center[0], -value.center[1], -value.center[2])
 
     globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
 

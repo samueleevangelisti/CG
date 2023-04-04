@@ -1,8 +1,14 @@
 var globals = {
+
+  // ---------- contesto grafico ----------
+
   // canvas
   canvas: null,
   // contesto grafico
   gl: null,
+
+  // ---------- geometria 3d ----------
+
   // struttura gnerale contenente gli items visualizzati
   itemObj: {},
   // vertici
@@ -21,6 +27,9 @@ var globals = {
     magenta05: [1, 0, 1, 0.5],
     cyan05: [0, 1, 1, 0.5]
   },
+
+  // ---------- array buffer ----------
+
   // array di vertici da passare a webgl
   vertexArr: [
     [0, 0, 0, 1],
@@ -29,6 +38,14 @@ var globals = {
     [0, 5, 0, 1],
     [0, 0, 0, 1],
     [0, 0, 5, 1]
+  ],
+  normalArr: [
+    [0, 0, 1, 1],
+    [0, 0, 1, 1],
+    [0, 0, 1, 1],
+    [0, 0, 1, 1],
+    [0, 0, 1, 1],
+    [0, 0, 1, 1]
   ],
   // array di colori da passare a webgl
   colorArr: [
@@ -68,17 +85,8 @@ var phi;
 var target;
 // vettore view up
 var viewUp;
-
-// projection matrix
-var pMatrix;
 // posizione della camera
 var cameraPosition;
-// matrice della camera
-var cameraMatrix;
-// view matrix
-var vMatrix;
-// model matrix
-var mMatrix;
 
 // shader program
 var shaderProgram;
