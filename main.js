@@ -16,61 +16,66 @@ globals.gl.enable(globals.gl.DEPTH_TEST);
 
 ////////////////////////////// inizializzazione geometria //////////////////////////////
 
-globals.itemObj.sqare1 = {
-  isTexture: false,
-  vertexArr: [
-    [3, -3, 0, 1],
-    [3, 3, 0, 1],
-    [-3, 3, 0, 1],
-    [3, -3, 0, 1],
-    [-3, 3, 0, 1],
-    [-3, -3, 0, 1]
-  ],
-  colorArr: [
-    [0, 0.5, 0, 1],
-    [0, 0.5, 0, 1],
-    [0, 0.5, 0, 1],
-    [0, 0.5, 0, 1],
-    [0, 0.5, 0, 1],
-    [0, 0.5, 0, 1]
-  ],
-  textureArr: [
-    [0, 1],
-    [1, 1],
-    [1, 0],
-    [0, 1],
-    [1, 0],
-    [0, 0]
-  ]
-};
-
-globals.itemObj.cube1 = {
-  isTexture: false,
-  vertexArr: [
-    [1, -1, 0.001, 1], [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [1, -1, 0.001, 1], [-1, 1, 0.001, 1], [-1, -1, 0.001, 1],
-    [1, -1, 0.001, 1], [1, 1, 0.001, 1], [1, 1, 1, 1], [1, -1, 0.001, 1], [1, 1, 1, 1], [1, -1, 1, 1],
-    [-1, -1, 0.001, 1], [1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
-    [-1, 1, 0.001, 1], [-1, -1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
-    [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
-    [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1], [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1],
-  ],
-  colorArr: [
-    ...new Array(6).fill([1, 0, 0, 1]),
-    ...new Array(6).fill([0, 1, 0, 1]),
-    ...new Array(6).fill([0, 0, 1, 1]),
-    ...new Array(6).fill([0, 1, 0, 1]),
-    ...new Array(6).fill([0, 0, 1, 1]),
-    ...new Array(6).fill([1, 0, 0, 1])
-  ],
-  textureArr: new Array(36).fill([0, 0])
+globals.itemObj = {
+  ...globals.itemObj,
+  square1: {
+    isTexture: false,
+    vertexArr: [
+      [3, -3, 0, 1], [3, 3, 0, 1], [-3, 3, 0, 1],
+      [3, -3, 0, 1], [-3, 3, 0, 1], [-3, -3, 0, 1]
+    ],
+    colorArr: [
+      [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1],
+      [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1]
+    ],
+    textureArr: [
+      [0, 1], [1, 1], [1, 0],
+      [0, 1], [1, 0], [0, 0]
+    ]
+  },
+  cube1: {
+    isTexture: false,
+    vertexArr: [
+      [1, -1, 0.001, 1], [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [1, -1, 0.001, 1], [-1, 1, 0.001, 1], [-1, -1, 0.001, 1],
+      [1, -1, 0.001, 1], [1, 1, 0.001, 1], [1, 1, 1, 1], [1, -1, 0.001, 1], [1, 1, 1, 1], [1, -1, 1, 1],
+      [-1, -1, 0.001, 1], [1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
+      [-1, 1, 0.001, 1], [-1, -1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
+      [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
+      [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1], [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1],
+    ],
+    colorArr: [
+      ...new Array(6).fill([1, 0, 0, 1]),
+      ...new Array(6).fill([0, 1, 0, 1]),
+      ...new Array(6).fill([0, 0, 1, 1]),
+      ...new Array(6).fill([0, 1, 0, 1]),
+      ...new Array(6).fill([0, 0, 1, 1]),
+      ...new Array(6).fill([1, 0, 0, 1])
+    ],
+    textureArr: new Array(36).fill([0, 0])
+  }
 };
 
 Object.entries(globals.itemObj).forEach(([key, value]) => {
+  // TODO DSE forse si potrebbe riuscire a calcolare le normali con il metodo di gouraud
+  value.normalArr = value.vertexArr.map((vertex, index) => {
+    let relativeIndex = index % 3;
+    let vertex1 = value.vertexArr[index - relativeIndex];
+    let vertex2 = value.vertexArr[index - relativeIndex + 1];
+    let vertex3  = value.vertexArr[index - relativeIndex + 2];
+    let t1 = m4.subtractVectors(vertex2, vertex1);
+    let t2 = m4.subtractVectors(vertex3, vertex2);
+    let normal = m4.cross(t1, t2);
+    return normal;
+  });
   value.center = center(value.vertexArr);
   value.vertexArrStart = globals.vertexArr.length;
   globals.vertexArr = [
     ...globals.vertexArr,
     ...value.vertexArr
+  ];
+  globals.normalArr = [
+    ...globals.normalArr,
+    ...value.normalArr
   ];
   globals.colorArr = [
     ...globals.colorArr,
@@ -85,6 +90,7 @@ Object.entries(globals.itemObj).forEach(([key, value]) => {
 
 // tipizzazione array tramite m4.js
 globals.vertexArr = m4.flatten(globals.vertexArr);
+globals.normalArr = m4.flatten(globals.normalArr);
 globals.colorArr = m4.flatten(globals.colorArr);
 globals.textureArr = m4.flatten(globals.textureArr);
 
@@ -188,7 +194,7 @@ function render(time) {
   // calcolo della matrice V dalla matrice della camera tramite m4.js
   let vMatrix = m4.inverse(cameraMatrix);
 
-  // matrice M inizialmente come identitù
+  // matrice M inizialmente come identità
   let mMatrix = m4.identity();
 
   globals.gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
