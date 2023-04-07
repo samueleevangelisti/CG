@@ -129,3 +129,12 @@ function setCameraPosition(newCameraPosition) {
   cameraPosition = newCameraPosition;
   cameraInputElement.value = JSON.stringify(cameraPosition);
 }
+
+////////////////////////////////////////////////////////////
+
+var lightAmbientInputElement = document.getElementById('light-ambient-input');
+
+function setLightAmbient(newLightAmbient) {
+  lightAmbient = newLightAmbient;
+  lightAmbientInputElement.value = JSON.stringify(lightAmbient);
+}

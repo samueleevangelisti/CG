@@ -36,42 +36,70 @@ globals.itemObj = {
   cube1: {
     isTexture: false,
     vertexArr: [
-      [1, -1, 0.001, 1], [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [1, -1, 0.001, 1], [-1, 1, 0.001, 1], [-1, -1, 0.001, 1],
-      [1, -1, 0.001, 1], [1, 1, 0.001, 1], [1, 1, 1, 1], [1, -1, 0.001, 1], [1, 1, 1, 1], [1, -1, 1, 1],
-      [-1, -1, 0.001, 1], [1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 0.001, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
-      [-1, 1, 0.001, 1], [-1, -1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 0.001, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
-      [1, 1, 0.001, 1], [-1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 0.001, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
-      [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1], [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1],
+      [1, -1, 0, 1], [1, 1, 0, 1], [1, 1, 1, 1],
+      [1, -1, 0, 1], [1, 1, 1, 1], [1, -1, 1, 1],
+      [-1, -1, 0, 1], [1, -1, 0, 1], [1, -1, 1, 1],
+      [-1, -1, 0, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
+      [-1, 1, 0, 1], [-1, -1, 0, 1], [-1, -1, 1, 1],
+      [-1, 1, 0, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
+      [1, 1, 0, 1], [-1, 1, 0, 1], [-1, 1, 1, 1],
+      [1, 1, 0, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
+      [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1],
+      [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1]
     ],
     colorArr: [
-      ...new Array(6).fill([1, 0, 0, 1]),
       ...new Array(6).fill([0, 1, 0, 1]),
       ...new Array(6).fill([0, 0, 1, 1]),
       ...new Array(6).fill([0, 1, 0, 1]),
       ...new Array(6).fill([0, 0, 1, 1]),
       ...new Array(6).fill([1, 0, 0, 1])
     ],
-    textureArr: new Array(36).fill([0, 0])
+    textureArr: new Array(6).fill([0, 0])
   }
 };
 
 Object.entries(globals.itemObj).forEach(([key, value]) => {
-  // TODO DSE forse si potrebbe riuscire a calcolare le normali con il metodo di gouraud
-  value.normalArr = value.vertexArr.map((vertex, index) => {
+  value.surfaceNormalArr = value.vertexArr.map((vertex, index) => {
     let relativeIndex = index % 3;
     let vertex1 = value.vertexArr[index - relativeIndex];
     let vertex2 = value.vertexArr[index - relativeIndex + 1];
     let vertex3  = value.vertexArr[index - relativeIndex + 2];
     let t1 = m4.subtractVectors(vertex2, vertex1);
     let t2 = m4.subtractVectors(vertex3, vertex2);
-    let normal = m4.cross(t1, t2);
+    let normal = m4.normalize(m4.cross(t1, t2));
     return normal;
   });
+  value.normalArr = new Array(value.surfaceNormalArr.length).fill(null);
+  value.vertexArr.forEach((vertex) => {
+    indexBoolArr = value.vertexArr.map((vertex1) => {
+      return vertex1[0] == vertex[0] && vertex1[1] == vertex[1] && vertex1[2] == vertex[2] && vertex1[3] == vertex[3];
+    });
+    let normal = m4.normalize(indexBoolArr.reduce((surfaceNormalArr, indexBool, index) => {
+      return [
+        ...surfaceNormalArr,
+        ...(indexBool && surfaceNormalArr.every((surfaceNormal) => {
+          return surfaceNormal[0] != value.surfaceNormalArr[index][0] || surfaceNormal[1] != value.surfaceNormalArr[index][1] || surfaceNormal[2] != value.surfaceNormalArr[index][2];
+        }) ? [value.surfaceNormalArr[index]] : [])
+      ];
+    }, []).reduce((total, surfaceNormal) => {
+      return m4.addVectors(total, surfaceNormal);
+    }, [0, 0, 0]));
+    indexBoolArr.forEach((indexBool, index) => {
+      if(indexBool) {
+        value.normalArr[index] = normal;
+      }
+    });
+  });
+
   value.center = center(value.vertexArr);
   value.vertexArrStart = globals.vertexArr.length;
   globals.vertexArr = [
     ...globals.vertexArr,
     ...value.vertexArr
+  ];
+  globals.surfaceNormalArr = [
+    ...globals.surfaceNormalArr,
+    ...value.surfaceNormalArr
   ];
   globals.normalArr = [
     ...globals.normalArr,
@@ -90,6 +118,7 @@ Object.entries(globals.itemObj).forEach(([key, value]) => {
 
 // tipizzazione array tramite m4.js
 globals.vertexArr = m4.flatten(globals.vertexArr);
+globals.surfaceNormalArr = m4.flatten(globals.surfaceNormalArr);
 globals.normalArr = m4.flatten(globals.normalArr);
 globals.colorArr = m4.flatten(globals.colorArr);
 globals.textureArr = m4.flatten(globals.textureArr);
@@ -115,6 +144,8 @@ setPhi(60);
 setTarget([0, 0, 0]);
 setViewUp([0, 0, 1]);
 
+setLightAmbient([1, 1, 1, 1])
+
 Object.keys(globals.itemObj).forEach((key) => {
   setYRotationAngle(key, 0);
   setZRotationAngle(key, 0);
@@ -134,6 +165,22 @@ shaderVertexPosition = globals.gl.getAttribLocation(shaderProgram, 'vertexPositi
 globals.gl.vertexAttribPointer(shaderVertexPosition, 4, globals.gl.FLOAT, false, 0, 0);
 globals.gl.enableVertexAttribArray(shaderVertexPosition);
 
+surfaceNormalBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, surfaceNormalBuffer);
+globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.surfaceNormalArr, globals.gl.STATIC_DRAW);
+
+shaderVertexSurfaceNormal = globals.gl.getAttribLocation(shaderProgram, 'vertexSurfaceNormal');
+globals.gl.vertexAttribPointer(shaderVertexSurfaceNormal, 3, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(shaderVertexSurfaceNormal);
+
+normalBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, normalBuffer);
+globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.normalArr, globals.gl.STATIC_DRAW);
+
+shaderVertexNormal = globals.gl.getAttribLocation(shaderProgram, 'vertexNormal');
+globals.gl.vertexAttribPointer(shaderVertexNormal, 3, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(shaderVertexNormal);
+
 colorBuffer = globals.gl.createBuffer();
 globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, colorBuffer);
 globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.colorArr, globals.gl.STATIC_DRAW);
@@ -150,9 +197,17 @@ shaderVertexTexture = globals.gl.getAttribLocation(shaderProgram, 'vertexTexture
 globals.gl.vertexAttribPointer(shaderVertexTexture, 2, globals.gl.FLOAT, false, 0, 0);
 globals.gl.enableVertexAttribArray(shaderVertexTexture);
 
+shaderIsLight = globals.gl.getUniformLocation(shaderProgram, 'isLight');
+shaderCameraPosition = globals.gl.getUniformLocation(shaderProgram, 'cameraPosition');
 shaderPMatrix = globals.gl.getUniformLocation(shaderProgram, 'PMatrix');
 shaderVMatrix = globals.gl.getUniformLocation(shaderProgram, 'VMatrix');
 shaderMMatrix = globals.gl.getUniformLocation(shaderProgram, 'MMatrix');
+shaderLightPosition = globals.gl.getUniformLocation(shaderProgram, 'lightPosition');
+shaderMaterialAmbient = globals.gl.getUniformLocation(shaderProgram, 'materialAmbient');
+shaderLightAmbient = globals.gl.getUniformLocation(shaderProgram, 'lightAmbient');
+shaderMaterialDiffuse = globals.gl.getUniformLocation(shaderProgram, 'materialDiffuse');
+shaderLightDiffuse = globals.gl.getUniformLocation(shaderProgram, 'lightDiffuse');
+shaderMaterialSpecular = globals.gl.getUniformLocation(shaderProgram, 'materialSpecular');
 
 shaderIsTexture = globals.gl.getUniformLocation(shaderProgram, 'isTexture');
 shaderTexture = globals.gl.getUniformLocation(shaderProgram, 'texture');
@@ -184,8 +239,8 @@ function render(time) {
   let pMatrix = m4.perspective(fovy, aspectRatio, near, far);
 
   setCameraPosition([
-    distance * Math.sin(phi) * Math.cos(theta), 
-    distance * Math.sin(phi) * Math.sin(theta),
+    distance * Math.cos(theta) * Math.sin(phi), 
+    distance * Math.sin(theta) * Math.sin(phi),
     distance * Math.cos(phi)
   ]);
 
@@ -197,14 +252,24 @@ function render(time) {
   // matrice M inizialmente come identità
   let mMatrix = m4.identity();
 
+  globals.gl.uniform1i(shaderIsLight, false);
+  globals.gl.uniform3fv(shaderCameraPosition, cameraPosition);
   globals.gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
   globals.gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
   globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+  globals.gl.uniform3fv(shaderLightPosition, lightPosition);
+  globals.gl.uniform4fv(shaderMaterialAmbient, materialAmbient);
+  globals.gl.uniform4fv(shaderLightAmbient, lightAmbient);
+  globals.gl.uniform4fv(shaderMaterialDiffuse, materialDiffuse);
+  globals.gl.uniform4fv(shaderLightDiffuse, lightDiffuse);
+  globals.gl.uniform4fv(shaderMaterialSpecular, materialSpecular);
 
   globals.gl.uniform1i(shaderIsTexture, false);
   globals.gl.uniform1i(shaderTexture, 0);
 
   globals.gl.drawArrays(globals.gl.LINES, 0, 6);
+
+  globals.gl.uniform1i(shaderIsLight, true);
 
   // TODO DSE riabilitare questo passaggio
   Object.entries(globals.itemObj).forEach(([key, value]) => {

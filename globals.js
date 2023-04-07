@@ -12,9 +12,7 @@ var globals = {
   // struttura gnerale contenente gli items visualizzati
   itemObj: {},
   // vertici
-  vertexObj: {
-    O: [0, 0, 0, 1]
-  },
+  vertexObj: {},
   // colori
   colorObj: {
     red: [1, 0, 0, 1],
@@ -36,10 +34,15 @@ var globals = {
     [0, 0, 0, 1], [0, 5, 0, 1],
     [0, 0, 0, 1], [0, 0, 5, 1]
   ],
+  surfaceNormalArr: [
+    [0, 0, 0], [0, 0, 0],
+    [0, 0, 0], [0, 0, 0],
+    [0, 0, 0], [0, 0, 0]
+  ],
   normalArr: [
-    [0, 0, 1, 1], [0, 0, 1, 1],
-    [0, 0, 1, 1], [0, 0, 1, 1],
-    [0, 0, 1, 1], [0, 0, 1, 1]
+    [0, 0, 0], [0, 0, 0],
+    [0, 0, 0], [0, 0, 0],
+    [0, 0, 0], [0, 0, 0]
   ],
   // array di colori da passare a webgl
   colorArr: [
@@ -53,7 +56,13 @@ var globals = {
     [0, 0], [0, 0],
     [0, 0], [0, 0]
   ]
+
+  // ---------- parametri prospettici ----------
+
+  // ---------- shader program ----------
 };
+
+// ---------- parametri prospettici ----------
 
 // campo visivo rispetto all'asse y
 var fovy;
@@ -65,9 +74,9 @@ var near;
 var far;
 // distanza della camera
 var distance;
-// angolo rispetto all'asse x
+// angolo rispetto all'asse x sul piano xy
 var theta;
-// angolo rispetto all'asse z
+// angolo rispetto all'asse z sul piano zx
 var phi;
 // obiettivo della camera
 var target;
@@ -76,12 +85,22 @@ var viewUp;
 // posizione della camera
 var cameraPosition;
 
+// ---------- shader program ----------
+
 // shader program
 var shaderProgram;
 // vertex buffer
 var vertexBuffer;
 // vertex position nello shader program
 var shaderVertexPosition;
+// surface normal buffer
+var surfaceNormalBuffer;
+// surface normal nello shader program
+var shaderVertexSurfaceNormal;
+// normal buffer
+var normalBuffer;
+// vertex normal nello shader program
+var shaderVertexNormal;
 // color buffer
 var colorBuffer;
 // vertex color nello shader program
@@ -90,6 +109,10 @@ var shaderVertexColor;
 var textureBuffer;
 // coordinate della texture nello shader program
 var shaderVertexTexture;
+// isLight nello shader program
+var shaderIsLight;
+// camera position nello shader program
+var shaderCameraPosition;
 // projection matrix nello shader program
 var shaderPMatrix;
 // view matrix nello shader program
@@ -102,3 +125,29 @@ var shaderIsTexture;
 var shaderTexture;
 // texture caricata
 var texture;
+
+// TODO DSE tentativo con la luce
+// posizione della luce
+var lightPosition = [5, 5, 5];
+// posizione della luce nello shader program
+var shaderLightPosition;
+// materiale per luce ambientale
+var materialAmbient = [0.02, 0.02, 0.02, 1];
+// materiale per luce ambientale nello shader program
+var shaderMaterialAmbient;
+// luce ambientale
+var lightAmbient;
+// luce ambientale nello shader program
+var shaderLightAmbient;
+// materiale per luce diffusa
+var materialDiffuse = [0.4, 0.4, 0.4, 1];
+// materiale per luce diffusa nello shader program
+var shaderMaterialDiffuse;
+// luce diffusa
+var lightDiffuse = [1, 1, 1, 1];
+// luce diffusa nello shader program
+var shaderLightDiffuse;
+// materiale per luce speculare
+var materialSpecular = [0.774597, 0.774597, 0.774597, 1];
+// material per luce speculare nello shader program
+var shaderMaterialSpecular;

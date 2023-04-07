@@ -34,7 +34,10 @@ function globalsInputOnChange(event) {
       setXRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;
     case 'camera':
-      setCamera(JSON.parse(event.target.value));
+      setCameraPosition(JSON.parse(event.target.value));
+      break;
+    case 'lightAmbient':
+      setLightAmbient(JSON.parse(event.target.value))
       break;
     default:
       break;

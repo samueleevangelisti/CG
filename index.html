@@ -93,6 +93,12 @@
                             <input id="camera-input" type="text" name="camera" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">light-ambient</td>
+                          <td class="text-nowrap p-1" colspan="2">
+                            <input id="light-ambient-input" type="text" name="lightAmbient" class="form-control p-1" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -111,19 +117,46 @@
   <!-- vertex shader -->
   <script id="vertex-shader" type="x-shader/x-vertex">
     attribute vec4 vertexPosition;
+    attribute vec3 vertexSurfaceNormal;
+    attribute vec3 vertexNormal;
     attribute vec4 vertexColor;
     attribute vec2 vertexTexture;
 
+    uniform bool isLight;
+    uniform vec3 cameraPosition;
     uniform mat4 PMatrix;
     uniform mat4 VMatrix;
     uniform mat4 MMatrix;
+    uniform vec3 lightPosition;
+    uniform vec4 materialAmbient;
+    uniform vec4 lightAmbient;
+    uniform vec4 materialDiffuse;
+    // TODO DSE rinominare in light object
+    uniform vec4 lightDiffuse;
+    uniform vec4 materialSpecular;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
 
-    void main(){
-      gl_Position = PMatrix*VMatrix*MMatrix*vertexPosition;
-      fragmentColor = vertexColor;
+    void main() {
+      vec4 ambient = materialAmbient * lightAmbient;
+      vec4 diffuse;
+      float dotDiffuse = dot(normalize(lightPosition - vec3(vertexPosition)), normalize(vertexNormal));
+      if(dotDiffuse > 0.0) {
+        diffuse = materialDiffuse * lightDiffuse * dotDiffuse;
+      } else {
+        diffuse = vec4(0, 0, 0, 1);
+      }
+      vec4 specular;
+      float dotSpecular = dot(normalize(reflect(-lightPosition, normalize(vertexSurfaceNormal))), normalize(cameraPosition));
+      if(dotSpecular > 0.0) {
+        specular = materialSpecular * lightDiffuse * pow(dotSpecular, 500.0);
+      } else {
+        specular = vec4(0, 0, 0, 1);
+      }
+
+      gl_Position = PMatrix * VMatrix * MMatrix * vertexPosition;
+      fragmentColor = (isLight ? ambient + diffuse + specular : vertexColor);
       fragmentTexture = vertexTexture;
     } 
   </script>
@@ -139,7 +172,7 @@
     varying vec2 fragmentTexture;
 
     void main(){
-      gl_FragColor = isTexture ? texture2D(texture, fragmentTexture) : fragmentColor;
+      gl_FragColor = (isTexture ? texture2D(texture, fragmentTexture) : fragmentColor);
     }
   </script>
 
