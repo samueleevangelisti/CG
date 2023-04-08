@@ -51,17 +51,15 @@ var utils = {
     ];
   },
   // credit: CG
+  degToRad: function(d) {
+    return d * Math.PI / 180;
+  },
+  // credit: CG
+  radToDeg: function(r) {
+    return r * 180 / Math.PI;
+  },
+  // credit: CG
   isPowerOf2: function(value) {
     return (value & (value - 1)) === 0;
   }
 };
-
-// credit: CG
-function degToRad(d) {
-  return d * Math.PI / 180;
-}
-
-// credit: CG
-function radToDeg(r) {
-  return r * 180 / Math.PI;
-}

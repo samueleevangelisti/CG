@@ -45,6 +45,15 @@ function globalsInputOnChange(event) {
     case 'lightAmbient':
       setLightAmbient(JSON.parse(event.target.value));
       break;
+    case 'materialDiffuse':
+      setMaterialDiffuse(JSON.parse(event.target.value));
+      break;
+    case 'materialSpecular':
+      setMaterialSpecular(JSON.parse(event.target.value));
+      break;
+    case 'lightSpecular':
+      setLightSpecular(JSON.parse(event.target.value));
+      break;
     default:
       break;
   }
@@ -67,8 +76,8 @@ function canvasOnMouseDown(event) {
 function canvasOnMouseMove(event) {
   event.preventDefault();
   if(isMouseDown) {
-    setTheta(radToDeg(globals.theta) - ((event.offsetX - mouseDownX) * 180 / globals.canvas.width));
-    setPhi(radToDeg(globals.phi) - ((event.offsetY - mouseDownY) * 180 / globals.canvas.height));
+    setTheta(utils.radToDeg(globals.theta) - ((event.offsetX - mouseDownX) * 180 / globals.canvas.width));
+    setPhi(utils.radToDeg(globals.phi) - ((event.offsetY - mouseDownY) * 180 / globals.canvas.height));
     mouseDownX = event.offsetX;
     mouseDownY = event.offsetY;
   }

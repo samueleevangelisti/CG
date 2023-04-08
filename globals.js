@@ -79,11 +79,11 @@ var globals = {
   // luce ambientale
   lightAmbient: [0, 0, 0, 0],
   // materiale per luce diffusa
-  materialDiffuse: [0.4, 0.4, 0.4, 1],
+  materialDiffuse: [0, 0, 0, 0],
   // materiale per luce speculare
-  materialSpecular: [0.774597, 0.774597, 0.774597, 1],
+  materialSpecular: [0, 0, 0, 0],
   // luce speculare
-  lightSpecular: [1, 1, 1, 0],
+  lightSpecular: [0, 0, 0, 0],
 
   // ---------- shader program ----------
 

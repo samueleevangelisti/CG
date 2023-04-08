@@ -149,6 +149,9 @@ setViewUp([0, 0, 1]);
 setLightPosition([5, 5, 5]);
 setMaterialAmbient([0.02, 0.02, 0.02, 1]);
 setLightAmbient([1, 1, 1, 1]);
+setMaterialDiffuse([0.4, 0.4, 0.4, 1]);
+setMaterialSpecular([0.774597, 0.774597, 0.774597, 1]);
+setLightSpecular([1, 1, 1, 1]);
 
 Object.keys(globals.itemObj).forEach((key) => {
   setYRotationAngle(key, 0);
