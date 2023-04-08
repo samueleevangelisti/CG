@@ -2,8 +2,8 @@ var fovyInputElement = document.getElementById('fovy-input');
 
 function setFovy(newFovy) {
   log(`setFovy(${newFovy})`);
-  fovy = degToRad(newFovy);
-  fovyInputElement.value = radToDeg(fovy).toFixed(2);
+  globals.fovy = degToRad(newFovy);
+  fovyInputElement.value = radToDeg(globals.fovy).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
@@ -12,13 +12,13 @@ var nearInputElement = document.getElementById('near-input');
 
 function setNear(newNear) {
   log(`setNear(${newNear})`);
-  near = newNear;
-  if(near > far) {
-    near = far;
-  } else if(near < 1) {
-    near = 1;
+  globals.near = newNear;
+  if(globals.near > globals.far) {
+    globals.near = globals.far;
+  } else if(globals.near < 1) {
+    globals.near = 1;
   }
-  nearInputElement.value = near;
+  nearInputElement.value = globals.near;
 }
 
 ////////////////////////////////////////////////////////////
@@ -27,13 +27,13 @@ var farInputElement = document.getElementById('far-input');
 
 function setFar(newFar) {
   log(`setFar(${newFar})`);
-  far = newFar
-  if(far > 100) {
-    far = 100;
-  } else if(far < near) {
-    far = near;
+  globals.far = newFar;
+  if(globals.far > 100) {
+    globals.far = 100;
+  } else if(globals.far < globals.near) {
+    globals.far = globals.near;
   }
-  farInputElement.value = far;
+  farInputElement.value = globals.far;
 }
 
 ////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ function setDistance(newDistance) {
   distance = newDistance;
   if(distance > 99) {
     distance = 99;
-  }else if(distance < 2) {
+  } else if(distance < 2) {
     distance = 2;
   }
   distanceInputElement.value = distance;
@@ -57,8 +57,8 @@ var thetaInputElement =  document.getElementById('theta-input');
 
 function setTheta(newTheta) {
   log(`setTheta(${newTheta})`);
-  theta = (degToRad(newTheta) + degToRad(360)) % degToRad(360);
-  thetaInputElement.value = radToDeg(theta).toFixed(2);
+  globals.theta = (degToRad(newTheta) + degToRad(360)) % degToRad(360);
+  thetaInputElement.value = radToDeg(globals.theta).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
@@ -66,15 +66,14 @@ function setTheta(newTheta) {
 var phiInputElement =  document.getElementById('phi-input');
 
 function setPhi(newPhi) {
-  // XXX TODO DSE per il momento è limitato tra 1 e 179, successivamente bisogna rendere consona la trasformazione
   log(`setPhi(${newPhi})`);
-  phi = degToRad(newPhi);
-  if(phi > degToRad(179)) {
-    phi = degToRad(179);
-  } else if(phi < degToRad(1)) {
-    phi = degToRad(1);
+  globals.phi = degToRad(newPhi);
+  if(globals.phi > degToRad(90)) {
+    globals.phi = degToRad(90);
+  } else if(globals.phi < degToRad(1)) {
+    globals.phi = degToRad(1);
   }
-  phiInputElement.value = radToDeg(phi).toFixed(2);
+  phiInputElement.value = radToDeg(globals.phi).toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
@@ -83,8 +82,8 @@ var targetInputElement = document.getElementById('target-input');
 
 function setTarget(newTarget) {
   log(`setTarget(${JSON.stringify(newTarget)})`);
-  target = newTarget;
-  targetInputElement.value = JSON.stringify(target);
+  globals.target = newTarget;
+  targetInputElement.value = JSON.stringify(globals.target);
 }
 
 ////////////////////////////////////////////////////////////
@@ -93,8 +92,44 @@ var viewUpInputElement = document.getElementById('view-up-input');
 
 function setViewUp(newViewUp) {
   log(`setViewUp(${JSON.stringify(newViewUp)})`);
-  viewUp = newViewUp;
-  viewUpInputElement.value = JSON.stringify(viewUp);
+  globals.viewUp = newViewUp;
+  viewUpInputElement.value = JSON.stringify(globals.viewUp);
+}
+
+////////////////////////////////////////////////////////////
+
+var cameraInputElement = document.getElementById('camera-input');
+
+function setCameraPosition(newCameraPosition) {
+  globals.cameraPosition = newCameraPosition;
+  cameraInputElement.value = JSON.stringify(globals.cameraPosition);
+}
+
+////////////////////////////////////////////////////////////
+
+var lightPositionInputElement = document.getElementById('light-position-input');
+
+function setLightPosition(newLightPosition) {
+  globals.lightPosition = newLightPosition;
+  lightPositionInputElement.value = JSON.stringify(globals.lightPosition);
+}
+
+////////////////////////////////////////////////////////////
+
+var materialAmbientInputElement = document.getElementById('material-ambient-input');
+
+function setMaterialAmbient(newMaterialAmbient) {
+  globals.materialAmbient = newMaterialAmbient;
+  materialAmbientInputElement.value = JSON.stringify(globals.materialAmbient);
+}
+
+////////////////////////////////////////////////////////////
+
+var lightAmbientInputElement = document.getElementById('light-ambient-input');
+
+function setLightAmbient(newLightAmbient) {
+  lightAmbient = newLightAmbient;
+  lightAmbientInputElement.value = JSON.stringify(lightAmbient);
 }
 
 ////////////////////////////////////////////////////////////
@@ -119,22 +154,4 @@ function setXRotationAngle(itemId, newXRotationAngle) {
   log(`setXRotationAngle(${itemId}, ${newXRotationAngle})`);
   globals.itemObj[itemId].xRotationAngle = (degToRad(newXRotationAngle) + degToRad(360)) % degToRad(360);
   document.getElementById(`${itemId}-x-rotation-input`).value = radToDeg(globals.itemObj[itemId].xRotationAngle).toFixed(2);
-}
-
-////////////////////////////////////////////////////////////
-
-var cameraInputElement = document.getElementById('camera-input');
-
-function setCameraPosition(newCameraPosition) {
-  cameraPosition = newCameraPosition;
-  cameraInputElement.value = JSON.stringify(cameraPosition);
-}
-
-////////////////////////////////////////////////////////////
-
-var lightAmbientInputElement = document.getElementById('light-ambient-input');
-
-function setLightAmbient(newLightAmbient) {
-  lightAmbient = newLightAmbient;
-  lightAmbientInputElement.value = JSON.stringify(lightAmbient);
 }

@@ -33,6 +33,29 @@ function elementFromConfigObj(configObj) {
   return element;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+var utils = {
+  center: function(pointArr) {
+    return [
+      pointArr.reduce((returnValue, currentValue) => {
+        return returnValue + currentValue[0];
+      }, 0) / pointArr.length,
+        pointArr.reduce((returnValue, currentValue) => {
+        return returnValue + currentValue[1];
+      }, 0) / pointArr.length,
+      pointArr.reduce((returnValue, currentValue) => {
+        return returnValue + currentValue[2];
+      }, 0) / pointArr.length,
+      1
+    ];
+  },
+  // credit: CG
+  isPowerOf2: function(value) {
+    return (value & (value - 1)) === 0;
+  }
+};
+
 // credit: CG
 function degToRad(d) {
   return d * Math.PI / 180;
@@ -41,24 +64,4 @@ function degToRad(d) {
 // credit: CG
 function radToDeg(r) {
   return r * 180 / Math.PI;
-}
-
-// credit: CG
-function isPowerOf2(value) {
-  return (value & (value - 1)) === 0;
-}
-
-function center(pointArr) {
-  return [
-    pointArr.reduce((returnValue, currentValue) => {
-      return returnValue + currentValue[0];
-    }, 0) / pointArr.length,
-      pointArr.reduce((returnValue, currentValue) => {
-      return returnValue + currentValue[1];
-    }, 0) / pointArr.length,
-    pointArr.reduce((returnValue, currentValue) => {
-      return returnValue + currentValue[2];
-    }, 0) / pointArr.length,
-    1
-  ];
 }

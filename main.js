@@ -19,7 +19,8 @@ globals.gl.enable(globals.gl.DEPTH_TEST);
 globals.itemObj = {
   ...globals.itemObj,
   square1: {
-    isTexture: false,
+    isFlat: true,
+    isTexture: true,
     vertexArr: [
       [3, -3, 0, 1], [3, 3, 0, 1], [-3, 3, 0, 1],
       [3, -3, 0, 1], [-3, 3, 0, 1], [-3, -3, 0, 1]
@@ -34,6 +35,7 @@ globals.itemObj = {
     ]
   },
   cube1: {
+    isFlat: true,
     isTexture: false,
     vertexArr: [
       [1, -1, 0, 1], [1, 1, 0, 1], [1, 1, 1, 1],
@@ -91,7 +93,7 @@ Object.entries(globals.itemObj).forEach(([key, value]) => {
     });
   });
 
-  value.center = center(value.vertexArr);
+  value.center = utils.center(value.vertexArr);
   value.vertexArrStart = globals.vertexArr.length;
   globals.vertexArr = [
     ...globals.vertexArr,
@@ -134,7 +136,7 @@ Object.keys(globals.itemObj).forEach((key) => {
 ////////////////////////////// inizializzazione vista //////////////////////////////
 
 setFovy(40);
-aspectRatio = globals.canvas.width / globals.canvas.height;
+var aspectRatio = globals.canvas.width / globals.canvas.height;
 setNear(1);
 setFar(100);
 
@@ -144,7 +146,9 @@ setPhi(60);
 setTarget([0, 0, 0]);
 setViewUp([0, 0, 1]);
 
-setLightAmbient([1, 1, 1, 1])
+setLightPosition([5, 5, 5]);
+setMaterialAmbient([0.02, 0.02, 0.02, 1]);
+setLightAmbient([1, 1, 1, 1]);
 
 Object.keys(globals.itemObj).forEach((key) => {
   setYRotationAngle(key, 0);
@@ -154,63 +158,64 @@ Object.keys(globals.itemObj).forEach((key) => {
 
 ////////////////////////////// shader program //////////////////////////////
 
-shaderProgram = webglUtils.createProgramFromScripts(globals.gl, ['vertex-shader', 'fragment-shader']);
-globals.gl.useProgram(shaderProgram);
+globals.shaderProgram = webglUtils.createProgramFromScripts(globals.gl, ['vertex-shader', 'fragment-shader']);
+globals.gl.useProgram(globals.shaderProgram);
 
-vertexBuffer = globals.gl.createBuffer();
-globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, vertexBuffer);
+globals.vertexBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, globals.vertexBuffer);
 globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.vertexArr, globals.gl.STATIC_DRAW);
 
-shaderVertexPosition = globals.gl.getAttribLocation(shaderProgram, 'vertexPosition');
-globals.gl.vertexAttribPointer(shaderVertexPosition, 4, globals.gl.FLOAT, false, 0, 0);
-globals.gl.enableVertexAttribArray(shaderVertexPosition);
+globals.shaderVertexPosition = globals.gl.getAttribLocation(globals.shaderProgram, 'vertexPosition');
+globals.gl.vertexAttribPointer(globals.shaderVertexPosition, 4, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(globals.shaderVertexPosition);
 
-surfaceNormalBuffer = globals.gl.createBuffer();
-globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, surfaceNormalBuffer);
+globals.surfaceNormalBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, globals.surfaceNormalBuffer);
 globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.surfaceNormalArr, globals.gl.STATIC_DRAW);
 
-shaderVertexSurfaceNormal = globals.gl.getAttribLocation(shaderProgram, 'vertexSurfaceNormal');
-globals.gl.vertexAttribPointer(shaderVertexSurfaceNormal, 3, globals.gl.FLOAT, false, 0, 0);
-globals.gl.enableVertexAttribArray(shaderVertexSurfaceNormal);
+globals.shaderVertexSurfaceNormal = globals.gl.getAttribLocation(globals.shaderProgram, 'vertexSurfaceNormal');
+globals.gl.vertexAttribPointer(globals.shaderVertexSurfaceNormal, 3, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(globals.shaderVertexSurfaceNormal);
 
-normalBuffer = globals.gl.createBuffer();
-globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, normalBuffer);
+globals.normalBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, globals.normalBuffer);
 globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.normalArr, globals.gl.STATIC_DRAW);
 
-shaderVertexNormal = globals.gl.getAttribLocation(shaderProgram, 'vertexNormal');
-globals.gl.vertexAttribPointer(shaderVertexNormal, 3, globals.gl.FLOAT, false, 0, 0);
-globals.gl.enableVertexAttribArray(shaderVertexNormal);
+globals.shaderVertexNormal = globals.gl.getAttribLocation(globals.shaderProgram, 'vertexNormal');
+globals.gl.vertexAttribPointer(globals.shaderVertexNormal, 3, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(globals.shaderVertexNormal);
 
-colorBuffer = globals.gl.createBuffer();
-globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, colorBuffer);
+globals.colorBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, globals.colorBuffer);
 globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.colorArr, globals.gl.STATIC_DRAW);
 
-shaderVertexColor = globals.gl.getAttribLocation(shaderProgram, 'vertexColor');
-globals.gl.vertexAttribPointer(shaderVertexColor, 4, globals.gl.FLOAT, false, 0, 0);
-globals.gl.enableVertexAttribArray(shaderVertexColor);
+globals.shaderVertexColor = globals.gl.getAttribLocation(globals.shaderProgram, 'vertexColor');
+globals.gl.vertexAttribPointer(globals.shaderVertexColor, 4, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(globals.shaderVertexColor);
 
-textureBuffer = globals.gl.createBuffer();
-globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, textureBuffer);
+globals.textureBuffer = globals.gl.createBuffer();
+globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, globals.textureBuffer);
 globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.textureArr, globals.gl.STATIC_DRAW);
 
-shaderVertexTexture = globals.gl.getAttribLocation(shaderProgram, 'vertexTexture');
-globals.gl.vertexAttribPointer(shaderVertexTexture, 2, globals.gl.FLOAT, false, 0, 0);
-globals.gl.enableVertexAttribArray(shaderVertexTexture);
+globals.shaderVertexTexture = globals.gl.getAttribLocation(globals.shaderProgram, 'vertexTexture');
+globals.gl.vertexAttribPointer(globals.shaderVertexTexture, 2, globals.gl.FLOAT, false, 0, 0);
+globals.gl.enableVertexAttribArray(globals.shaderVertexTexture);
 
-shaderIsLight = globals.gl.getUniformLocation(shaderProgram, 'isLight');
-shaderCameraPosition = globals.gl.getUniformLocation(shaderProgram, 'cameraPosition');
-shaderPMatrix = globals.gl.getUniformLocation(shaderProgram, 'PMatrix');
-shaderVMatrix = globals.gl.getUniformLocation(shaderProgram, 'VMatrix');
-shaderMMatrix = globals.gl.getUniformLocation(shaderProgram, 'MMatrix');
-shaderLightPosition = globals.gl.getUniformLocation(shaderProgram, 'lightPosition');
-shaderMaterialAmbient = globals.gl.getUniformLocation(shaderProgram, 'materialAmbient');
-shaderLightAmbient = globals.gl.getUniformLocation(shaderProgram, 'lightAmbient');
-shaderMaterialDiffuse = globals.gl.getUniformLocation(shaderProgram, 'materialDiffuse');
-shaderLightDiffuse = globals.gl.getUniformLocation(shaderProgram, 'lightDiffuse');
-shaderMaterialSpecular = globals.gl.getUniformLocation(shaderProgram, 'materialSpecular');
+globals.shaderIsFlat = globals.gl.getUniformLocation(globals.shaderProgram, 'isFlat');
+globals.shaderCameraPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'cameraPosition');
+globals.shaderPMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'PMatrix');
+globals.shaderVMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'VMatrix');
+globals.shaderMMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MMatrix');
+globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
+globals.shaderMaterialAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'materialAmbient');
+shaderLightAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'lightAmbient');
+shaderMaterialDiffuse = globals.gl.getUniformLocation(globals.shaderProgram, 'materialDiffuse');
+shaderMaterialSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'materialSpecular');
+shaderLightSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'lightSpecular');
 
-shaderIsTexture = globals.gl.getUniformLocation(shaderProgram, 'isTexture');
-shaderTexture = globals.gl.getUniformLocation(shaderProgram, 'texture');
+shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
+shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
+shaderTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'texture');
 
 texture = globals.gl.createTexture();
 globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
@@ -220,7 +225,7 @@ image.src = 'resources/grass.avif';
 image.addEventListener('load', (event) => {
   globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
   globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
-  if(isPowerOf2(image.width) && isPowerOf2(image.height)) {
+  if(utils.isPowerOf2(image.width) && utils.isPowerOf2(image.height)) {
     globals.gl.generateMipmap(globals.gl.TEXTURE_2D);
   } else {
     globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_S, globals.gl.CLAMP_TO_EDGE);
@@ -236,35 +241,35 @@ function render(time) {
   globals.gl.clear(globals.gl.COLOR_BUFFER_BIT | globals.gl.DEPTH_BUFFER_BIT); 
 
   // calcolo della matrice P tramite m4.js
-  let pMatrix = m4.perspective(fovy, aspectRatio, near, far);
+  let pMatrix = m4.perspective(globals.fovy, aspectRatio, globals.near, globals.far);
 
   setCameraPosition([
-    distance * Math.cos(theta) * Math.sin(phi), 
-    distance * Math.sin(theta) * Math.sin(phi),
-    distance * Math.cos(phi)
+    distance * Math.cos(globals.theta) * Math.sin(globals.phi), 
+    distance * Math.sin(globals.theta) * Math.sin(globals.phi),
+    distance * Math.cos(globals.phi)
   ]);
 
   // calcolo della posizione della camera tramite m4.js
-  let cameraMatrix = m4.lookAt(cameraPosition, target, viewUp);
+  let cameraMatrix = m4.lookAt(globals.cameraPosition, globals.target, globals.viewUp);
   // calcolo della matrice V dalla matrice della camera tramite m4.js
   let vMatrix = m4.inverse(cameraMatrix);
 
   // matrice M inizialmente come identità
   let mMatrix = m4.identity();
 
-  globals.gl.uniform1i(shaderIsLight, false);
-  globals.gl.uniform3fv(shaderCameraPosition, cameraPosition);
-  globals.gl.uniformMatrix4fv(shaderPMatrix, false, pMatrix);
-  globals.gl.uniformMatrix4fv(shaderVMatrix, false, vMatrix);
-  globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
-  globals.gl.uniform3fv(shaderLightPosition, lightPosition);
-  globals.gl.uniform4fv(shaderMaterialAmbient, materialAmbient);
+  globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
+  globals.gl.uniformMatrix4fv(globals.shaderPMatrix, false, pMatrix);
+  globals.gl.uniformMatrix4fv(globals.shaderVMatrix, false, vMatrix);
+  globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
+  globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
+  globals.gl.uniform4fv(globals.shaderMaterialAmbient, globals.materialAmbient);
   globals.gl.uniform4fv(shaderLightAmbient, lightAmbient);
   globals.gl.uniform4fv(shaderMaterialDiffuse, materialDiffuse);
-  globals.gl.uniform4fv(shaderLightDiffuse, lightDiffuse);
   globals.gl.uniform4fv(shaderMaterialSpecular, materialSpecular);
+  globals.gl.uniform4fv(shaderLightSpecular, lightSpecular);
 
   globals.gl.uniform1i(shaderIsTexture, false);
+  globals.gl.uniform1i(shaderIsLight, false);
   globals.gl.uniform1i(shaderTexture, 0);
 
   globals.gl.drawArrays(globals.gl.LINES, 0, 6);
@@ -273,6 +278,7 @@ function render(time) {
 
   // TODO DSE riabilitare questo passaggio
   Object.entries(globals.itemObj).forEach(([key, value]) => {
+    globals.gl.uniform1i(globals.shaderIsFlat, value.isFlat);
     // model matrix identità tramite m4.js
     mMatrix = m4.identity();
     mMatrix = m4.translate(mMatrix, value.center[0], value.center[1], value.center[2])
@@ -281,7 +287,7 @@ function render(time) {
     mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
     mMatrix = m4.translate(mMatrix, -value.center[0], -value.center[1], -value.center[2])
 
-    globals.gl.uniformMatrix4fv(shaderMMatrix, false, mMatrix);
+    globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
 
     globals.gl.uniform1i(shaderIsTexture, value.isTexture);
 

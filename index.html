@@ -93,6 +93,37 @@
                             <input id="camera-input" type="text" name="camera" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#light-expansion-panel">Light</button>
+                </h2>
+                <div id="light-expansion-panel" class="accordion-collapse collapse" data-bs-parent="#item-accordion">
+                  <div class="accordion-body">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col" style="width: 1%;"></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="text-nowrap p-1">light-position</td>
+                          <td class="text-nowrap p-1" colspan="2">
+                            <input id="light-position-input" type="text" name="lightPosition" class="form-control p-1" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">material-ambient</td>
+                          <td class="text-nowrap p-1" colspan="2">
+                            <input id="material-ambient-input" type="text" name="materialAmbient" class="form-control p-1" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
                         <tr>
                           <td class="text-nowrap p-1">light-ambient</td>
                           <td class="text-nowrap p-1" colspan="2">
@@ -122,7 +153,7 @@
     attribute vec4 vertexColor;
     attribute vec2 vertexTexture;
 
-    uniform bool isLight;
+    uniform bool isFlat;
     uniform vec3 cameraPosition;
     uniform mat4 PMatrix;
     uniform mat4 VMatrix;
@@ -131,33 +162,27 @@
     uniform vec4 materialAmbient;
     uniform vec4 lightAmbient;
     uniform vec4 materialDiffuse;
-    // TODO DSE rinominare in light object
-    uniform vec4 lightDiffuse;
     uniform vec4 materialSpecular;
+    uniform vec4 lightSpecular;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
+    varying vec4 ambient;
+    varying vec4 diffusePre;
+    varying vec4 specular;
 
     void main() {
-      vec4 ambient = materialAmbient * lightAmbient;
-      vec4 diffuse;
-      float dotDiffuse = dot(normalize(lightPosition - vec3(vertexPosition)), normalize(vertexNormal));
-      if(dotDiffuse > 0.0) {
-        diffuse = materialDiffuse * lightDiffuse * dotDiffuse;
-      } else {
-        diffuse = vec4(0, 0, 0, 1);
-      }
-      vec4 specular;
-      float dotSpecular = dot(normalize(reflect(-lightPosition, normalize(vertexSurfaceNormal))), normalize(cameraPosition));
-      if(dotSpecular > 0.0) {
-        specular = materialSpecular * lightDiffuse * pow(dotSpecular, 500.0);
-      } else {
-        specular = vec4(0, 0, 0, 1);
-      }
+      float dotDiffuse = dot(normalize(lightPosition - vec3(MMatrix * vertexPosition)), normalize(vec3(MMatrix * vec4((isFlat ? vertexSurfaceNormal : vertexNormal), 0))));
+      float dotSpecular = dot(normalize(reflect(-lightPosition, normalize(vec3(MMatrix * vec4((isFlat ? vertexSurfaceNormal : vertexNormal), 0))))), normalize(cameraPosition));
 
-      gl_Position = PMatrix * VMatrix * MMatrix * vertexPosition;
-      fragmentColor = (isLight ? ambient + diffuse + specular : vertexColor);
+      fragmentColor = vertexColor;
       fragmentTexture = vertexTexture;
+      ambient = materialAmbient * lightAmbient;
+      diffusePre = (dotDiffuse > 0.0 ? materialDiffuse * dotDiffuse : vec4(0, 0, 0, 1));
+      // TODO DSE la shininess deve essere parametrica dall'esterno
+      specular = (dotSpecular > 0.0 ? materialSpecular * lightSpecular * pow(dotSpecular, 500.0) : vec4(0, 0, 0, 1));
+      
+      gl_Position = PMatrix * VMatrix * MMatrix * vertexPosition;
     } 
   </script>
 
@@ -166,13 +191,20 @@
     precision mediump float;
 
     uniform bool isTexture;
+    uniform bool isLight;
     uniform sampler2D texture;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
+    varying vec4 ambient;
+    varying vec4 diffusePre;
+    varying vec4 specular;
 
     void main(){
-      gl_FragColor = (isTexture ? texture2D(texture, fragmentTexture) : fragmentColor);
+      vec4 color = (isTexture ? texture2D(texture, fragmentTexture) : fragmentColor);
+      vec4 diffuse = diffusePre * color;
+
+      gl_FragColor = (isLight ? ambient + diffuse + specular : color);
     }
   </script>
 
