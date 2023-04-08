@@ -63,6 +63,12 @@ var globals = {
   // posizione della camera
   cameraPosition: [0, 0, 0],
 
+  // ---------- texture ----------
+
+  // TODO DSE la texture deve essere interna agli oggetti e non globale
+  // texture caricata
+  texture: null,
+
   // ---------- luce ----------
 
   // posizione della luce
@@ -70,6 +76,14 @@ var globals = {
   // TODO DSE i parametri dei materiali devono essere negli oggetti
   // materiale per luce ambientale
   materialAmbient: [0, 0, 0, 0],
+  // luce ambientale
+  lightAmbient: [0, 0, 0, 0],
+  // materiale per luce diffusa
+  materialDiffuse: [0.4, 0.4, 0.4, 1],
+  // materiale per luce speculare
+  materialSpecular: [0.774597, 0.774597, 0.774597, 1],
+  // luce speculare
+  lightSpecular: [1, 1, 1, 0],
 
   // ---------- shader program ----------
 
@@ -108,33 +122,19 @@ var globals = {
   // posizione della luce nello shader program
   shaderLightPosition: null,
   // materiale per luce ambientale nello shader program
-  shaderMaterialAmbient: null
+  shaderMaterialAmbient: null,
+  // luce ambientale nello shader program
+  shaderLightAmbient: null,
+  // materiale per luce diffusa nello shader program
+  shaderMaterialDiffuse: null,
+  // material per luce speculare nello shader program
+  shaderMaterialSpecular: null,
+  // luce speculare nello shader program
+  shaderLightSpecular: null,
+  // flag se la texture è abilitata
+  shaderIsTexture: null,
+  // isLight nello shader program
+  shaderIsLight: null,
+  // texture nello shader program
+  shaderTexture: null
 };
-
-// ---------- shader program ----------
-
-// flag se la texture è abilitata
-var shaderIsTexture;
-// isLight nello shader program
-var shaderIsLight;
-// texture nello shader program
-var shaderTexture;
-// texture caricata
-var texture;
-
-// luce ambientale
-var lightAmbient;
-// luce ambientale nello shader program
-var shaderLightAmbient;
-// materiale per luce diffusa
-var materialDiffuse = [0.4, 0.4, 0.4, 1];
-// materiale per luce diffusa nello shader program
-var shaderMaterialDiffuse;
-// materiale per luce speculare
-var materialSpecular = [0.774597, 0.774597, 0.774597, 1];
-// material per luce speculare nello shader program
-var shaderMaterialSpecular;
-// luce speculare
-var lightSpecular = [1, 1, 1, 0];
-// luce speculare nello shader program
-var shaderLightSpecular;

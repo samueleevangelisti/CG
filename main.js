@@ -208,22 +208,22 @@ globals.shaderVMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'VM
 globals.shaderMMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MMatrix');
 globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
 globals.shaderMaterialAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'materialAmbient');
-shaderLightAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'lightAmbient');
-shaderMaterialDiffuse = globals.gl.getUniformLocation(globals.shaderProgram, 'materialDiffuse');
+globals.shaderLightAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'lightAmbient');
+globals.shaderMaterialDiffuse = globals.gl.getUniformLocation(globals.shaderProgram, 'materialDiffuse');
 shaderMaterialSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'materialSpecular');
-shaderLightSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'lightSpecular');
+globals.shaderLightSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'lightSpecular');
 
-shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
-shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
-shaderTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'texture');
+globals.shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
+globals.shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
+globals.shaderTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'texture');
 
-texture = globals.gl.createTexture();
-globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
+globals.texture = globals.gl.createTexture();
+globals.gl.bindTexture(globals.gl.TEXTURE_2D, globals.texture);
 globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, 1, 1, 0, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
 let image = new Image();
 image.src = 'resources/grass.avif';
 image.addEventListener('load', (event) => {
-  globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
+  globals.gl.bindTexture(globals.gl.TEXTURE_2D, globals.texture);
   globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
   if(utils.isPowerOf2(image.width) && utils.isPowerOf2(image.height)) {
     globals.gl.generateMipmap(globals.gl.TEXTURE_2D);
@@ -263,18 +263,18 @@ function render(time) {
   globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
   globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
   globals.gl.uniform4fv(globals.shaderMaterialAmbient, globals.materialAmbient);
-  globals.gl.uniform4fv(shaderLightAmbient, lightAmbient);
-  globals.gl.uniform4fv(shaderMaterialDiffuse, materialDiffuse);
-  globals.gl.uniform4fv(shaderMaterialSpecular, materialSpecular);
-  globals.gl.uniform4fv(shaderLightSpecular, lightSpecular);
+  globals.gl.uniform4fv(globals.shaderLightAmbient, globals.lightAmbient);
+  globals.gl.uniform4fv(globals.shaderMaterialDiffuse, globals.materialDiffuse);
+  globals.gl.uniform4fv(shaderMaterialSpecular, globals.materialSpecular);
+  globals.gl.uniform4fv(globals.shaderLightSpecular, globals.lightSpecular);
 
-  globals.gl.uniform1i(shaderIsTexture, false);
-  globals.gl.uniform1i(shaderIsLight, false);
-  globals.gl.uniform1i(shaderTexture, 0);
+  globals.gl.uniform1i(globals.shaderIsTexture, false);
+  globals.gl.uniform1i(globals.shaderIsLight, false);
+  globals.gl.uniform1i(globals.shaderTexture, 0);
 
   globals.gl.drawArrays(globals.gl.LINES, 0, 6);
 
-  globals.gl.uniform1i(shaderIsLight, true);
+  globals.gl.uniform1i(globals.shaderIsLight, true);
 
   // TODO DSE riabilitare questo passaggio
   Object.entries(globals.itemObj).forEach(([key, value]) => {
@@ -289,7 +289,7 @@ function render(time) {
 
     globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
 
-    globals.gl.uniform1i(shaderIsTexture, value.isTexture);
+    globals.gl.uniform1i(globals.shaderIsTexture, value.isTexture);
 
     // disegna l'ogetto
     globals.gl.drawArrays(globals.gl.TRIANGLES, value.vertexArrStart, value.vertexArrStop - value.vertexArrStart);

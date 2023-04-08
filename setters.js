@@ -128,8 +128,8 @@ function setMaterialAmbient(newMaterialAmbient) {
 var lightAmbientInputElement = document.getElementById('light-ambient-input');
 
 function setLightAmbient(newLightAmbient) {
-  lightAmbient = newLightAmbient;
-  lightAmbientInputElement.value = JSON.stringify(lightAmbient);
+  globals.lightAmbient = newLightAmbient;
+  lightAmbientInputElement.value = JSON.stringify(globals.lightAmbient);
 }
 
 ////////////////////////////////////////////////////////////
