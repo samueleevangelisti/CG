@@ -24,15 +24,6 @@ function globalsInputOnChange(event) {
     case 'viewUp':
       setViewUp(JSON.parse(event.target.value));
       break;
-    case 'yRotation':
-      setYRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
-      break;
-    case 'zRotation':
-      setZRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
-      break;
-    case 'xRotation':
-      setXRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
-      break;
     case 'camera':
       setCameraPosition(JSON.parse(event.target.value));
       break;
@@ -53,6 +44,18 @@ function globalsInputOnChange(event) {
       break;
     case 'lightSpecular':
       setLightSpecular(JSON.parse(event.target.value));
+      break;
+    case 'shininess':
+      setShininess(parseFloat(event.target.value));
+      break;
+    case 'yRotation':
+      setYRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
+      break;
+    case 'zRotation':
+      setZRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
+      break;
+    case 'xRotation':
+      setXRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;
     default:
       break;

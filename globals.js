@@ -5,9 +5,13 @@ var globals = {
   canvas: null,
   // contesto grafico
   gl: null,
+  // costanti per le texture unit
+  textureUnitArr: [],
 
   // ---------- geometria 3d ----------
 
+  // struttura contenente le texture
+  textureObj: {},
   // struttura gnerale contenente gli items visualizzati
   itemObj: {},
 
@@ -84,6 +88,8 @@ var globals = {
   materialSpecular: [0, 0, 0, 0],
   // luce speculare
   lightSpecular: [0, 0, 0, 0],
+  // shininess
+  shininess: 0,
 
   // ---------- shader program ----------
 
@@ -131,6 +137,8 @@ var globals = {
   shaderMaterialSpecular: null,
   // luce speculare nello shader program
   shaderLightSpecular: null,
+  // shininess nello shader program
+  shaderShininess: null,
   // flag se la texture è abilitata
   shaderIsTexture: null,
   // isLight nello shader program

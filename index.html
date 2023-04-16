@@ -148,6 +148,12 @@
                             <input id="light-specular-input" type="text" name="lightSpecular" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">shininess</td>
+                          <td class="text-nowrap p-1" colspan="2">
+                            <input id="shininess-input" type="number" name="shininess" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -182,6 +188,7 @@
     uniform vec4 materialDiffuse;
     uniform vec4 materialSpecular;
     uniform vec4 lightSpecular;
+    uniform float shininess;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
@@ -197,8 +204,7 @@
       fragmentTexture = vertexTexture;
       ambient = materialAmbient * lightAmbient;
       diffusePre = (dotDiffuse > 0.0 ? materialDiffuse * dotDiffuse : vec4(0, 0, 0, 1));
-      // TODO DSE la shininess deve essere parametrica dall'esterno
-      specular = (dotSpecular > 0.0 ? materialSpecular * lightSpecular * pow(dotSpecular, 500.0) : vec4(0, 0, 0, 1));
+      specular = (dotSpecular > 0.0 ? materialSpecular * lightSpecular * pow(dotSpecular, shininess) : vec4(0, 0, 0, 1));
       
       gl_Position = PMatrix * VMatrix * MMatrix * vertexPosition;
     } 

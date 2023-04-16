@@ -14,13 +14,59 @@ globals.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 // globals.gl.enable(globals.gl.CULL_FACE);
 globals.gl.enable(globals.gl.DEPTH_TEST);
 
+globals.textureUnitArr = [
+  globals.gl.TEXTURE0,
+  globals.gl.TEXTURE1,
+  globals.gl.TEXTURE2,
+  globals.gl.TEXTURE3,
+  globals.gl.TEXTURE4,
+  globals.gl.TEXTURE5,
+  globals.gl.TEXTURE6,
+  globals.gl.TEXTURE7,
+  globals.gl.TEXTURE8,
+  globals.gl.TEXTURE9
+];
+
 ////////////////////////////// inizializzazione geometria //////////////////////////////
 
+globals.textureObj = {
+  grass: {
+    src: 'resources/grass.avif'
+  },
+  gioconda: {
+    src: 'resources/gioconda.jpg'
+  }
+};
+
+Object.values(globals.textureObj).forEach((value, index) => {
+  value.index = index;
+  let texture = globals.gl.createTexture();
+  globals.gl.activeTexture(globals.textureUnitArr[index]);
+  globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
+  globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, 1, 1, 0, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
+  let image = new Image();
+  image.addEventListener('load', (event) => {
+    globals.gl.activeTexture(globals.textureUnitArr[index]);
+    globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
+    globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
+    if(utils.isPowerOf2(image.width) && utils.isPowerOf2(image.height)) {
+      globals.gl.generateMipmap(globals.gl.TEXTURE_2D);
+    } else {
+      globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_S, globals.gl.CLAMP_TO_EDGE);
+      globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_T, globals.gl.CLAMP_TO_EDGE);
+      globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_MIN_FILTER, globals.gl.LINEAR);
+    }
+  });
+  image.src = value.src;
+});
+
+// TODO DSE gli attributi degli oggetti dovrebbero essere impostabili da interfaccia
 globals.itemObj = {
   ...globals.itemObj,
   square1: {
     isFlat: true,
     isTexture: true,
+    texture: globals.textureObj.grass.index,
     vertexArr: [
       [3, -3, 0, 1], [3, 3, 0, 1], [-3, 3, 0, 1],
       [3, -3, 0, 1], [-3, 3, 0, 1], [-3, -3, 0, 1]
@@ -37,6 +83,7 @@ globals.itemObj = {
   cube1: {
     isFlat: true,
     isTexture: false,
+    texture: 0,
     vertexArr: [
       [1, -1, 0, 1], [1, 1, 0, 1], [1, 1, 1, 1],
       [1, -1, 0, 1], [1, 1, 1, 1], [1, -1, 1, 1],
@@ -60,7 +107,7 @@ globals.itemObj = {
   }
 };
 
-Object.entries(globals.itemObj).forEach(([key, value]) => {
+Object.values(globals.itemObj).forEach((value) => {
   value.surfaceNormalArr = value.vertexArr.map((vertex, index) => {
     let relativeIndex = index % 3;
     let vertex1 = value.vertexArr[index - relativeIndex];
@@ -152,6 +199,7 @@ setLightAmbient([1, 1, 1, 1]);
 setMaterialDiffuse([0.4, 0.4, 0.4, 1]);
 setMaterialSpecular([0.774597, 0.774597, 0.774597, 1]);
 setLightSpecular([1, 1, 1, 1]);
+setShininess(100);
 
 Object.keys(globals.itemObj).forEach((key) => {
   setYRotationAngle(key, 0);
@@ -215,27 +263,11 @@ globals.shaderLightAmbient = globals.gl.getUniformLocation(globals.shaderProgram
 globals.shaderMaterialDiffuse = globals.gl.getUniformLocation(globals.shaderProgram, 'materialDiffuse');
 shaderMaterialSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'materialSpecular');
 globals.shaderLightSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'lightSpecular');
+globals.shaderShininess = globals.gl.getUniformLocation(globals.shaderProgram, 'shininess');
 
 globals.shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
 globals.shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
 globals.shaderTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'texture');
-
-globals.texture = globals.gl.createTexture();
-globals.gl.bindTexture(globals.gl.TEXTURE_2D, globals.texture);
-globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, 1, 1, 0, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
-let image = new Image();
-image.src = 'resources/grass.avif';
-image.addEventListener('load', (event) => {
-  globals.gl.bindTexture(globals.gl.TEXTURE_2D, globals.texture);
-  globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
-  if(utils.isPowerOf2(image.width) && utils.isPowerOf2(image.height)) {
-    globals.gl.generateMipmap(globals.gl.TEXTURE_2D);
-  } else {
-    globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_S, globals.gl.CLAMP_TO_EDGE);
-    globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_T, globals.gl.CLAMP_TO_EDGE);
-    globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_MIN_FILTER, globals.gl.LINEAR);
-  }
-});
 
 ////////////////////////////// rendering //////////////////////////////
 
@@ -270,6 +302,7 @@ function render(time) {
   globals.gl.uniform4fv(globals.shaderMaterialDiffuse, globals.materialDiffuse);
   globals.gl.uniform4fv(shaderMaterialSpecular, globals.materialSpecular);
   globals.gl.uniform4fv(globals.shaderLightSpecular, globals.lightSpecular);
+  globals.gl.uniform1f(globals.shaderShininess, globals.shininess);
 
   globals.gl.uniform1i(globals.shaderIsTexture, false);
   globals.gl.uniform1i(globals.shaderIsLight, false);
@@ -279,7 +312,6 @@ function render(time) {
 
   globals.gl.uniform1i(globals.shaderIsLight, true);
 
-  // TODO DSE riabilitare questo passaggio
   Object.entries(globals.itemObj).forEach(([key, value]) => {
     globals.gl.uniform1i(globals.shaderIsFlat, value.isFlat);
     // model matrix identità tramite m4.js
@@ -293,6 +325,7 @@ function render(time) {
     globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
 
     globals.gl.uniform1i(globals.shaderIsTexture, value.isTexture);
+    globals.gl.uniform1i(globals.shaderTexture, value.texture);
 
     // disegna l'ogetto
     globals.gl.drawArrays(globals.gl.TRIANGLES, value.vertexArrStart, value.vertexArrStop - value.vertexArrStart);

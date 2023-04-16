@@ -167,6 +167,16 @@ function setLightSpecular(newLightSpecular) {
 
 ////////////////////////////////////////////////////////////
 
+var shininessInputElement = document.getElementById('shininess-input');
+
+function setShininess(newShininess) {
+  log(`setShininess(${newShininess})`);
+  globals.shininess = newShininess;
+  shininessInputElement.value = globals.shininess;
+}
+
+////////////////////////////////////////////////////////////
+
 function setYRotationAngle(itemId, newYRotationAngle) {
   log(`setYRotationAngle(${itemId}, ${newYRotationAngle})`);
   globals.itemObj[itemId].yRotationAngle = (utils.degToRad(newYRotationAngle) + utils.degToRad(360)) % utils.degToRad(360);
