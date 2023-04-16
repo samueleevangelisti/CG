@@ -14,6 +14,8 @@ var globals = {
   textureObj: {},
   // struttura gnerale contenente gli items visualizzati
   itemObj: {},
+  // TODO DSE questa serve solo per fare alcuni test
+  testObj: {},
 
   // ---------- array buffer ----------
 

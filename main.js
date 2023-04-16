@@ -10,7 +10,7 @@ globals.gl.viewport(0, 0, globals.canvas.width, globals.canvas.height);
 
 globals.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
-// XXX TODO DSE questo bisogna capire cosa voglia dire
+// TODO DSE questo bisogna capire cosa voglia dire
 // globals.gl.enable(globals.gl.CULL_FACE);
 globals.gl.enable(globals.gl.DEPTH_TEST);
 
@@ -61,50 +61,52 @@ Object.values(globals.textureObj).forEach((value, index) => {
 });
 
 // TODO DSE gli attributi degli oggetti dovrebbero essere impostabili da interfaccia
+// TODO DSE forse è il caso che i punti siano espressi in termini di coordinate senza il quarto valore, poi lo metto nelle formule di webgl
 globals.itemObj = {
   ...globals.itemObj,
-  square1: {
-    isFlat: true,
-    isTexture: true,
-    texture: globals.textureObj.grass.index,
-    vertexArr: [
-      [3, -3, 0, 1], [3, 3, 0, 1], [-3, 3, 0, 1],
-      [3, -3, 0, 1], [-3, 3, 0, 1], [-3, -3, 0, 1]
-    ],
-    colorArr: [
-      [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1],
-      [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1]
-    ],
-    textureArr: [
-      [0, 1], [1, 1], [1, 0],
-      [0, 1], [1, 0], [0, 0]
-    ]
-  },
-  cube1: {
-    isFlat: true,
-    isTexture: false,
-    texture: 0,
-    vertexArr: [
-      [1, -1, 0, 1], [1, 1, 0, 1], [1, 1, 1, 1],
-      [1, -1, 0, 1], [1, 1, 1, 1], [1, -1, 1, 1],
-      [-1, -1, 0, 1], [1, -1, 0, 1], [1, -1, 1, 1],
-      [-1, -1, 0, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
-      [-1, 1, 0, 1], [-1, -1, 0, 1], [-1, -1, 1, 1],
-      [-1, 1, 0, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
-      [1, 1, 0, 1], [-1, 1, 0, 1], [-1, 1, 1, 1],
-      [1, 1, 0, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
-      [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1],
-      [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1]
-    ],
-    colorArr: [
-      ...new Array(6).fill([0, 1, 0, 1]),
-      ...new Array(6).fill([0, 0, 1, 1]),
-      ...new Array(6).fill([0, 1, 0, 1]),
-      ...new Array(6).fill([0, 0, 1, 1]),
-      ...new Array(6).fill([1, 0, 0, 1])
-    ],
-    textureArr: new Array(6).fill([0, 0])
-  }
+  // TODO DSE al momento facciamo un po' di test
+  // square1: {
+  //   isFlat: true,
+  //   isTexture: true,
+  //   texture: globals.textureObj.grass.index,
+  //   vertexArr: [
+  //     [3, -3, 0, 1], [3, 3, 0, 1], [-3, 3, 0, 1],
+  //     [3, -3, 0, 1], [-3, 3, 0, 1], [-3, -3, 0, 1]
+  //   ],
+  //   colorArr: [
+  //     [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1],
+  //     [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1]
+  //   ],
+  //   textureArr: [
+  //     [0, 1], [1, 1], [1, 0],
+  //     [0, 1], [1, 0], [0, 0]
+  //   ]
+  // },
+  // cube1: {
+  //   isFlat: true,
+  //   isTexture: false,
+  //   texture: 0,
+  //   vertexArr: [
+  //     [1, -1, 0, 1], [1, 1, 0, 1], [1, 1, 1, 1],
+  //     [1, -1, 0, 1], [1, 1, 1, 1], [1, -1, 1, 1],
+  //     [-1, -1, 0, 1], [1, -1, 0, 1], [1, -1, 1, 1],
+  //     [-1, -1, 0, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
+  //     [-1, 1, 0, 1], [-1, -1, 0, 1], [-1, -1, 1, 1],
+  //     [-1, 1, 0, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
+  //     [1, 1, 0, 1], [-1, 1, 0, 1], [-1, 1, 1, 1],
+  //     [1, 1, 0, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
+  //     [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1],
+  //     [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1]
+  //   ],
+  //   colorArr: [
+  //     ...new Array(6).fill([0, 1, 0, 1]),
+  //     ...new Array(6).fill([0, 0, 1, 1]),
+  //     ...new Array(6).fill([0, 1, 0, 1]),
+  //     ...new Array(6).fill([0, 0, 1, 1]),
+  //     ...new Array(6).fill([1, 0, 0, 1])
+  //   ],
+  //   textureArr: new Array(6).fill([0, 0])
+  // }
 };
 
 Object.values(globals.itemObj).forEach((value) => {
@@ -164,6 +166,14 @@ Object.values(globals.itemObj).forEach((value) => {
   ];
   value.vertexArrStop = globals.vertexArr.length;
 });
+
+// TODO DSE questo è per fare test
+let testMesh = {};
+testMesh.sourceMesh='resources/cube.obj';
+globals.testObj = {
+  ...globals.testObj,
+  testCube: LoadMesh(globals.gl, testMesh)
+};
 
 // tipizzazione array tramite m4.js
 globals.vertexArr = m4.flatten(globals.vertexArr);

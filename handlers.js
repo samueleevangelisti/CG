@@ -95,3 +95,5 @@ function canvasOnMouseWheel(event) {
   event.preventDefault();
   setDistance(distance + ((event.deltaY > 0 ? 1 : -1) * deltaDistance));
 }
+
+// TODO DSE bisogna anche gestire le gesture del touch dei dispositivi mobili
