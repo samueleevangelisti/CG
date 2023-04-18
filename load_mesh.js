@@ -1,19 +1,19 @@
 function loadMeshFromOBJ(mesh) {
   return new Promise((resolve, reject) => {
     ajaxUtils.get(mesh.sourceMesh)
-    .then((response) => {
-      logUtils.debug('(load_mesh.loadMeshFromOBJ)', response);
-      // scommentare/commentare per utilizzare o meno la LoadSubdivMesh
-      // mesh.data = LoadSubdivMesh(result.mesh);
-      let result = glmReadOBJ(response,new subd_mesh());
-      mesh.data = result.mesh;
-      mesh.fileMTL = result.fileMtl;
-      resolve(response);
-    })
-    .catch((error) => {
-      logUtils.error('(load_mesh.loadMeshFromOBJ)', error);
-      reject(error);
-    });
+      .then((response) => {
+        logUtils.debug('(load_mesh.loadMeshFromOBJ)', response);
+        // scommentare/commentare per utilizzare o meno la LoadSubdivMesh
+        // mesh.data = LoadSubdivMesh(result.mesh);
+        let result = glmReadOBJ(response,new subd_mesh());
+        mesh.data = result.mesh;
+        mesh.fileMTL = result.fileMtl;
+        resolve(response);
+      })
+      .catch((error) => {
+        logUtils.error('(load_mesh.loadMeshFromOBJ)', error);
+        reject(error);
+      });
   });
 }
 
