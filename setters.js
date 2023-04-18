@@ -117,6 +117,16 @@ function setLightPosition(newLightPosition) {
 
 ////////////////////////////////////////////////////////////
 
+var lightColorInputElement = document.getElementById('light-color-input');
+
+function setLightColor(newLightColor) {
+  log(`setLightColor(${newLightColor})`);
+  globals.lightColor = newLightColor;
+  lightColorInputElement.value = JSON.stringify(globals.lightColor);
+}
+
+////////////////////////////////////////////////////////////
+
 var materialEmissiveInputElement = document.getElementById('material-emissive-input');
 
 function setMaterialEmissive(newMaterialEmissive) {
@@ -163,16 +173,6 @@ function setMaterialSpecular(newMaterialSpecular) {
   log(`setMaterialSpecular(${newMaterialSpecular})`);
   globals.materialSpecular = newMaterialSpecular;
   materialSpecularInputElement.value = JSON.stringify(globals.materialSpecular);
-}
-
-////////////////////////////////////////////////////////////
-
-var lightSpecularInputElement = document.getElementById('light-specular-input');
-
-function setLightSpecular(newLightSpecular) {
-  log(`setLightSpecular(${newLightSpecular})`);
-  globals.lightSpecular = newLightSpecular;
-  lightSpecularInputElement.value = JSON.stringify(globals.lightSpecular);
 }
 
 ////////////////////////////////////////////////////////////

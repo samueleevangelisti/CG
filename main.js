@@ -202,12 +202,12 @@ setTarget([0, 0, 0]);
 setViewUp([0, 0, 1]);
 
 setLightPosition([5, 5, 5]);
+setLightColor([1, 1, 1, 1]);
 setMaterialEmissive([0, 0, 0]);
 setMaterialAmbient([0.2, 0.2, 0.2]);
-setLightAmbient([0.2, 0.2, 0.2]);
+setLightAmbient([0.2, 0.2, 0.2, 1]);
 setMaterialDiffuse([0.4, 0.4, 0.4]);
 setMaterialSpecular([0.774597, 0.774597, 0.774597]);
-setLightSpecular([1, 1, 1]);
 setShininess(100);
 setOpacity(1);
 
@@ -262,22 +262,23 @@ globals.shaderVertexTexture = globals.gl.getAttribLocation(globals.shaderProgram
 globals.gl.vertexAttribPointer(globals.shaderVertexTexture, 2, globals.gl.FLOAT, false, 0, 0);
 globals.gl.enableVertexAttribArray(globals.shaderVertexTexture);
 
-globals.shaderIsFlat = globals.gl.getUniformLocation(globals.shaderProgram, 'isFlat');
-globals.shaderCameraPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'cameraPosition');
 globals.shaderPMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'PMatrix');
 globals.shaderVMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'VMatrix');
 globals.shaderMMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MMatrix');
-globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
-globals.shaderMaterialDiffuse = globals.gl.getUniformLocation(globals.shaderProgram, 'materialDiffuse');
-shaderMaterialSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'materialSpecular');
-globals.shaderLightSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'lightSpecular');
-globals.shaderShininess = globals.gl.getUniformLocation(globals.shaderProgram, 'shininess');
 
+globals.shaderIsFlat = globals.gl.getUniformLocation(globals.shaderProgram, 'isFlat');
 globals.shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
 globals.shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
+globals.shaderMRMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MRMatrix');
+globals.shaderCameraPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'cameraPosition');
+globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
+globals.shaderLightColor = globals.gl.getUniformLocation(globals.shaderProgram, 'lightColor');
 globals.shaderMaterialEmissive = globals.gl.getUniformLocation(globals.shaderProgram, 'materialEmissive');
 globals.shaderMaterialAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'materialAmbient');
 globals.shaderLightAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'lightAmbient');
+globals.shaderMaterialDiffuse = globals.gl.getUniformLocation(globals.shaderProgram, 'materialDiffuse');
+shaderMaterialSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'materialSpecular');
+globals.shaderShininess = globals.gl.getUniformLocation(globals.shaderProgram, 'shininess');
 globals.shaderOpacity = globals.gl.getUniformLocation(globals.shaderProgram, 'opacity');
 globals.shaderTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'texture');
 
@@ -307,21 +308,21 @@ function render(time) {
   // matrice M con solo le rotazioni
   let mRMatrix = m4.identity();
 
-  globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
   globals.gl.uniformMatrix4fv(globals.shaderPMatrix, false, pMatrix);
   globals.gl.uniformMatrix4fv(globals.shaderVMatrix, false, vMatrix);
   globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
-  globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
-  globals.gl.uniform3fv(globals.shaderMaterialDiffuse, globals.materialDiffuse);
-  globals.gl.uniform3fv(shaderMaterialSpecular, globals.materialSpecular);
-  globals.gl.uniform3fv(globals.shaderLightSpecular, globals.lightSpecular);
-  globals.gl.uniform1f(globals.shaderShininess, globals.shininess);
 
   globals.gl.uniform1i(globals.shaderIsTexture, false);
   globals.gl.uniform1i(globals.shaderIsLight, false);
+  globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
+  globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
+  globals.gl.uniform4fv(globals.shaderLightColor, globals.lightColor);
   globals.gl.uniform3fv(globals.shaderMaterialEmissive, globals.materialEmissive);
   globals.gl.uniform3fv(globals.shaderMaterialAmbient, globals.materialAmbient);
-  globals.gl.uniform3fv(globals.shaderLightAmbient, globals.lightAmbient);
+  globals.gl.uniform4fv(globals.shaderLightAmbient, globals.lightAmbient);
+  globals.gl.uniform3fv(globals.shaderMaterialDiffuse, globals.materialDiffuse);
+  globals.gl.uniform3fv(shaderMaterialSpecular, globals.materialSpecular);
+  globals.gl.uniform1f(globals.shaderShininess, globals.shininess);
   globals.gl.uniform1f(globals.shaderOpacity, globals.opacity);
   globals.gl.uniform1i(globals.shaderTexture, 0);
 
@@ -330,7 +331,6 @@ function render(time) {
   globals.gl.uniform1i(globals.shaderIsLight, true);
 
   Object.entries(globals.itemObj).forEach(([key, value]) => {
-    globals.gl.uniform1i(globals.shaderIsFlat, value.isFlat);
     // model matrix identità tramite m4.js
     mMatrix = m4.identity();
     mMatrix = m4.translate(mMatrix, value.center[0], value.center[1], value.center[2])
@@ -346,7 +346,9 @@ function render(time) {
     mRMatrix = m4.zRotate(mRMatrix, value.zRotationAngle);
     mRMatrix = m4.yRotate(mRMatrix, value.yRotationAngle);
 
+    globals.gl.uniform1i(globals.shaderIsFlat, value.isFlat);
     globals.gl.uniform1i(globals.shaderIsTexture, value.isTexture);
+    globals.gl.uniformMatrix4fv(globals.shaderMRMatrix, false, mRMatrix);
     globals.gl.uniform1i(globals.shaderTexture, value.texture);
 
     // disegna l'ogetto

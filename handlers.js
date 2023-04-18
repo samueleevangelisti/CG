@@ -30,6 +30,9 @@ function globalsInputOnChange(event) {
     case 'lightPosition':
       setLightPosition(JSON.parse(event.target.value));
       break;
+    case 'lightColor':
+      setLightColor(JSON.parse(event.target.value));
+      break;
     case 'materialEmissive':
       setMaterialEmissive(JSON.parse(event.target.value));
       break;
@@ -44,9 +47,6 @@ function globalsInputOnChange(event) {
       break;
     case 'materialSpecular':
       setMaterialSpecular(JSON.parse(event.target.value));
-      break;
-    case 'lightSpecular':
-      setLightSpecular(JSON.parse(event.target.value));
       break;
     case 'shininess':
       setShininess(parseFloat(event.target.value));

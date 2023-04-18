@@ -73,19 +73,19 @@ var globals = {
 
   // posizione della luce
   lightPosition: [0, 0, 0],
+  // colore della luce
+  lightColor: [0, 0, 0, 0],
   // TODO DSE i parametri dei materiali devono essere negli oggetti
   // materiale per emissive
   materialEmissive: [0, 0, 0],
   // materiale per luce ambientale
   materialAmbient: [0, 0, 0],
   // luce ambientale
-  lightAmbient: [0, 0, 0],
+  lightAmbient: [0, 0, 0, 0],
   // materiale per luce diffusa
   materialDiffuse: [0, 0, 0],
   // materiale per luce speculare
   materialSpecular: [0, 0, 0],
-  // luce speculare
-  lightSpecular: [0, 0, 0],
   // shininess
   shininess: 0,
   // opacità
@@ -115,36 +115,38 @@ var globals = {
   textureBuffer: null,
   // coordinate della texture nello shader program
   shaderVertexTexture: null,
-  // isFlat nello shader program
-  shaderIsFlat: null,
-  // camera position nello shader program
-  shaderCameraPosition: null,
   // projection matrix nello shader program
   shaderPMatrix: null,
   // view matrix nello shader program
   shaderVMatrix: null,
   // model matrix nello shader program
   shaderMMatrix: null,
-  // posizione della luce nello shader program
-  shaderLightPosition: null,
-  // materiale per luce diffusa nello shader program
-  shaderMaterialDiffuse: null,
-  // material per luce speculare nello shader program
-  shaderMaterialSpecular: null,
-  // luce speculare nello shader program
-  shaderLightSpecular: null,
-  // shininess nello shader program
-  shaderShininess: null,
+  // isFlat nello shader program
+  shaderIsFlat: null,
   // flag se la texture è abilitata
   shaderIsTexture: null,
   // isLight nello shader program
   shaderIsLight: null,
+  // matrice m solo di rotazione nello shader program
+  shaderMRMatrix: null,
+  // camera position nello shader program
+  shaderCameraPosition: null,
+  // posizione della luce nello shader program
+  shaderLightPosition: null,
+  // colore della luce nello shader program
+  shaderLightColor: null,
   // material emissive nello shader program
   shaderMaterialEmissive: null,
   // materiale per luce ambientale nello shader program
   shaderMaterialAmbient: null,
   // luce ambientale nello shader program
   shaderLightAmbient: null,
+  // materiale per luce diffusa nello shader program
+  shaderMaterialDiffuse: null,
+  // material per luce speculare nello shader program
+  shaderMaterialSpecular: null,
+  // shininess nello shader program
+  shaderShininess: null,
   // opacità nello shader program
   shaderOpacity: null,
   // texture nello shader program
