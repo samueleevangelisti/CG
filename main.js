@@ -203,8 +203,8 @@ setViewUp([0, 0, 1]);
 
 setLightPosition([5, 5, 5]);
 setMaterialEmissive([0, 0, 0]);
-setMaterialAmbient([0.02, 0.02, 0.02]);
-setLightAmbient([1, 1, 1]);
+setMaterialAmbient([0.2, 0.2, 0.2]);
+setLightAmbient([0.2, 0.2, 0.2]);
 setMaterialDiffuse([0.4, 0.4, 0.4]);
 setMaterialSpecular([0.774597, 0.774597, 0.774597]);
 setLightSpecular([1, 1, 1]);
@@ -268,8 +268,6 @@ globals.shaderPMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'PM
 globals.shaderVMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'VMatrix');
 globals.shaderMMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MMatrix');
 globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
-globals.shaderMaterialAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'materialAmbient');
-globals.shaderLightAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'lightAmbient');
 globals.shaderMaterialDiffuse = globals.gl.getUniformLocation(globals.shaderProgram, 'materialDiffuse');
 shaderMaterialSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'materialSpecular');
 globals.shaderLightSpecular = globals.gl.getUniformLocation(globals.shaderProgram, 'lightSpecular');
@@ -278,6 +276,8 @@ globals.shaderShininess = globals.gl.getUniformLocation(globals.shaderProgram, '
 globals.shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
 globals.shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
 globals.shaderMaterialEmissive = globals.gl.getUniformLocation(globals.shaderProgram, 'materialEmissive');
+globals.shaderMaterialAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'materialAmbient');
+globals.shaderLightAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'lightAmbient');
 globals.shaderOpacity = globals.gl.getUniformLocation(globals.shaderProgram, 'opacity');
 globals.shaderTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'texture');
 
@@ -312,8 +312,6 @@ function render(time) {
   globals.gl.uniformMatrix4fv(globals.shaderVMatrix, false, vMatrix);
   globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
   globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
-  globals.gl.uniform3fv(globals.shaderMaterialAmbient, globals.materialAmbient);
-  globals.gl.uniform3fv(globals.shaderLightAmbient, globals.lightAmbient);
   globals.gl.uniform3fv(globals.shaderMaterialDiffuse, globals.materialDiffuse);
   globals.gl.uniform3fv(shaderMaterialSpecular, globals.materialSpecular);
   globals.gl.uniform3fv(globals.shaderLightSpecular, globals.lightSpecular);
@@ -322,6 +320,8 @@ function render(time) {
   globals.gl.uniform1i(globals.shaderIsTexture, false);
   globals.gl.uniform1i(globals.shaderIsLight, false);
   globals.gl.uniform3fv(globals.shaderMaterialEmissive, globals.materialEmissive);
+  globals.gl.uniform3fv(globals.shaderMaterialAmbient, globals.materialAmbient);
+  globals.gl.uniform3fv(globals.shaderLightAmbient, globals.lightAmbient);
   globals.gl.uniform1f(globals.shaderOpacity, globals.opacity);
   globals.gl.uniform1i(globals.shaderTexture, 0);
 

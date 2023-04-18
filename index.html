@@ -196,8 +196,6 @@
     uniform mat4 VMatrix;
     uniform mat4 MMatrix;
     uniform vec3 lightPosition;
-    uniform vec3 materialAmbient;
-    uniform vec3 lightAmbient;
     uniform vec3 materialDiffuse;
     uniform vec3 materialSpecular;
     uniform vec3 lightSpecular;
@@ -205,7 +203,6 @@
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
-    varying vec3 ambient;
     varying vec3 diffusePre;
     varying vec3 specular;
 
@@ -215,7 +212,6 @@
 
       fragmentColor = vertexColor;
       fragmentTexture = vertexTexture;
-      ambient = materialAmbient * lightAmbient;
       diffusePre = (dotDiffuse > 0.0 ? materialDiffuse * dotDiffuse : vec3(0, 0, 0));
       specular = (dotSpecular > 0.0 ? materialSpecular * lightSpecular * pow(dotSpecular, shininess) : vec3(0, 0, 0));
       
@@ -230,12 +226,13 @@
     uniform bool isTexture;
     uniform bool isLight;
     uniform vec3 materialEmissive;
+    uniform vec3 materialAmbient;
+    uniform vec3 lightAmbient;
     uniform float opacity;
     uniform sampler2D texture;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
-    varying vec3 ambient;
     varying vec3 diffusePre;
     varying vec3 specular;
 
@@ -244,6 +241,7 @@
       vec3 diffuse = diffusePre * color.rgb;
 
       vec3 emissive = materialEmissive;
+      vec3 ambient = materialAmbient * lightAmbient;
       float opacity1 = opacity * color.a;
 
       gl_FragColor = (isLight ? vec4(emissive + ambient + diffuse + specular, opacity1) : color);

@@ -127,10 +127,6 @@ var globals = {
   shaderMMatrix: null,
   // posizione della luce nello shader program
   shaderLightPosition: null,
-  // materiale per luce ambientale nello shader program
-  shaderMaterialAmbient: null,
-  // luce ambientale nello shader program
-  shaderLightAmbient: null,
   // materiale per luce diffusa nello shader program
   shaderMaterialDiffuse: null,
   // material per luce speculare nello shader program
@@ -145,6 +141,10 @@ var globals = {
   shaderIsLight: null,
   // material emissive nello shader program
   shaderMaterialEmissive: null,
+  // materiale per luce ambientale nello shader program
+  shaderMaterialAmbient: null,
+  // luce ambientale nello shader program
+  shaderLightAmbient: null,
   // opacità nello shader program
   shaderOpacity: null,
   // texture nello shader program
