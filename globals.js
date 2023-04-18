@@ -76,20 +76,8 @@ var globals = {
   // colore della luce
   lightColor: [0, 0, 0, 0],
   // TODO DSE i parametri dei materiali devono essere negli oggetti
-  // materiale per emissive
-  materialEmissive: [0, 0, 0],
-  // materiale per luce ambientale
-  materialAmbient: [0, 0, 0],
   // luce ambientale
   lightAmbient: [0, 0, 0, 0],
-  // materiale per luce diffusa
-  materialDiffuse: [0, 0, 0],
-  // materiale per luce speculare
-  materialSpecular: [0, 0, 0],
-  // shininess
-  shininess: 0,
-  // opacità
-  opacity: 0,
 
   // ---------- shader program ----------
 

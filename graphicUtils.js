@@ -84,6 +84,218 @@ var graphicUtils = {
                             childElementArr: [
                               elementFromConfigObj({
                                 tag: 'td',
+                                innerHTML: 'material emissive',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-material-emissive-input`,
+                                    type: 'text',
+                                    name: `${itemId}-materialEmissive`,
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'material ambient',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-material-ambient-input`,
+                                    type: 'text',
+                                    name: `${itemId}-materialAmbient`,
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'material diffuse',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-material-diffuse-input`,
+                                    type: 'text',
+                                    name: `${itemId}-materialDiffuse`,
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'material specular',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-material-specular-input`,
+                                    type: 'text',
+                                    name: `${itemId}-materialSpecular`,
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'shininess',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-shininess-input`,
+                                    type: 'number',
+                                    name: `${itemId}-shininess`,
+                                    step: '0.01',
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'opacity',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-opacity-input`,
+                                    type: 'number',
+                                    name: `${itemId}-opacity`,
+                                    step: '0.01',
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
                                 innerHTML: 'y rotation',
                                 classArr: [
                                   'text-nowrap',

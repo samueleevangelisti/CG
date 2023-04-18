@@ -33,26 +33,26 @@ function globalsInputOnChange(event) {
     case 'lightColor':
       setLightColor(JSON.parse(event.target.value));
       break;
-    case 'materialEmissive':
-      setMaterialEmissive(JSON.parse(event.target.value));
-      break;
-    case 'materialAmbient':
-      setMaterialAmbient(JSON.parse(event.target.value));
-      break;
     case 'lightAmbient':
       setLightAmbient(JSON.parse(event.target.value));
       break;
+    case 'materialEmissive':
+      setMaterialEmissive(event.target.name.split('-').slice(0, -1).join('-'), JSON.parse(event.target.value));
+      break;
+    case 'materialAmbient':
+      setMaterialAmbient(event.target.name.split('-').slice(0, -1).join('-'), JSON.parse(event.target.value));
+      break;
     case 'materialDiffuse':
-      setMaterialDiffuse(JSON.parse(event.target.value));
+      setMaterialDiffuse(event.target.name.split('-').slice(0, -1).join('-'), JSON.parse(event.target.value));
       break;
     case 'materialSpecular':
-      setMaterialSpecular(JSON.parse(event.target.value));
+      setMaterialSpecular(event.target.name.split('-').slice(0, -1).join('-'), JSON.parse(event.target.value));
       break;
     case 'shininess':
-      setShininess(parseFloat(event.target.value));
+      setShininess(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;
     case 'opacity':
-      setOpacity(parseFloat(event.target.value));
+      setOpacity(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;
     case 'yRotation':
       setYRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));

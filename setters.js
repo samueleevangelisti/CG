@@ -127,26 +127,6 @@ function setLightColor(newLightColor) {
 
 ////////////////////////////////////////////////////////////
 
-var materialEmissiveInputElement = document.getElementById('material-emissive-input');
-
-function setMaterialEmissive(newMaterialEmissive) {
-  log(`setMaterialEmissive(${newMaterialEmissive})`);
-  globals.materialEmissive = newMaterialEmissive;
-  materialEmissiveInputElement.value = JSON.stringify(globals.materialEmissive);
-}
-
-////////////////////////////////////////////////////////////
-
-var materialAmbientInputElement = document.getElementById('material-ambient-input');
-
-function setMaterialAmbient(newMaterialAmbient) {
-  log(`setMaterialAmbient(${newMaterialAmbient})`);
-  globals.materialAmbient = newMaterialAmbient;
-  materialAmbientInputElement.value = JSON.stringify(globals.materialAmbient);
-}
-
-////////////////////////////////////////////////////////////
-
 var lightAmbientInputElement = document.getElementById('light-ambient-input');
 
 function setLightAmbient(newLightAmbient) {
@@ -157,47 +137,55 @@ function setLightAmbient(newLightAmbient) {
 
 ////////////////////////////////////////////////////////////
 
-var materialDiffuseInputElement = document.getElementById('material-diffuse-input');
-
-function setMaterialDiffuse(newMaterialDiffuse) {
-  log(`setMaterialDiffuse(${newMaterialDiffuse})`);
-  globals.materialDiffuse = newMaterialDiffuse;
-  materialDiffuseInputElement.value = JSON.stringify(globals.materialDiffuse);
+function setMaterialEmissive(itemId, newMaterialEmissive) {
+  log(`setMaterialEmissive(${itemId}, ${newMaterialEmissive})`);
+  globals.itemObj[itemId].materialEmissive = newMaterialEmissive;
+  document.getElementById(`${itemId}-material-emissive-input`).value = JSON.stringify(globals.itemObj[itemId].materialEmissive);
 }
 
 ////////////////////////////////////////////////////////////
 
-var materialSpecularInputElement = document.getElementById('material-specular-input');
-
-function setMaterialSpecular(newMaterialSpecular) {
-  log(`setMaterialSpecular(${newMaterialSpecular})`);
-  globals.materialSpecular = newMaterialSpecular;
-  materialSpecularInputElement.value = JSON.stringify(globals.materialSpecular);
+function setMaterialAmbient(itemId, newMaterialAmbient) {
+  log(`setMaterialAmbient(${itemId}, ${newMaterialAmbient})`);
+  globals.itemObj[itemId].materialAmbient = newMaterialAmbient;
+  document.getElementById(`${itemId}-material-ambient-input`).value = JSON.stringify(globals.itemObj[itemId].materialAmbient);
 }
 
 ////////////////////////////////////////////////////////////
 
-var shininessInputElement = document.getElementById('shininess-input');
-
-function setShininess(newShininess) {
-  log(`setShininess(${newShininess})`);
-  globals.shininess = newShininess;
-  shininessInputElement.value = globals.shininess;
+function setMaterialDiffuse(itemId, newMaterialDiffuse) {
+  log(`setMaterialDiffuse(${itemId}, ${newMaterialDiffuse})`);
+  globals.itemObj[itemId].materialDiffuse = newMaterialDiffuse;
+  document.getElementById(`${itemId}-material-diffuse-input`).value = JSON.stringify(globals.itemObj[itemId].materialDiffuse);
 }
 
 ////////////////////////////////////////////////////////////
 
-var opacityInputElement = document.getElementById('opacity-input');
+function setMaterialSpecular(itemId, newMaterialSpecular) {
+  log(`setMaterialSpecular(${itemId}, ${newMaterialSpecular})`);
+  globals.itemObj[itemId].materialSpecular = newMaterialSpecular;
+  document.getElementById(`${itemId}-material-specular-input`).value = JSON.stringify(globals.itemObj[itemId].materialSpecular);
+}
 
-function setOpacity(newOpacity) {
-  log(`setOpacity(${newOpacity})`);
-  globals.opacity = newOpacity;
-  if(globals.opacity > 1) {
-    globals.opacity = 1;
-  } else if(globals.opacity < 0) {
-    globals.opacity = 0;
+////////////////////////////////////////////////////////////
+
+function setShininess(itemId, newShininess) {
+  log(`setShininess(${itemId}, ${newShininess})`);
+  globals.itemObj[itemId].shininess = newShininess;
+  document.getElementById(`${itemId}-shininess-input`).value = globals.itemObj[itemId].shininess;
+}
+
+////////////////////////////////////////////////////////////
+
+function setOpacity(itemId, newOpacity) {
+  log(`setOpacity(${itemId}, ${newOpacity})`);
+  globals.itemObj[itemId].opacity = newOpacity;
+  if(globals.itemObj[itemId].opacity > 1) {
+    globals.itemObj[itemId].opacity = 1;
+  } else if(globals.itemObj[itemId].opacity < 0) {
+    globals.itemObj[itemId].opacity = 0;
   }
-  opacityInputElement.value = globals.opacity;
+  document.getElementById(`${itemId}-opacity-input`).value = globals.itemObj[itemId].opacity;
 }
 
 ////////////////////////////////////////////////////////////

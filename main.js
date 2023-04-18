@@ -67,6 +67,12 @@ globals.itemObj = {
     isFlat: true,
     isTexture: true,
     texture: globals.textureObj.grass.index,
+    materialEmissive: [0, 0, 0],
+    materialAmbient: [0.2, 0.2, 0.2],
+    materialDiffuse: [0.4, 0.4, 0.4],
+    materialSpecular: [0.774597, 0.774597, 0.774597],
+    shininess: 100,
+    opacity: 1,
     vertexArr: [
       [3, -3, 0], [3, 3, 0], [-3, 3, 0],
       [3, -3, 0], [-3, 3, 0], [-3, -3, 0]
@@ -84,6 +90,12 @@ globals.itemObj = {
     isFlat: true,
     isTexture: false,
     texture: 0,
+    materialEmissive: [0, 0, 0],
+    materialAmbient: [0.2, 0.2, 0.2],
+    materialDiffuse: [0.4, 0.4, 0.4],
+    materialSpecular: [0.774597, 0.774597, 0.774597],
+    shininess: 100,
+    opacity: 1,
     vertexArr: [
       [1, -1, 0], [1, 1, 0], [1, 1, 1],
       [1, -1, 0], [1, 1, 1], [1, -1, 1],
@@ -203,15 +215,15 @@ setViewUp([0, 0, 1]);
 
 setLightPosition([5, 5, 5]);
 setLightColor([1, 1, 1, 1]);
-setMaterialEmissive([0, 0, 0]);
-setMaterialAmbient([0.2, 0.2, 0.2]);
 setLightAmbient([0.2, 0.2, 0.2, 1]);
-setMaterialDiffuse([0.4, 0.4, 0.4]);
-setMaterialSpecular([0.774597, 0.774597, 0.774597]);
-setShininess(100);
-setOpacity(1);
 
-Object.keys(globals.itemObj).forEach((key) => {
+Object.entries(globals.itemObj).forEach(([key, value]) => {
+  setMaterialEmissive(key, value.materialEmissive);
+  setMaterialAmbient(key, value.materialAmbient);
+  setMaterialDiffuse(key, value.materialDiffuse);
+  setMaterialSpecular(key, value.materialSpecular);
+  setShininess(key, 100);
+  setOpacity(key, 1);
   setYRotationAngle(key, 0);
   setZRotationAngle(key, 0);
   setXRotationAngle(key, 0);
@@ -317,13 +329,7 @@ function render(time) {
   globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
   globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
   globals.gl.uniform4fv(globals.shaderLightColor, globals.lightColor);
-  globals.gl.uniform3fv(globals.shaderMaterialEmissive, globals.materialEmissive);
-  globals.gl.uniform3fv(globals.shaderMaterialAmbient, globals.materialAmbient);
   globals.gl.uniform4fv(globals.shaderLightAmbient, globals.lightAmbient);
-  globals.gl.uniform3fv(globals.shaderMaterialDiffuse, globals.materialDiffuse);
-  globals.gl.uniform3fv(shaderMaterialSpecular, globals.materialSpecular);
-  globals.gl.uniform1f(globals.shaderShininess, globals.shininess);
-  globals.gl.uniform1f(globals.shaderOpacity, globals.opacity);
   globals.gl.uniform1i(globals.shaderTexture, 0);
 
   globals.gl.drawArrays(globals.gl.LINES, 0, 6);
@@ -349,6 +355,12 @@ function render(time) {
     globals.gl.uniform1i(globals.shaderIsFlat, value.isFlat);
     globals.gl.uniform1i(globals.shaderIsTexture, value.isTexture);
     globals.gl.uniformMatrix4fv(globals.shaderMRMatrix, false, mRMatrix);
+    globals.gl.uniform3fv(globals.shaderMaterialEmissive, value.materialEmissive);
+    globals.gl.uniform3fv(globals.shaderMaterialAmbient, value.materialAmbient);
+    globals.gl.uniform3fv(globals.shaderMaterialDiffuse, value.materialDiffuse);
+    globals.gl.uniform3fv(shaderMaterialSpecular, value.materialSpecular);
+    globals.gl.uniform1f(globals.shaderShininess, value.shininess);
+    globals.gl.uniform1f(globals.shaderOpacity, value.opacity);
     globals.gl.uniform1i(globals.shaderTexture, value.texture);
 
     // disegna l'ogetto
