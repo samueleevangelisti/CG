@@ -172,7 +172,7 @@
 
   <!-- vertex shader -->
   <script id="vertex-shader" type="x-shader/x-vertex">
-    attribute vec4 vertexPosition;
+    attribute vec3 vertexPosition;
     attribute vec3 vertexSurfaceNormal;
     attribute vec3 vertexNormal;
     attribute vec4 vertexColor;
@@ -198,7 +198,7 @@
     varying vec4 specular;
 
     void main() {
-      float dotDiffuse = dot(normalize(lightPosition - vec3(MMatrix * vertexPosition)), normalize(vec3(MMatrix * vec4((isFlat ? vertexSurfaceNormal : vertexNormal), 0))));
+      float dotDiffuse = dot(normalize(lightPosition - vec3(MMatrix * vec4(vertexPosition, 1))), normalize(vec3(MMatrix * vec4((isFlat ? vertexSurfaceNormal : vertexNormal), 0))));
       float dotSpecular = dot(normalize(reflect(-lightPosition, normalize(vec3(MMatrix * vec4((isFlat ? vertexSurfaceNormal : vertexNormal), 0))))), normalize(cameraPosition));
 
       fragmentColor = vertexColor;
@@ -207,7 +207,7 @@
       diffusePre = (dotDiffuse > 0.0 ? materialDiffuse * dotDiffuse : vec4(0, 0, 0, 1));
       specular = (dotSpecular > 0.0 ? materialSpecular * lightSpecular * pow(dotSpecular, shininess) : vec4(0, 0, 0, 1));
       
-      gl_Position = PMatrix * VMatrix * MMatrix * vertexPosition;
+      gl_Position = PMatrix * VMatrix * MMatrix * vec4(vertexPosition, 1);
     } 
   </script>
 

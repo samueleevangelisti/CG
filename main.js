@@ -61,7 +61,6 @@ Object.values(globals.textureObj).forEach((value, index) => {
 });
 
 // TODO DSE gli attributi degli oggetti dovrebbero essere impostabili da interfaccia
-// TODO DSE forse è il caso che i punti siano espressi in termini di coordinate senza il quarto valore, poi lo metto nelle formule di webgl
 globals.itemObj = {
   ...globals.itemObj,
   square1: {
@@ -69,8 +68,8 @@ globals.itemObj = {
     isTexture: true,
     texture: globals.textureObj.grass.index,
     vertexArr: [
-      [3, -3, 0, 1], [3, 3, 0, 1], [-3, 3, 0, 1],
-      [3, -3, 0, 1], [-3, 3, 0, 1], [-3, -3, 0, 1]
+      [3, -3, 0], [3, 3, 0], [-3, 3, 0],
+      [3, -3, 0], [-3, 3, 0], [-3, -3, 0]
     ],
     colorArr: [
       [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1],
@@ -86,16 +85,16 @@ globals.itemObj = {
     isTexture: false,
     texture: 0,
     vertexArr: [
-      [1, -1, 0, 1], [1, 1, 0, 1], [1, 1, 1, 1],
-      [1, -1, 0, 1], [1, 1, 1, 1], [1, -1, 1, 1],
-      [-1, -1, 0, 1], [1, -1, 0, 1], [1, -1, 1, 1],
-      [-1, -1, 0, 1], [1, -1, 1, 1], [-1, -1, 1, 1],
-      [-1, 1, 0, 1], [-1, -1, 0, 1], [-1, -1, 1, 1],
-      [-1, 1, 0, 1], [-1, -1, 1, 1], [-1, 1, 1, 1],
-      [1, 1, 0, 1], [-1, 1, 0, 1], [-1, 1, 1, 1],
-      [1, 1, 0, 1], [-1, 1, 1, 1], [1, 1, 1, 1],
-      [1, -1, 1, 1], [1, 1, 1, 1], [-1, 1, 1, 1],
-      [1, -1, 1, 1], [-1, 1, 1, 1], [-1, -1, 1, 1]
+      [1, -1, 0], [1, 1, 0], [1, 1, 1],
+      [1, -1, 0], [1, 1, 1], [1, -1, 1],
+      [-1, -1, 0], [1, -1, 0], [1, -1, 1],
+      [-1, -1, 0], [1, -1, 1], [-1, -1, 1],
+      [-1, 1, 0], [-1, -1, 0], [-1, -1, 1],
+      [-1, 1, 0], [-1, -1, 1], [-1, 1, 1],
+      [1, 1, 0], [-1, 1, 0], [-1, 1, 1],
+      [1, 1, 0], [-1, 1, 1], [1, 1, 1],
+      [1, -1, 1], [1, 1, 1], [-1, 1, 1],
+      [1, -1, 1], [-1, 1, 1], [-1, -1, 1]
     ],
     colorArr: [
       ...new Array(6).fill([0, 1, 0, 1]),
@@ -226,7 +225,7 @@ globals.gl.bindBuffer(globals.gl.ARRAY_BUFFER, globals.vertexBuffer);
 globals.gl.bufferData(globals.gl.ARRAY_BUFFER, globals.vertexArr, globals.gl.STATIC_DRAW);
 
 globals.shaderVertexPosition = globals.gl.getAttribLocation(globals.shaderProgram, 'vertexPosition');
-globals.gl.vertexAttribPointer(globals.shaderVertexPosition, 4, globals.gl.FLOAT, false, 0, 0);
+globals.gl.vertexAttribPointer(globals.shaderVertexPosition, 3, globals.gl.FLOAT, false, 0, 0);
 globals.gl.enableVertexAttribArray(globals.shaderVertexPosition);
 
 globals.surfaceNormalBuffer = globals.gl.createBuffer();
