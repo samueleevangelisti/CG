@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                           <td class="text-nowrap p-1">camera</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="camera-input" type="text" name="camera" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
@@ -115,44 +115,56 @@
                       <tbody>
                         <tr>
                           <td class="text-nowrap p-1">light-position</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="light-position-input" type="text" name="lightPosition" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
                         <tr>
+                          <td class="text-nowrap p-1">material-emissive</td>
+                          <td class="text-nowrap p-1">
+                            <input id="material-emissive-input" type="text" name="materialEmissive" class="form-control p-1" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
                           <td class="text-nowrap p-1">material-ambient</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="material-ambient-input" type="text" name="materialAmbient" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
                         <tr>
                           <td class="text-nowrap p-1">light-ambient</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="light-ambient-input" type="text" name="lightAmbient" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
                         <tr>
                           <td class="text-nowrap p-1">material-diffuse</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="material-diffuse-input" type="text" name="materialDiffuse" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
                         <tr>
                           <td class="text-nowrap p-1">material-specular</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="material-specular-input" type="text" name="materialSpecular" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
                         <tr>
                           <td class="text-nowrap p-1">light-specular</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="light-specular-input" type="text" name="lightSpecular" class="form-control p-1" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
                         <tr>
                           <td class="text-nowrap p-1">shininess</td>
-                          <td class="text-nowrap p-1" colspan="2">
+                          <td class="text-nowrap p-1">
                             <input id="shininess-input" type="number" name="shininess" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-nowrap p-1">opacity</td>
+                          <td class="text-nowrap p-1">
+                            <input id="opacity-input" type="number" name="opacity" class="form-control p-1" step="0.01" onchange="globalsInputOnChange(event)">
                           </td>
                         </tr>
                       </tbody>
@@ -184,18 +196,18 @@
     uniform mat4 VMatrix;
     uniform mat4 MMatrix;
     uniform vec3 lightPosition;
-    uniform vec4 materialAmbient;
-    uniform vec4 lightAmbient;
-    uniform vec4 materialDiffuse;
-    uniform vec4 materialSpecular;
-    uniform vec4 lightSpecular;
+    uniform vec3 materialAmbient;
+    uniform vec3 lightAmbient;
+    uniform vec3 materialDiffuse;
+    uniform vec3 materialSpecular;
+    uniform vec3 lightSpecular;
     uniform float shininess;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
-    varying vec4 ambient;
-    varying vec4 diffusePre;
-    varying vec4 specular;
+    varying vec3 ambient;
+    varying vec3 diffusePre;
+    varying vec3 specular;
 
     void main() {
       float dotDiffuse = dot(normalize(lightPosition - vec3(MMatrix * vec4(vertexPosition, 1))), normalize(vec3(MMatrix * vec4((isFlat ? vertexSurfaceNormal : vertexNormal), 0))));
@@ -204,8 +216,8 @@
       fragmentColor = vertexColor;
       fragmentTexture = vertexTexture;
       ambient = materialAmbient * lightAmbient;
-      diffusePre = (dotDiffuse > 0.0 ? materialDiffuse * dotDiffuse : vec4(0, 0, 0, 1));
-      specular = (dotSpecular > 0.0 ? materialSpecular * lightSpecular * pow(dotSpecular, shininess) : vec4(0, 0, 0, 1));
+      diffusePre = (dotDiffuse > 0.0 ? materialDiffuse * dotDiffuse : vec3(0, 0, 0));
+      specular = (dotSpecular > 0.0 ? materialSpecular * lightSpecular * pow(dotSpecular, shininess) : vec3(0, 0, 0));
       
       gl_Position = PMatrix * VMatrix * MMatrix * vec4(vertexPosition, 1);
     } 
@@ -217,19 +229,24 @@
 
     uniform bool isTexture;
     uniform bool isLight;
+    uniform vec3 materialEmissive;
+    uniform float opacity;
     uniform sampler2D texture;
 
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
-    varying vec4 ambient;
-    varying vec4 diffusePre;
-    varying vec4 specular;
+    varying vec3 ambient;
+    varying vec3 diffusePre;
+    varying vec3 specular;
 
     void main(){
       vec4 color = (isTexture ? texture2D(texture, fragmentTexture) : fragmentColor);
-      vec4 diffuse = diffusePre * color;
+      vec3 diffuse = diffusePre * color.rgb;
 
-      gl_FragColor = (isLight ? ambient + diffuse + specular : color);
+      vec3 emissive = materialEmissive;
+      float opacity1 = opacity * color.a;
+
+      gl_FragColor = (isLight ? vec4(emissive + ambient + diffuse + specular, opacity1) : color);
     }
   </script>
 

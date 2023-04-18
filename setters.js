@@ -117,6 +117,16 @@ function setLightPosition(newLightPosition) {
 
 ////////////////////////////////////////////////////////////
 
+var materialEmissiveInputElement = document.getElementById('material-emissive-input');
+
+function setMaterialEmissive(newMaterialEmissive) {
+  log(`setMaterialEmissive(${newMaterialEmissive})`);
+  globals.materialEmissive = newMaterialEmissive;
+  materialEmissiveInputElement.value = JSON.stringify(globals.materialEmissive);
+}
+
+////////////////////////////////////////////////////////////
+
 var materialAmbientInputElement = document.getElementById('material-ambient-input');
 
 function setMaterialAmbient(newMaterialAmbient) {
@@ -173,6 +183,21 @@ function setShininess(newShininess) {
   log(`setShininess(${newShininess})`);
   globals.shininess = newShininess;
   shininessInputElement.value = globals.shininess;
+}
+
+////////////////////////////////////////////////////////////
+
+var opacityInputElement = document.getElementById('opacity-input');
+
+function setOpacity(newOpacity) {
+  log(`setOpacity(${newOpacity})`);
+  globals.opacity = newOpacity;
+  if(globals.opacity > 1) {
+    globals.opacity = 1;
+  } else if(globals.opacity < 0) {
+    globals.opacity = 0;
+  }
+  opacityInputElement.value = globals.opacity;
 }
 
 ////////////////////////////////////////////////////////////

@@ -74,18 +74,22 @@ var globals = {
   // posizione della luce
   lightPosition: [0, 0, 0],
   // TODO DSE i parametri dei materiali devono essere negli oggetti
+  // materiale per emissive
+  materialEmissive: [0, 0, 0],
   // materiale per luce ambientale
-  materialAmbient: [0, 0, 0, 0],
+  materialAmbient: [0, 0, 0],
   // luce ambientale
-  lightAmbient: [0, 0, 0, 0],
+  lightAmbient: [0, 0, 0],
   // materiale per luce diffusa
-  materialDiffuse: [0, 0, 0, 0],
+  materialDiffuse: [0, 0, 0],
   // materiale per luce speculare
-  materialSpecular: [0, 0, 0, 0],
+  materialSpecular: [0, 0, 0],
   // luce speculare
-  lightSpecular: [0, 0, 0, 0],
+  lightSpecular: [0, 0, 0],
   // shininess
   shininess: 0,
+  // opacità
+  opacity: 0,
 
   // ---------- shader program ----------
 
@@ -139,6 +143,10 @@ var globals = {
   shaderIsTexture: null,
   // isLight nello shader program
   shaderIsLight: null,
+  // material emissive nello shader program
+  shaderMaterialEmissive: null,
+  // opacità nello shader program
+  shaderOpacity: null,
   // texture nello shader program
   shaderTexture: null
 };
