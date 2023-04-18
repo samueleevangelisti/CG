@@ -69,12 +69,6 @@ var globals = {
   // posizione della camera
   cameraPosition: [0, 0, 0],
 
-  // ---------- texture ----------
-
-  // TODO DSE la texture deve essere interna agli oggetti e non globale
-  // texture caricata
-  texture: null,
-
   // ---------- luce ----------
 
   // posizione della luce

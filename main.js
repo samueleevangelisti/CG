@@ -301,6 +301,9 @@ function render(time) {
   // matrice M inizialmente come identità
   let mMatrix = m4.identity();
 
+  // matrice M con solo le rotazioni
+  let mRMatrix = m4.identity();
+
   globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
   globals.gl.uniformMatrix4fv(globals.shaderPMatrix, false, pMatrix);
   globals.gl.uniformMatrix4fv(globals.shaderVMatrix, false, vMatrix);
@@ -332,6 +335,11 @@ function render(time) {
     mMatrix = m4.translate(mMatrix, -value.center[0], -value.center[1], -value.center[2])
 
     globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
+
+    mRMatrix = m4.identity();
+    mRMatrix = m4.xRotate(mRMatrix, value.xRotationAngle);
+    mRMatrix = m4.zRotate(mRMatrix, value.zRotationAngle);
+    mRMatrix = m4.yRotate(mRMatrix, value.yRotationAngle);
 
     globals.gl.uniform1i(globals.shaderIsTexture, value.isTexture);
     globals.gl.uniform1i(globals.shaderTexture, value.texture);
