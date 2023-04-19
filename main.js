@@ -56,7 +56,6 @@ window.addEventListener('load', (event) => {
     ...new Array(globals.textureUnitArr.length - globals.textureSourceArr.length).fill(null)
   ];
 
-  // TODO DSE gli attributi degli oggetti dovrebbero essere impostabili da interfaccia
   globals.itemObj = {
     ...globals.itemObj,
     square1: {
@@ -327,9 +326,9 @@ window.addEventListener('load', (event) => {
     let pMatrix = m4.perspective(globals.fovy, aspectRatio, globals.near, globals.far);
 
     setCameraPosition([
-      distance * Math.cos(globals.theta) * Math.sin(globals.phi), 
-      distance * Math.sin(globals.theta) * Math.sin(globals.phi),
-      distance * Math.cos(globals.phi)
+      globals.distance * Math.cos(globals.theta) * Math.sin(globals.phi), 
+      globals.distance * Math.sin(globals.theta) * Math.sin(globals.phi),
+      globals.distance * Math.cos(globals.phi)
     ]);
 
     // calcolo della posizione della camera tramite m4.js

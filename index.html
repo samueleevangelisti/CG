@@ -20,7 +20,7 @@
   <div class="container-fluid my-3 h-100">
     <div class="row h-100">
       <div class="col-md-6 h-100">
-        <canvas id="my-canvas" width="512" height="512" style="width: 100%; height: 100%;" onmousedown="canvasOnMouseDown(event)" onmousemove="canvasOnMouseMove(event)" onmouseup="canvasOnMouseUp(event)" onmouseleave="canvasOnMouseUp(event)" onmousewheel="canvasOnMouseWheel(event)"></canvas>
+        <canvas id="my-canvas" width="512" height="512" style="width: 100%; height: 100%;" onmousedown="handlers.canvasOnMouseDown(event)" onmousemove="handlers.canvasOnMouseMove(event)" onmouseup="handlers.canvasOnMouseUp(event)" onmouseleave="handlers.canvasOnMouseUp(event)" onmousewheel="handlers.canvasOnMouseWheel(event)" ontouchstart="handlers.canvasOnTouchStart(event)" ontouchmove="handlers.canvasOnTouchMove(event)" ontouchend="handlers.canvasOnTouchEnd(event)"></canvas>
       </div>
       <div class="col-md-6">
         <div class="row">
@@ -142,7 +142,7 @@
                 </h2>
                 <div id="texture-expansion-panel" class="accordion-collapse collapse" data-bs-parent="#item-accordion">
                   <div class="accordion-body">
-                    <ol id="texture-ol"></ol>
+                    <ol id="texture-ol" start="0"></ol>
                   </div>
                 </div>
               </div>

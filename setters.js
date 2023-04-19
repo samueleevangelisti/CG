@@ -42,13 +42,13 @@ var distanceInputElement = document.getElementById('distance-input');
 
 function setDistance(newDistance) {
   log(`setDistance(${newDistance})`);
-  distance = newDistance;
-  if(distance > 99) {
-    distance = 99;
-  } else if(distance < 2) {
-    distance = 2;
+  globals.distance = newDistance;
+  if(globals.distance > 99) {
+    globals.distance = 99;
+  } else if(globals.distance < 2) {
+    globals.distance = 2;
   }
-  distanceInputElement.value = distance;
+  distanceInputElement.value = globals.distance;
 }
 
 ////////////////////////////////////////////////////////////

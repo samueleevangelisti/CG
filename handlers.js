@@ -79,36 +79,54 @@ function globalsInputOnChange(event) {
 
 ////////////////////////////////////////////////////////////
 
-var deltaDistance = 0.5;
-var isMouseDown = false;
-var mouseDownX;
-var mouseDownY;
-
-function canvasOnMouseDown(event) {
-  event.preventDefault();
-  isMouseDown = true;
-  mouseDownX = event.offsetX;
-  mouseDownY = event.offsetY;
-}
-
-function canvasOnMouseMove(event) {
-  event.preventDefault();
-  if(isMouseDown) {
-    setTheta(utils.radToDeg(globals.theta) - ((event.offsetX - mouseDownX) * 180 / globals.canvas.width));
-    setPhi(utils.radToDeg(globals.phi) - ((event.offsetY - mouseDownY) * 180 / globals.canvas.height));
-    mouseDownX = event.offsetX;
-    mouseDownY = event.offsetY;
+var handlers = {
+  deltaDistance: 0.5,
+  isMouseDown: false,
+  mouseDownX: 0,
+  mouseDownY: 0,
+  isTouchDown: false,
+  touchDownX: 0,
+  touchDownY: 0,
+  canvasOnMouseDown: function(event) {
+    event.preventDefault();
+    handlers.isMouseDown = true;
+    handlers.mouseDownX = event.offsetX;
+    handlers.mouseDownY = event.offsetY;
+  },
+  canvasOnTouchStart: function(event) {
+    event.preventDefault();
+    handlers.isTouchDown = true;
+    handlers.touchDownX = event.touches[0].clientX;
+    handlers.touchDownY = event.touches[0].clientY;
+  },
+  canvasOnMouseMove: function(event) {
+    event.preventDefault();
+    if(handlers.isMouseDown) {
+      setTheta(utils.radToDeg(globals.theta) - ((event.offsetX - handlers.mouseDownX) * 180 / globals.canvas.width));
+      setPhi(utils.radToDeg(globals.phi) - ((event.offsetY - handlers.mouseDownY) * 180 / globals.canvas.height));
+      handlers.mouseDownX = event.offsetX;
+      handlers.mouseDownY = event.offsetY;
+    }
+  },
+  canvasOnTouchMove: function(event) {
+    event.preventDefault();
+    if(handlers.isTouchDown) {
+      setTheta(utils.radToDeg(globals.theta) - ((event.touches[0].clientX - handlers.touchDownX) * 180 / globals.canvas.width));
+      setPhi(utils.radToDeg(globals.phi) - ((event.touches[0].clientY - handlers.touchDownY) * 180 / globals.canvas.height));
+      handlers.touchDownX = event.touches[0].clientX;
+      handlers.touchDownY = event.touches[0].clientY;
+    }
+  },
+  canvasOnMouseUp: function(event) {
+    event.preventDefault();
+    handlers.isMouseDown = false;
+  },
+  canvasOnTouchEnd: function(event) {
+    event.preventDefault();
+    handlers.isTouchDown = false;
+  },
+  canvasOnMouseWheel: function(event) {
+    event.preventDefault();
+    setDistance(globals.distance + ((event.deltaY > 0 ? 1 : -1) * handlers.deltaDistance));
   }
-}
-
-function canvasOnMouseUp(event) {
-  event.preventDefault();
-  isMouseDown = false;
-}
-
-function canvasOnMouseWheel(event) {
-  event.preventDefault();
-  setDistance(distance + ((event.deltaY > 0 ? 1 : -1) * deltaDistance));
-}
-
-// TODO DSE bisogna anche gestire le gesture del touch dei dispositivi mobili
+};
