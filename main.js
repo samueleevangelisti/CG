@@ -65,7 +65,7 @@ window.addEventListener('load', (event) => {
       materialEmissive: [0, 0, 0],
       materialAmbient: [0.2, 0.2, 0.2],
       materialDiffuse: [0.4, 0.4, 0.4],
-      materialSpecular: [0.774597, 0.774597, 0.774597],
+      materialSpecular: [0, 0, 0],
       shininess: 100,
       opacity: 1,
       texture: 0,
@@ -84,6 +84,9 @@ window.addEventListener('load', (event) => {
       surfaceNormalArr: [],
       normalArr: [],
       center: [0, 0, 0],
+      yRotationAngle: 0,
+      zRotationAngle: 0,
+      xRotationAngle: 0,
       vertexArrStart: 0,
       vertexArrStop: 0
     },
@@ -120,6 +123,9 @@ window.addEventListener('load', (event) => {
       surfaceNormalArr: [],
       normalArr: [],
       center: [0, 0, 0],
+      yRotationAngle: 0,
+      zRotationAngle: 0,
+      xRotationAngle: 0,
       vertexArrStart: 0,
       vertexArrStop: 0
     }
@@ -233,15 +239,17 @@ window.addEventListener('load', (event) => {
   });
 
   Object.entries(globals.itemObj).forEach(([key, value]) => {
+    setIsFlat(key, value.isFlat);
     setMaterialEmissive(key, value.materialEmissive);
     setMaterialAmbient(key, value.materialAmbient);
     setMaterialDiffuse(key, value.materialDiffuse);
     setMaterialSpecular(key, value.materialSpecular);
-    setShininess(key, 100);
-    setOpacity(key, 1);
-    setYRotationAngle(key, 0);
-    setZRotationAngle(key, 0);
-    setXRotationAngle(key, 0);
+    setShininess(key, value.shininess);
+    setOpacity(key, value.opacity);
+    setTexture(key, value.texture);
+    setYRotationAngle(key, value.yRotationAngle);
+    setZRotationAngle(key, value.zRotationAngle);
+    setXRotationAngle(key, value.xRotationAngle);
   });
 
   ////////////////////////////// shader program //////////////////////////////

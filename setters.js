@@ -146,6 +146,14 @@ function setTextureSource(index, newTextureSource) {
 
 ////////////////////////////////////////////////////////////
 
+function setIsFlat(itemId, newIsFlat) {
+  log(`setIsFlat(${itemId}, ${newIsFlat})`);
+  globals.itemObj[itemId].isFlat = newIsFlat;
+  document.getElementById(`${itemId}-is-flat-input`).checked = globals.itemObj[itemId].isFlat;
+}
+
+////////////////////////////////////////////////////////////
+
 function setMaterialEmissive(itemId, newMaterialEmissive) {
   log(`setMaterialEmissive(${itemId}, ${newMaterialEmissive})`);
   globals.itemObj[itemId].materialEmissive = newMaterialEmissive;
@@ -195,6 +203,19 @@ function setOpacity(itemId, newOpacity) {
     globals.itemObj[itemId].opacity = 0;
   }
   document.getElementById(`${itemId}-opacity-input`).value = globals.itemObj[itemId].opacity;
+}
+
+////////////////////////////////////////////////////////////
+
+function setTexture(itemId, newTexture) {
+  log(`setTexture(${itemId}, ${newTexture})`);
+  globals.itemObj[itemId].texture = newTexture;
+  if(globals.itemObj[itemId].texture > globals.textureUnitArr.length - 1) {
+    globals.itemObj[itemId].texture = globals.textureUnitArr.length - 1;
+  } else if(globals.itemObj[itemId].texture < 0) {
+    globals.itemObj[itemId].texture = 0;
+  }
+  document.getElementById(`${itemId}-texture-input`).value = globals.itemObj[itemId].texture;
 }
 
 ////////////////////////////////////////////////////////////

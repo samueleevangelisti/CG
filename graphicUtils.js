@@ -118,6 +118,41 @@ var graphicUtils = {
                             childElementArr: [
                               elementFromConfigObj({
                                 tag: 'td',
+                                innerHTML: 'is flat',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-is-flat-input`,
+                                    type: 'checkbox',
+                                    name: `${itemId}-isFlat`,
+                                    classArr: [
+                                      'form-check-input',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
                                 innerHTML: 'material emissive',
                                 classArr: [
                                   'text-nowrap',
@@ -313,6 +348,42 @@ var graphicUtils = {
                                     type: 'number',
                                     name: `${itemId}-opacity`,
                                     step: '0.01',
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'texture',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-texture-input`,
+                                    type: 'number',
+                                    name: `${itemId}-texture`,
+                                    step: '1',
                                     classArr: [
                                       'form-control',
                                       'p-1'

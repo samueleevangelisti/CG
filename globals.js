@@ -71,11 +71,12 @@ var globals = {
 
   // ---------- luce ----------
 
+  // attivazione della luce
+  isLight: true,
   // posizione della luce
   lightPosition: [0, 0, 0],
   // colore della luce
   lightColor: [0, 0, 0, 0],
-  // TODO DSE i parametri dei materiali devono essere negli oggetti
   // luce ambientale
   lightAmbient: [0, 0, 0, 0],
 

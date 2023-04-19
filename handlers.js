@@ -39,6 +39,9 @@ function globalsInputOnChange(event) {
     case 'textureSource':
       setTextureSource(event.target.name.split('-').slice(0, -1).join('-'), event.target.value);
       break;
+    case 'isFlat':
+      setIsFlat(event.target.name.split('-').slice(0, -1).join('-'), event.target.checked);
+      break;
     case 'materialEmissive':
       setMaterialEmissive(event.target.name.split('-').slice(0, -1).join('-'), JSON.parse(event.target.value));
       break;
@@ -56,6 +59,9 @@ function globalsInputOnChange(event) {
       break;
     case 'opacity':
       setOpacity(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
+      break;
+    case 'texture':
+      setTexture(event.target.name.split('-').slice(0, -1).join('-'), parseInt(event.target.value));
       break;
     case 'yRotation':
       setYRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
