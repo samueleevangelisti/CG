@@ -46,8 +46,7 @@ var utils = {
       }, 0) / pointArr.length,
       pointArr.reduce((returnValue, currentValue) => {
         return returnValue + currentValue[2];
-      }, 0) / pointArr.length,
-      1
+      }, 0) / pointArr.length
     ];
   },
   // credit: CG

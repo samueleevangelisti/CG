@@ -62,13 +62,13 @@ window.addEventListener('load', (event) => {
     square1: {
       isFlat: true,
       isTexture: true,
-      texture: 0,
       materialEmissive: [0, 0, 0],
       materialAmbient: [0.2, 0.2, 0.2],
       materialDiffuse: [0.4, 0.4, 0.4],
       materialSpecular: [0.774597, 0.774597, 0.774597],
       shininess: 100,
       opacity: 1,
+      texture: 0,
       vertexArr: [
         [3, -3, 0], [3, 3, 0], [-3, 3, 0],
         [3, -3, 0], [-3, 3, 0], [-3, -3, 0]
@@ -80,18 +80,23 @@ window.addEventListener('load', (event) => {
       textureArr: [
         [0, 1], [1, 1], [1, 0],
         [0, 1], [1, 0], [0, 0]
-      ]
+      ],
+      surfaceNormalArr: [],
+      normalArr: [],
+      center: [0, 0, 0],
+      vertexArrStart: 0,
+      vertexArrStop: 0
     },
     cube1: {
       isFlat: true,
       isTexture: false,
-      texture: 0,
       materialEmissive: [0, 0, 0],
       materialAmbient: [0.2, 0.2, 0.2],
       materialDiffuse: [0.4, 0.4, 0.4],
       materialSpecular: [0.774597, 0.774597, 0.774597],
       shininess: 100,
       opacity: 1,
+      texture: 0,
       vertexArr: [
         [1, -1, 0], [1, 1, 0], [1, 1, 1],
         [1, -1, 0], [1, 1, 1], [1, -1, 1],
@@ -111,7 +116,12 @@ window.addEventListener('load', (event) => {
         ...new Array(6).fill([0, 0, 1, 1]),
         ...new Array(6).fill([1, 0, 0, 1])
       ],
-      textureArr: new Array(6).fill([0, 0])
+      textureArr: new Array(6).fill([0, 0]),
+      surfaceNormalArr: [],
+      normalArr: [],
+      center: [0, 0, 0],
+      vertexArrStart: 0,
+      vertexArrStop: 0
     }
   };
 
