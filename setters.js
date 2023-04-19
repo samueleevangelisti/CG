@@ -137,6 +137,15 @@ function setLightAmbient(newLightAmbient) {
 
 ////////////////////////////////////////////////////////////
 
+function setTextureSource(index, newTextureSource) {
+  log(`setTextureSource(${index}, ${newTextureSource})`);
+  globals.textureSourceArr[index] = newTextureSource;
+  document.getElementById(`${index}-texture-source-input`).value = globals.textureSourceArr[index];
+  utils.loadTexture(index, globals.textureSourceArr[index]);
+}
+
+////////////////////////////////////////////////////////////
+
 function setMaterialEmissive(itemId, newMaterialEmissive) {
   log(`setMaterialEmissive(${itemId}, ${newMaterialEmissive})`);
   globals.itemObj[itemId].materialEmissive = newMaterialEmissive;

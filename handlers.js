@@ -36,6 +36,9 @@ function globalsInputOnChange(event) {
     case 'lightAmbient':
       setLightAmbient(JSON.parse(event.target.value));
       break;
+    case 'textureSource':
+      setTextureSource(event.target.name.split('-').slice(0, -1).join('-'), event.target.value);
+      break;
     case 'materialEmissive':
       setMaterialEmissive(event.target.name.split('-').slice(0, -1).join('-'), JSON.parse(event.target.value));
       break;

@@ -46,36 +46,15 @@ window.addEventListener('load', (event) => {
 
   ////////////////////////////// inizializzazione geometria //////////////////////////////
 
-  globals.textureObj = {
-    grass: {
-      src: 'resources/grass.avif'
-    },
-    gioconda: {
-      src: 'resources/gioconda.jpg'
-    }
-  };
+  globals.textureSourceArr = [
+    'resources/grass.avif',
+    'resources/gioconda.jpg'
+  ];
 
-  Object.values(globals.textureObj).forEach((value, index) => {
-    value.index = index;
-    let texture = globals.gl.createTexture();
-    globals.gl.activeTexture(globals.textureUnitArr[index]);
-    globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
-    globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, 1, 1, 0, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
-    let image = new Image();
-    image.addEventListener('load', (event) => {
-      globals.gl.activeTexture(globals.textureUnitArr[index]);
-      globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
-      globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
-      if(utils.isPowerOf2(image.width) && utils.isPowerOf2(image.height)) {
-        globals.gl.generateMipmap(globals.gl.TEXTURE_2D);
-      } else {
-        globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_S, globals.gl.CLAMP_TO_EDGE);
-        globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_T, globals.gl.CLAMP_TO_EDGE);
-        globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_MIN_FILTER, globals.gl.LINEAR);
-      }
-    });
-    image.src = value.src;
-  });
+  globals.textureSourceArr = [
+    ...globals.textureSourceArr,
+    ...new Array(globals.textureUnitArr.length - globals.textureSourceArr.length).fill(null)
+  ];
 
   // TODO DSE gli attributi degli oggetti dovrebbero essere impostabili da interfaccia
   globals.itemObj = {
@@ -83,7 +62,7 @@ window.addEventListener('load', (event) => {
     square1: {
       isFlat: true,
       isTexture: true,
-      texture: globals.textureObj.grass.index,
+      texture: 0,
       materialEmissive: [0, 0, 0],
       materialAmbient: [0.2, 0.2, 0.2],
       materialDiffuse: [0.4, 0.4, 0.4],
@@ -168,7 +147,6 @@ window.addEventListener('load', (event) => {
         }
       });
     });
-
     value.center = utils.center(value.vertexArr);
     value.vertexArrStart = globals.vertexArr.length;
     globals.vertexArr = [
@@ -211,6 +189,13 @@ window.addEventListener('load', (event) => {
 
   ////////////////////////////// inizializzazione elementi interfaccia //////////////////////////////
 
+  globals.textureSourceArr.forEach((textureSource, index) => {
+    document.getElementById('texture-ol').append(graphicUtils.TextureLi.fromConfigObj({
+      index: index,
+      textureSource: textureSource
+    }).element);
+  });
+
   Object.keys(globals.itemObj).forEach((key) => {
     document.getElementById('item-accordion').append(graphicUtils.AccordionItem.fromConfigObj({
       itemId: key
@@ -223,7 +208,6 @@ window.addEventListener('load', (event) => {
   var aspectRatio = globals.canvas.width / globals.canvas.height;
   setNear(1);
   setFar(100);
-
   setDistance(10);
   setTheta(30);
   setPhi(60);
@@ -233,6 +217,10 @@ window.addEventListener('load', (event) => {
   setLightPosition([5, 5, 5]);
   setLightColor([1, 1, 1, 1]);
   setLightAmbient([0.2, 0.2, 0.2, 1]);
+
+  globals.textureSourceArr.forEach((textureSource, index) => {
+    setTextureSource(index, textureSource);
+  });
 
   Object.entries(globals.itemObj).forEach(([key, value]) => {
     setMaterialEmissive(key, value.materialEmissive);

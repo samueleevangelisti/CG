@@ -10,8 +10,8 @@ var globals = {
 
   // ---------- geometria 3d ----------
 
-  // struttura contenente le texture
-  textureObj: {},
+  // Array contenente le texture
+  textureSourceArr: [],
   // struttura gnerale contenente gli items visualizzati
   itemObj: {},
   // TODO DSE questa serve solo per fare alcuni test

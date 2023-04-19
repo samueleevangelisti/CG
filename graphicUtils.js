@@ -1,4 +1,38 @@
 var graphicUtils = {
+
+  TextureLi: class {
+    static fromConfigObj(configObj) {
+      let index = configObj.index;
+      let textureSource = configObj.textureSource;
+      if(index == null || index == undefined) {
+        throw 'index is undefined';
+      }
+      return new graphicUtils.TextureLi(elementFromConfigObj({
+        tag: 'li',
+        childElementArr: [
+          elementFromConfigObj({
+            tag: 'input',
+            id: `${index}-texture-source-input`,
+            type: 'text',
+            name: `${index}-textureSource`,
+            classArr: [
+              'form-control',
+              'p-1',
+              'my-1'
+            ],
+            handlerFnObj: {
+              'change': globalsInputOnChange
+            }
+          })
+        ]
+      }));
+    }
+
+    constructor(element) {
+      this.element = element;
+    }
+  },
+
   AccordionItem: class {
     static fromConfigObj(configObj) {
       let itemId = configObj.itemId;
