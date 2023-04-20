@@ -63,6 +63,15 @@ function globalsInputOnChange(event) {
     case 'texture':
       setTexture(event.target.name.split('-').slice(0, -1).join('-'), parseInt(event.target.value));
       break;
+    case 'xTraslation':
+      setXTraslation(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
+      break;
+    case 'yTraslation':
+      setYTraslation(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
+      break;
+    case 'zTraslation':
+      setZTraslation(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
+      break;
     case 'yRotation':
       setYRotationAngle(event.target.name.split('-').slice(0, -1).join('-'), parseFloat(event.target.value));
       break;

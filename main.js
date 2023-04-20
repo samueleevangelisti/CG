@@ -83,6 +83,9 @@ window.addEventListener('load', (event) => {
       surfaceNormalArr: [],
       normalArr: [],
       center: [0, 0, 0],
+      xTraslation: 0,
+      yTraslation: 0,
+      zTraslation: 0,
       yRotationAngle: 0,
       zRotationAngle: 0,
       xRotationAngle: 0,
@@ -122,6 +125,9 @@ window.addEventListener('load', (event) => {
       surfaceNormalArr: [],
       normalArr: [],
       center: [0, 0, 0],
+      xTraslation: 0,
+      yTraslation: 0,
+      zTraslation: 0,
       yRotationAngle: 0,
       zRotationAngle: 0,
       xRotationAngle: 0,
@@ -246,6 +252,9 @@ window.addEventListener('load', (event) => {
     setShininess(key, value.shininess);
     setOpacity(key, value.opacity);
     setTexture(key, value.texture);
+    setXTraslation(key, value.xTraslation);
+    setYTraslation(key, value.yTraslation);
+    setZTraslation(key, value.zTraslation);
     setYRotationAngle(key, value.yRotationAngle);
     setZRotationAngle(key, value.zRotationAngle);
     setXRotationAngle(key, value.xRotationAngle);
@@ -361,11 +370,12 @@ window.addEventListener('load', (event) => {
     Object.entries(globals.itemObj).forEach(([key, value]) => {
       // model matrix identità tramite m4.js
       mMatrix = m4.identity();
-      mMatrix = m4.translate(mMatrix, value.center[0], value.center[1], value.center[2])
+      mMatrix = m4.translate(mMatrix, value.xTraslation, value.yTraslation, value.zTraslation);
+      mMatrix = m4.translate(mMatrix, value.center[0], value.center[1], value.center[2]);
       mMatrix = m4.xRotate(mMatrix, value.xRotationAngle);
       mMatrix = m4.zRotate(mMatrix, value.zRotationAngle);
       mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
-      mMatrix = m4.translate(mMatrix, -value.center[0], -value.center[1], -value.center[2])
+      mMatrix = m4.translate(mMatrix, -value.center[0], -value.center[1], -value.center[2]);
 
       globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
 

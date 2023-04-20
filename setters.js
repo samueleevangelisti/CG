@@ -189,7 +189,7 @@ function setMaterialSpecular(itemId, newMaterialSpecular) {
 function setShininess(itemId, newShininess) {
   log(`setShininess(${itemId}, ${newShininess})`);
   globals.itemObj[itemId].shininess = newShininess;
-  document.getElementById(`${itemId}-shininess-input`).value = globals.itemObj[itemId].shininess;
+  document.getElementById(`${itemId}-shininess-input`).value = globals.itemObj[itemId].shininess.toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
@@ -202,7 +202,7 @@ function setOpacity(itemId, newOpacity) {
   } else if(globals.itemObj[itemId].opacity < 0) {
     globals.itemObj[itemId].opacity = 0;
   }
-  document.getElementById(`${itemId}-opacity-input`).value = globals.itemObj[itemId].opacity;
+  document.getElementById(`${itemId}-opacity-input`).value = globals.itemObj[itemId].opacity.toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////
@@ -216,6 +216,30 @@ function setTexture(itemId, newTexture) {
     globals.itemObj[itemId].texture = 0;
   }
   document.getElementById(`${itemId}-texture-input`).value = globals.itemObj[itemId].texture;
+}
+
+////////////////////////////////////////////////////////////
+
+function setXTraslation(itemId, newXTraslation) {
+  log(`setXTraslation(${itemId}, ${newXTraslation})`);
+  globals.itemObj[itemId].xTraslation = newXTraslation;
+  document.getElementById(`${itemId}-x-traslation-input`).value = globals.itemObj[itemId].xTraslation.toFixed(2);
+}
+
+////////////////////////////////////////////////////////////
+
+function setYTraslation(itemId, newYTraslation) {
+  log(`setYTraslation(${itemId}, ${newYTraslation})`);
+  globals.itemObj[itemId].yTraslation = newYTraslation;
+  document.getElementById(`${itemId}-y-traslation-input`).value = globals.itemObj[itemId].yTraslation.toFixed(2);
+}
+
+////////////////////////////////////////////////////////////
+
+function setZTraslation(itemId, newZTraslation) {
+  log(`setZTraslation(${itemId}, ${newZTraslation})`);
+  globals.itemObj[itemId].zTraslation = newZTraslation;
+  document.getElementById(`${itemId}-z-traslation-input`).value = globals.itemObj[itemId].zTraslation.toFixed(2);
 }
 
 ////////////////////////////////////////////////////////////

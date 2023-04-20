@@ -401,6 +401,114 @@ var graphicUtils = {
                             childElementArr: [
                               elementFromConfigObj({
                                 tag: 'td',
+                                innerHTML: 'x traslation',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-x-traslation-input`,
+                                    type: 'number',
+                                    name: `${itemId}-xTraslation`,
+                                    step: '0.01',
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'y traslation',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-y-traslation-input`,
+                                    type: 'number',
+                                    name: `${itemId}-yTraslation`,
+                                    step: '0.01',
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
+                                innerHTML: 'z traslation',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ]
+                              }),
+                              elementFromConfigObj({
+                                tag: 'td',
+                                classArr: [
+                                  'text-nowrap',
+                                  'p-1'
+                                ],
+                                childElementArr: [
+                                  elementFromConfigObj({
+                                    tag: 'input',
+                                    id: `${itemId}-z-traslation-input`,
+                                    type: 'number',
+                                    name: `${itemId}-zTraslation`,
+                                    step: '0.01',
+                                    classArr: [
+                                      'form-control',
+                                      'p-1'
+                                    ],
+                                    handlerFnObj: {
+                                      'change': globalsInputOnChange
+                                    }
+                                  })
+                                ]
+                              })
+                            ]
+                          }),
+                          elementFromConfigObj({
+                            tag: 'tr',
+                            childElementArr: [
+                              elementFromConfigObj({
+                                tag: 'td',
                                 innerHTML: 'y rotation',
                                 classArr: [
                                   'text-nowrap',
