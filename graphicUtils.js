@@ -21,7 +21,7 @@ var graphicUtils = {
               'my-1'
             ],
             handlerFnObj: {
-              'change': globalsInputOnChange
+              'change': handlers.globalsInputOnChange
             }
           })
         ]
@@ -141,7 +141,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -176,7 +176,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -211,7 +211,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -246,7 +246,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -281,7 +281,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -317,7 +317,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -353,7 +353,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -389,7 +389,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -425,7 +425,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -461,7 +461,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -497,7 +497,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -533,7 +533,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -569,7 +569,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]
@@ -605,7 +605,7 @@ var graphicUtils = {
                                       'p-1'
                                     ],
                                     handlerFnObj: {
-                                      'change': globalsInputOnChange
+                                      'change': handlers.globalsInputOnChange
                                     }
                                   })
                                 ]

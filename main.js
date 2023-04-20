@@ -225,39 +225,39 @@ window.addEventListener('load', (event) => {
 
   ////////////////////////////// inizializzazione vista //////////////////////////////
 
-  setFovy(40);
+  setters.setFovy(40);
   var aspectRatio = globals.canvas.width / globals.canvas.height;
-  setNear(1);
-  setFar(100);
-  setDistance(10);
-  setTheta(30);
-  setPhi(60);
-  setTarget([0, 0, 0]);
-  setViewUp([0, 0, 1]);
+  setters.setNear(1);
+  setters.setFar(100);
+  setters.setDistance(10);
+  setters.setTheta(30);
+  setters.setPhi(60);
+  setters.setTarget([0, 0, 0]);
+  setters.setViewUp([0, 0, 1]);
 
-  setLightPosition([5, 5, 5]);
-  setLightColor([1, 1, 1, 1]);
-  setLightAmbient([0.2, 0.2, 0.2, 1]);
+  setters.setLightPosition([5, 5, 5]);
+  setters.setLightColor([1, 1, 1, 1]);
+  setters.setLightAmbient([0.2, 0.2, 0.2, 1]);
 
   globals.textureSourceArr.forEach((textureSource, index) => {
-    setTextureSource(index, textureSource);
+    setters.setTextureSource(index, textureSource);
   });
 
   Object.entries(globals.itemObj).forEach(([key, value]) => {
-    setIsFlat(key, value.isFlat);
-    setMaterialEmissive(key, value.materialEmissive);
-    setMaterialAmbient(key, value.materialAmbient);
-    setMaterialDiffuse(key, value.materialDiffuse);
-    setMaterialSpecular(key, value.materialSpecular);
-    setShininess(key, value.shininess);
-    setOpacity(key, value.opacity);
-    setTexture(key, value.texture);
-    setXTraslation(key, value.xTraslation);
-    setYTraslation(key, value.yTraslation);
-    setZTraslation(key, value.zTraslation);
-    setYRotationAngle(key, value.yRotationAngle);
-    setZRotationAngle(key, value.zRotationAngle);
-    setXRotationAngle(key, value.xRotationAngle);
+    setters.setIsFlat(key, value.isFlat);
+    setters.setMaterialEmissive(key, value.materialEmissive);
+    setters.setMaterialAmbient(key, value.materialAmbient);
+    setters.setMaterialDiffuse(key, value.materialDiffuse);
+    setters.setMaterialSpecular(key, value.materialSpecular);
+    setters.setShininess(key, value.shininess);
+    setters.setOpacity(key, value.opacity);
+    setters.setTexture(key, value.texture);
+    setters.setXTraslation(key, value.xTraslation);
+    setters.setYTraslation(key, value.yTraslation);
+    setters.setZTraslation(key, value.zTraslation);
+    setters.setYRotationAngle(key, value.yRotationAngle);
+    setters.setZRotationAngle(key, value.zRotationAngle);
+    setters.setXRotationAngle(key, value.xRotationAngle);
   });
 
   ////////////////////////////// shader program //////////////////////////////
@@ -334,7 +334,7 @@ window.addEventListener('load', (event) => {
     // calcolo della matrice P tramite m4.js
     let pMatrix = m4.perspective(globals.fovy, aspectRatio, globals.near, globals.far);
 
-    setCameraPosition([
+    setters.setCameraPosition([
       globals.distance * Math.cos(globals.theta) * Math.sin(globals.phi), 
       globals.distance * Math.sin(globals.theta) * Math.sin(globals.phi),
       globals.distance * Math.cos(globals.phi)
