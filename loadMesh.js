@@ -3,6 +3,7 @@ function loadMeshFromOBJ(mesh) {
     ajaxUtils.get(mesh.sourceMesh)
       .then((response) => {
         logUtils.debug('(load_mesh.loadMeshFromOBJ)', response);
+        // TODO DSE questa cosa andrebbe controllata meglio
         // scommentare/commentare per utilizzare o meno la LoadSubdivMesh
         // mesh.data = LoadSubdivMesh(result.mesh);
         let result = glmReadOBJ(response,new subd_mesh());
