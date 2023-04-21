@@ -71,6 +71,7 @@ var utils = {
       let image = new Image();
       image.addEventListener('load', (event) => {
         globals.gl.activeTexture(globals.textureUnitArr[index]);
+        // globals.gl.pixelStorei(globals.gl.UNPACK_FLIP_Y_WEBGL, true);
         globals.gl.bindTexture(globals.gl.TEXTURE_2D, texture);
         globals.gl.texImage2D(globals.gl.TEXTURE_2D, 0, globals.gl.RGBA, globals.gl.RGBA, globals.gl.UNSIGNED_BYTE, image);
         if(utils.isPowerOf2(image.width) && utils.isPowerOf2(image.height)) {
@@ -79,6 +80,7 @@ var utils = {
           globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_S, globals.gl.CLAMP_TO_EDGE);
           globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_WRAP_T, globals.gl.CLAMP_TO_EDGE);
           globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_MIN_FILTER, globals.gl.LINEAR);
+          // globals.gl.texParameteri(globals.gl.TEXTURE_2D, globals.gl.TEXTURE_MAG_FILTER, globals.gl.LINEAR);
         }
       });
       image.src = textureSource;
