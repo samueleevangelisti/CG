@@ -62,8 +62,8 @@ window.addEventListener('load', (event) => {
       isFlat: true,
       isTexture: true,
       materialEmissive: [0, 0, 0],
-      materialAmbient: [0.2, 0.2, 0.2],
-      materialDiffuse: [0.4, 0.4, 0.4],
+      materialAmbient: [1, 1, 1],
+      materialDiffuse: [1, 1, 1],
       materialSpecular: [0, 0, 0],
       shininess: 100,
       opacity: 1,
@@ -156,7 +156,7 @@ window.addEventListener('load', (event) => {
           let normal = m4.normalize(m4.cross(t1, t2));
           return normal;
         });
-        if(!value.normalArr.length) {
+        // if(!value.normalArr.length) {
           value.normalArr = new Array(value.surfaceNormalArr.length).fill(null);
           value.vertexArr.forEach((vertex) => {
             indexBoolArr = value.vertexArr.map((vertex1) => {
@@ -178,7 +178,7 @@ window.addEventListener('load', (event) => {
               }
             });
           });
-        }
+        // }
         value.center = utils.center(value.vertexArr);
         value.vertexArrStart = globals.vertexArr.length;
         globals.vertexArr = [

@@ -71,7 +71,7 @@ function LoadMesh(itemId, meshSource) {
   return new Promise((resolve, reject) => {
     let returnObj = {
       isFlat: false,
-      isTesture: false,
+      isTexture: true,
       materialEmissive: [0, 0, 0],
       materialAmbient: [0, 0, 0],
       materialDiffuse: [0, 0, 0],
@@ -130,10 +130,11 @@ function LoadMesh(itemId, meshSource) {
           i1 = mesh.data.face[i].vert[1] - 1;
           i2 = mesh.data.face[i].vert[2] - 1;
           returnObj.vertexArr.push([x[i0], y[i0], z[i0]], [x[i1], y[i1], z[i1]], [x[i2], y[i2], z[i2]]);
-          i0 = mesh.data.facetnorms[i].i;
-          i1 = mesh.data.facetnorms[i].j;
-          i2 = mesh.data.facetnorms[i].k;
-          returnObj.normalArr.push([i0, i1, i2], [i0, i1, i2], [i0, i1, i2]); 
+          // TODO DSE le normali me le calcolo io
+          // i0 = mesh.data.facetnorms[i].i;
+          // i1 = mesh.data.facetnorms[i].j;
+          // i2 = mesh.data.facetnorms[i].k;
+          // returnObj.normalArr.push([i0, i1, i2], [i0, i1, i2], [i0, i1, i2]); 
           i0 = mesh.data.face[i].textCoordsIndex[0] - 1;
           i1 = mesh.data.face[i].textCoordsIndex[1] - 1;
           i2 = mesh.data.face[i].textCoordsIndex[2] - 1;
