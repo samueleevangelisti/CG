@@ -137,15 +137,13 @@ window.addEventListener('load', (event) => {
   };
 
   // TODO DSE questo è per fare test, disabilitato al momento
-  LoadMesh('testCube', 'resources/cube.obj')
-    .then((response) => {
-      logUtils.debug('(main.window.onload)', response);
-    })
-    .catch((error) => {
-      logUtils.error('(main.window.onload)', error);
-    })
-    .finally(() => {
+  Promise.allSettled([
+    LoadMesh('testCube', 'resources/cube.obj')
+  ])
+    .then((responseArr) => {
+      logUtils.debug('(main.Promise.allSettled) LoadMesh', responseArr);
       Object.values(globals.itemObj).forEach((value) => {
+        logUtils.debug('(main.Promise.allSettled) surfaceNormalArr', value);
         value.surfaceNormalArr = value.vertexArr.map((vertex, index) => {
           let relativeIndex = index % 3;
           let vertex1 = value.vertexArr[index - relativeIndex];
@@ -156,29 +154,27 @@ window.addEventListener('load', (event) => {
           let normal = m4.normalize(m4.cross(t1, t2));
           return normal;
         });
-        // if(!value.normalArr.length) {
-          value.normalArr = new Array(value.surfaceNormalArr.length).fill(null);
-          value.vertexArr.forEach((vertex) => {
-            indexBoolArr = value.vertexArr.map((vertex1) => {
-              return vertex1[0] == vertex[0] && vertex1[1] == vertex[1] && vertex1[2] == vertex[2] && vertex1[3] == vertex[3];
-            });
-            let normal = m4.normalize(indexBoolArr.reduce((surfaceNormalArr, indexBool, index) => {
-              return [
-                ...surfaceNormalArr,
-                ...(indexBool && surfaceNormalArr.every((surfaceNormal) => {
-                  return surfaceNormal[0] != value.surfaceNormalArr[index][0] || surfaceNormal[1] != value.surfaceNormalArr[index][1] || surfaceNormal[2] != value.surfaceNormalArr[index][2];
-                }) ? [value.surfaceNormalArr[index]] : [])
-              ];
-            }, []).reduce((total, surfaceNormal) => {
-              return m4.addVectors(total, surfaceNormal);
-            }, [0, 0, 0]));
-            indexBoolArr.forEach((indexBool, index) => {
-              if(indexBool) {
-                value.normalArr[index] = normal;
-              }
-            });
+        value.normalArr = new Array(value.surfaceNormalArr.length).fill(null);
+        value.vertexArr.forEach((vertex) => {
+          indexBoolArr = value.vertexArr.map((vertex1) => {
+            return vertex1[0] == vertex[0] && vertex1[1] == vertex[1] && vertex1[2] == vertex[2] && vertex1[3] == vertex[3];
           });
-        // }
+          let normal = m4.normalize(indexBoolArr.reduce((surfaceNormalArr, indexBool, index) => {
+            return [
+              ...surfaceNormalArr,
+              ...(indexBool && surfaceNormalArr.every((surfaceNormal) => {
+                return surfaceNormal[0] != value.surfaceNormalArr[index][0] || surfaceNormal[1] != value.surfaceNormalArr[index][1] || surfaceNormal[2] != value.surfaceNormalArr[index][2];
+              }) ? [value.surfaceNormalArr[index]] : [])
+            ];
+          }, []).reduce((total, surfaceNormal) => {
+            return m4.addVectors(total, surfaceNormal);
+          }, [0, 0, 0]));
+          indexBoolArr.forEach((indexBool, index) => {
+            if(indexBool) {
+              value.normalArr[index] = normal;
+            }
+          });
+        });
         value.center = utils.center(value.vertexArr);
         value.vertexArrStart = globals.vertexArr.length;
         globals.vertexArr = [
