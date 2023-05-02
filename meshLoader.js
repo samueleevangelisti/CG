@@ -8,7 +8,7 @@ var meshLoader = {
       vn: [],
       f: []
     };
-    let usemtl = null;
+    let usemtl = 'default';
     text.replace('\r', '').replace(/\ +/g, ' ').replace(/\ *\n/g, '\n').split('\n').filter((line) => {
       return line;
     }).filter((line) => {
@@ -21,7 +21,7 @@ var meshLoader = {
           break;
         case 'o':
           returnObj.o = lineArr[1];
-          usemtl = null;
+          usemtl = 'default';
           break;
         case 'v':
           returnObj.v.push(lineArr.slice(1).map((e) => {
@@ -58,7 +58,20 @@ var meshLoader = {
     return returnObj;
   },
   _parseMtl: function(text) {
-    let returnObj = {};
+    let returnObj = {
+      default: {
+        Ke: [0, 0, 0],
+        Ka: [0.2, 0.2, 0.2],
+        Kd: [0.5, 0.5, 0.5],
+        Ks: [0, 0, 0],
+        Ns: 1,
+        Ni: 1,
+        map_Kd: null,
+        isTexture: false,
+        index: 0,
+        color: [0, 0, 0]
+      }
+    };
     let newmtl = null;
     text.replace('\r', '').replace(/\ +/g, ' ').replace(/\ *\n/g, '\n').split('\n').filter((line) => {
       return line;
@@ -186,7 +199,7 @@ var meshLoader = {
       ajaxUtils.get(sourcePath)
         .then((response) => {
           logUtils.debug('(meshLoader.load)', response);
-          let objObj = meshLoader._parseObj(response);
+          let objObj = meshLoader._parseObj(response, configObj);
           if(objObj.mtllib) {
             ajaxUtils.get(`${sourcePath.split('/').slice(0, -1).join('/')}/${objObj.mtllib}`)
               .then((response) => {
