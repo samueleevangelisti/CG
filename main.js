@@ -47,104 +47,36 @@ window.addEventListener('load', (event) => {
   ////////////////////////////// inizializzazione geometria //////////////////////////////
 
   globals.textureSourceArr = [
-    'resources/grass.avif',
-    'resources/gioconda.jpg'
-  ];
-
-  globals.textureSourceArr = [
     ...globals.textureSourceArr,
     ...new Array(globals.textureUnitArr.length - globals.textureSourceArr.length).fill(null)
   ];
 
   globals.itemObj = {
     ...globals.itemObj,
-    square1: {
-      isFlat: true,
-      isTexture: true,
-      materialEmissive: [0, 0, 0],
-      materialAmbient: [1, 1, 1],
-      materialDiffuse: [1, 1, 1],
-      materialSpecular: [0, 0, 0],
-      shininess: 100,
-      opacity: 1,
-      texture: 0,
-      vertexArr: [
-        [3, -3, 0], [3, 3, 0], [-3, 3, 0],
-        [3, -3, 0], [-3, 3, 0], [-3, -3, 0]
-      ],
-      colorArr: [
-        [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1],
-        [0, 0.5, 0, 1], [0, 0.5, 0, 1], [0, 0.5, 0, 1]
-      ],
-      textureArr: [
-        [0, 1], [1, 1], [1, 0],
-        [0, 1], [1, 0], [0, 0]
-      ],
-      surfaceNormalArr: [],
-      normalArr: [],
-      center: [0, 0, 0],
-      xTraslation: 0,
-      yTraslation: 0,
-      zTraslation: 0,
-      yRotationAngle: 0,
-      zRotationAngle: 0,
-      xRotationAngle: 0,
-      vertexArrStart: 0,
-      vertexArrStop: 0
-    },
-    // cube1: {
-    //   isFlat: true,
-    //   isTexture: false,
-    //   materialEmissive: [0, 0, 0],
-    //   materialAmbient: [0.2, 0.2, 0.2],
-    //   materialDiffuse: [0.4, 0.4, 0.4],
-    //   materialSpecular: [0.774597, 0.774597, 0.774597],
-    //   shininess: 100,
-    //   opacity: 1,
-    //   texture: 0,
-    //   vertexArr: [
-    //     [1, -1, 0], [1, 1, 0], [1, 1, 1],
-    //     [1, -1, 0], [1, 1, 1], [1, -1, 1],
-    //     [-1, -1, 0], [1, -1, 0], [1, -1, 1],
-    //     [-1, -1, 0], [1, -1, 1], [-1, -1, 1],
-    //     [-1, 1, 0], [-1, -1, 0], [-1, -1, 1],
-    //     [-1, 1, 0], [-1, -1, 1], [-1, 1, 1],
-    //     [1, 1, 0], [-1, 1, 0], [-1, 1, 1],
-    //     [1, 1, 0], [-1, 1, 1], [1, 1, 1],
-    //     [1, -1, 1], [1, 1, 1], [-1, 1, 1],
-    //     [1, -1, 1], [-1, 1, 1], [-1, -1, 1]
-    //   ],
-    //   colorArr: [
-    //     ...new Array(6).fill([0, 1, 0, 1]),
-    //     ...new Array(6).fill([0, 0, 1, 1]),
-    //     ...new Array(6).fill([0, 1, 0, 1]),
-    //     ...new Array(6).fill([0, 0, 1, 1]),
-    //     ...new Array(6).fill([1, 0, 0, 1])
-    //   ],
-    //   textureArr: new Array(6).fill([0, 0]),
-    //   surfaceNormalArr: [],
-    //   normalArr: [],
-    //   center: [0, 0, 0],
-    //   xTraslation: 0,
-    //   yTraslation: 0,
-    //   zTraslation: 0,
-    //   yRotationAngle: 0,
-    //   zRotationAngle: 0,
-    //   xRotationAngle: 0,
-    //   vertexArrStart: 0,
-    //   vertexArrStop: 0
-    // }
   };
 
   // TODO DSE questo è per fare test, disabilitato al momento
   Promise.allSettled([
-    LoadMesh('testCube', 'resources/cube.obj')
+    meshLoader.load('resources/field.obj', {
+      isFlat: true
+    }),
+    meshLoader.load('resources/cube.obj', {
+      isFlat: true,
+      xTraslation: -2.5,
+      yTraslation: -2.5
+    })
   ])
     .then((responseArr) => {
       logUtils.debug('(main.Promise.allSettled) LoadMesh', responseArr);
-      Object.values(globals.itemObj).forEach((value) => {
-        logUtils.debug('(main.Promise.allSettled) surfaceNormalArr', value);
+      responseArr.forEach((response) => {
+        if(response.status == 'fulfilled') {
+          meshLoader.computeItem(...response.value);
+        }
+      });
+      Object.entries(globals.itemObj).forEach(([key, value]) => {
+        vertexArrLength = value.vertexArr.length;
         value.surfaceNormalArr = value.vertexArr.map((vertex, index) => {
+          logUtils.debug(`(main.Promise.allSettled) (surfaceNormalArr) ${key}`, `${(index + 1) / vertexArrLength * 100}%`);
           let relativeIndex = index % 3;
           let vertex1 = value.vertexArr[index - relativeIndex];
           let vertex2 = value.vertexArr[index - relativeIndex + 1];
@@ -155,7 +87,10 @@ window.addEventListener('load', (event) => {
           return normal;
         });
         value.normalArr = new Array(value.surfaceNormalArr.length).fill(null);
-        value.vertexArr.forEach((vertex) => {
+        vertexArrLength = value.vertexArr.length;
+        value.vertexArr.forEach((vertex, index) => {
+          // TODO DSE serve una barra di caricamento
+          logUtils.debug(`(main.Promise.allSettled) (normalArr) ${key}`, `${(index + 1) / vertexArrLength * 100}%`);
           indexBoolArr = value.vertexArr.map((vertex1) => {
             return vertex1[0] == vertex[0] && vertex1[1] == vertex[1] && vertex1[2] == vertex[2] && vertex1[3] == vertex[3];
           });

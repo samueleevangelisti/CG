@@ -11,7 +11,9 @@ var globals = {
   // ---------- geometria 3d ----------
 
   // Array contenente le texture
-  textureSourceArr: [],
+  textureSourceArr: [
+    'resources/gioconda.jpg'
+  ],
   // struttura gnerale contenente gli items visualizzati
   itemObj: {},
   // TODO DSE questa serve solo per fare alcuni test
