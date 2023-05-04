@@ -46,7 +46,7 @@ var meshLoader = {
             usemtl: usemtl,
             f: lineArr.slice(1).map((e) => {
               return e.split('/').map((e) => {
-                return parseInt(e);
+                return (e ? parseInt(e) : null);
               });
             })
           });
@@ -58,20 +58,7 @@ var meshLoader = {
     return returnObj;
   },
   _parseMtl: function(text) {
-    let returnObj = {
-      default: {
-        Ke: [0, 0, 0],
-        Ka: [0.2, 0.2, 0.2],
-        Kd: [0.5, 0.5, 0.5],
-        Ks: [0, 0, 0],
-        Ns: 1,
-        Ni: 1,
-        map_Kd: null,
-        isTexture: false,
-        index: 0,
-        color: [0, 0, 0]
-      }
-    };
+    let returnObj = {};
     let newmtl = null;
     text.replace('\r', '').replace(/\ +/g, ' ').replace(/\ *\n/g, '\n').split('\n').filter((line) => {
       return line;
@@ -92,7 +79,7 @@ var meshLoader = {
             map_Kd: null,
             isTexture: false,
             index: 0,
-            color: [0, 0, 0]
+            color: [0, 0, 0, 1]
           };
           break;
         case 'Ke':
@@ -143,7 +130,7 @@ var meshLoader = {
         globals.textureSourceArr[value.index] = `${sourcePath.split('/').slice(0, -1).join('/')}/${value.map_Kd}`;
       } else {
         value.isTexture = false;
-        value.color = value.Kd;
+        value.color = [...value.Kd, 1];
         value.Kd = [1, 1, 1];
       }
     });
@@ -192,10 +179,23 @@ var meshLoader = {
         globals.itemObj[`${objObj.o}_${key}`] = value;
       });
     }
-    return returnObjObj;
   },
   load: function(sourcePath, configObj={}) {
     return new Promise((resolve, reject) => {
+      let mtlObjDefault = {
+        default: {
+          Ke: [0, 0, 0],
+          Ka: [0.2, 0.2, 0.2],
+          Kd: [0.5, 0.5, 0.5],
+          Ks: [0, 0, 0],
+          Ns: 100,
+          Ni: 1,
+          map_Kd: null,
+          isTexture: false,
+          index: 0,
+          color: [0, 0, 0, 1]
+        }
+      };
       ajaxUtils.get(sourcePath)
         .then((response) => {
           logUtils.debug('(meshLoader.load)', response);
@@ -205,14 +205,17 @@ var meshLoader = {
               .then((response) => {
                 logUtils.debug('(meshLoader.load)', response);
                 let mtlObj = meshLoader._parseMtl(response);
-                resolve([sourcePath, objObj, mtlObj, configObj]);
+                resolve([sourcePath, objObj, {
+                  ...mtlObjDefault,
+                  ...mtlObj
+                }, configObj]);
               })
               .catch((error) => {
                 logUtils.error('(meshLoader.load)', error);
                 reject(error);
               });
           } else {
-            resolve([sourcePath, objObj, mtlObj, configObj]);
+            resolve([sourcePath, objObj, mtlObjDefault, configObj]);
           }
         })
         .catch((error) => {

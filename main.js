@@ -62,8 +62,13 @@ window.addEventListener('load', (event) => {
     }),
     meshLoader.load('resources/cube.obj', {
       isFlat: true,
-      xTraslation: -2.5,
-      yTraslation: -2.5
+      xTraslation: 1,
+      yTraslation: 1
+    }),
+    meshLoader.load('resources/sphere.obj', {
+      xTraslation: -1, 
+      yTraslation: -1,
+      zTraslation: 1
     })
   ])
     .then((responseArr) => {
