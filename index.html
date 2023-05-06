@@ -208,7 +208,7 @@
     varying vec4 fragmentColor;
     varying vec2 fragmentTexture;
 
-    void main(){
+    void main() {
       vec3 cameraPositionNormalized = normalize(cameraPosition);
       vec3 lightPositionNormalized = normalize(lightPosition);
       vec3 fragmentSurfaceNormalNormalized = normalize((MRMatrix * vec4(fragmentSurfaceNormal, 0)).xyz);

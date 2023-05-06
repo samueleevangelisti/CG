@@ -12,12 +12,10 @@ var globals = {
 
   // Array contenente le texture
   textureSourceArr: [
-    'resources/gioconda.jpg'
+    'resources/gioconda.avif'
   ],
   // struttura gnerale contenente gli items visualizzati
   itemObj: {},
-  // TODO DSE questa serve solo per fare alcuni test
-  testObj: {},
 
   // ---------- array buffer ----------
 

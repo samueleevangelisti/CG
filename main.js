@@ -27,8 +27,9 @@ window.addEventListener('load', (event) => {
 
   globals.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
-  // TODO DSE questo bisogna capire cosa voglia dire
-  // globals.gl.enable(globals.gl.CULL_FACE);
+  // tbilitazione del back face culling per la non visualizzazione delle facce nascoste, BACK è il valore di default
+  globals.gl.enable(globals.gl.CULL_FACE);
+  // test della profondità per scartare i fragment che sopra ne hanno altri
   globals.gl.enable(globals.gl.DEPTH_TEST);
 
   globals.textureUnitArr = [
@@ -55,7 +56,7 @@ window.addEventListener('load', (event) => {
     ...globals.itemObj,
   };
 
-  // TODO DSE questo è per fare test, disabilitato al momento
+  // Caricamento degli items da file in formato obj waveform
   Promise.allSettled([
     meshLoader.load('resources/field.obj', {
       isFlat: true
@@ -81,7 +82,8 @@ window.addEventListener('load', (event) => {
       Object.entries(globals.itemObj).forEach(([key, value]) => {
         vertexArrLength = value.vertexArr.length;
         value.surfaceNormalArr = value.vertexArr.map((vertex, index) => {
-          logUtils.debug(`(main.Promise.allSettled) (surfaceNormalArr) ${key}`, `${(index + 1) / vertexArrLength * 100}%`);
+          // TODO DSE servirebbe una barra di caricamento
+          // logUtils.debug(`(main.Promise.allSettled) (surfaceNormalArr) ${key}`, `${(index + 1) / vertexArrLength * 100}%`);
           let relativeIndex = index % 3;
           let vertex1 = value.vertexArr[index - relativeIndex];
           let vertex2 = value.vertexArr[index - relativeIndex + 1];
@@ -94,8 +96,8 @@ window.addEventListener('load', (event) => {
         value.normalArr = new Array(value.surfaceNormalArr.length).fill(null);
         vertexArrLength = value.vertexArr.length;
         value.vertexArr.forEach((vertex, index) => {
-          // TODO DSE serve una barra di caricamento
-          logUtils.debug(`(main.Promise.allSettled) (normalArr) ${key}`, `${(index + 1) / vertexArrLength * 100}%`);
+          // TODO DSE servirebbe una barra di caricamento
+          // logUtils.debug(`(main.Promise.allSettled) (normalArr) ${key}`, `${(index + 1) / vertexArrLength * 100}%`);
           indexBoolArr = value.vertexArr.map((vertex1) => {
             return vertex1[0] == vertex[0] && vertex1[1] == vertex[1] && vertex1[2] == vertex[2] && vertex1[3] == vertex[3];
           });
@@ -140,7 +142,7 @@ window.addEventListener('load', (event) => {
         value.vertexArrStop = globals.vertexArr.length;
       });
 
-      // tipizzazione array tramite m4.js
+      // Tipizzazione array tramite m4.js
       globals.vertexArr = m4.flatten(globals.vertexArr);
       globals.surfaceNormalArr = m4.flatten(globals.surfaceNormalArr);
       globals.normalArr = m4.flatten(globals.normalArr);
