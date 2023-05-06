@@ -14,6 +14,7 @@ window.addEventListener('load', (event) => {
   canvasElement.style.height = `${height}px`;
   canvasElement.width = width;
   canvasElement.height = height;
+  document.getElementById('canvas-div').classList.remove('h-100');
 
   ////////////////////////////// inizializzazione contesto grafico //////////////////////////////
 
