@@ -104,6 +104,8 @@ var globals = {
   textureBuffer: null,
   // coordinate della texture nello shader program
   shaderVertexTexture: null,
+  // posizione della luce nello shader program
+  shaderLightPosition: null,
   // projection matrix nello shader program
   shaderPMatrix: null,
   // view matrix nello shader program
@@ -120,8 +122,6 @@ var globals = {
   shaderIsLight: null,
   // camera position nello shader program
   shaderCameraPosition: null,
-  // posizione della luce nello shader program
-  shaderLightPosition: null,
   // colore della luce nello shader program
   shaderLightColor: null,
   // material emissive nello shader program

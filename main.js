@@ -247,6 +247,7 @@ window.addEventListener('load', (event) => {
       globals.gl.vertexAttribPointer(globals.shaderVertexTexture, 2, globals.gl.FLOAT, false, 0, 0);
       globals.gl.enableVertexAttribArray(globals.shaderVertexTexture);
 
+      globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
       globals.shaderPMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'PMatrix');
       globals.shaderVMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'VMatrix');
       globals.shaderMMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MMatrix');
@@ -256,7 +257,6 @@ window.addEventListener('load', (event) => {
       globals.shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
       globals.shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
       globals.shaderCameraPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'cameraPosition');
-      globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
       globals.shaderLightColor = globals.gl.getUniformLocation(globals.shaderProgram, 'lightColor');
       globals.shaderMaterialEmissive = globals.gl.getUniformLocation(globals.shaderProgram, 'materialEmissive');
       globals.shaderMaterialAmbient = globals.gl.getUniformLocation(globals.shaderProgram, 'materialAmbient');
@@ -292,6 +292,7 @@ window.addEventListener('load', (event) => {
         // matrice M con solo le rotazioni
         let mRMatrix = m4.identity();
 
+        globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
         globals.gl.uniformMatrix4fv(globals.shaderPMatrix, false, pMatrix);
         globals.gl.uniformMatrix4fv(globals.shaderVMatrix, false, vMatrix);
         globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
@@ -299,7 +300,6 @@ window.addEventListener('load', (event) => {
         globals.gl.uniform1i(globals.shaderIsTexture, false);
         globals.gl.uniform1i(globals.shaderIsLight, false);
         globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
-        globals.gl.uniform3fv(globals.shaderLightPosition, globals.lightPosition);
         globals.gl.uniform4fv(globals.shaderLightColor, globals.lightColor);
         globals.gl.uniform4fv(globals.shaderLightAmbient, globals.lightAmbient);
         globals.gl.uniform1i(globals.shaderTexture, 0);
