@@ -218,16 +218,16 @@
       vec3 fragmentSurfaceNormalNormalized = normalize(fragmentSurfaceNormal);
       vec3 fragmentNormalNormalized = normalize(fragmentNormal);
       // selezione della normale in base alla caratteristiche dell'oggetto da illuminare se piatto o smussato
-      vec3 diffuseNormal = (isFlat ? fragmentSurfaceNormalNormalized : fragmentNormalNormalized);
+      vec3 effectiveNormal = (isFlat ? fragmentSurfaceNormalNormalized : fragmentNormalNormalized);
       // controllo faccia in luce o in ombra
-      bool isFragmentLight = dot(lightDirectionNormalized, diffuseNormal) > 0.0;
+      bool isFragmentLight = dot(lightDirectionNormalized, effectiveNormal) > 0.0;
       // selezione della fonte del colore se da texture o da colore fisso
       vec4 color = (isTexture ? texture2D(texture, fragmentTexture) : fragmentColor);
 
       vec3 emissive = materialEmissive;
       vec3 ambient = materialAmbient * color.rgb * lightAmbient.rgb;
-      vec3 diffuse = (isFragmentLight ? materialDiffuse * color.rgb * lightColor.rgb * dot(lightDirectionNormalized, diffuseNormal) : vec3(0, 0, 0));
-      vec3 specular = (isFragmentLight ? materialSpecular * lightColor.rgb * pow(clamp(dot(reflect(-lightDirectionNormalized, fragmentNormalNormalized), cameraPositionNormalized), 0.0, 1.0), shininess) : vec3(0, 0, 0));
+      vec3 diffuse = (isFragmentLight ? materialDiffuse * color.rgb * lightColor.rgb * dot(lightDirectionNormalized, effectiveNormal) : vec3(0, 0, 0));
+      vec3 specular = (isFragmentLight ? materialSpecular * lightColor.rgb * pow(clamp(dot(reflect(-lightDirectionNormalized, effectiveNormal), cameraPositionNormalized), 0.0, 1.0), shininess) : vec3(0, 0, 0));
       float opacityColor = opacity * color.a;
 
       gl_FragColor = (isLight ? vec4(emissive + ambient + diffuse + specular, opacityColor) : color);
