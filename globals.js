@@ -110,14 +110,14 @@ var globals = {
   shaderVMatrix: null,
   // model matrix nello shader program
   shaderMMatrix: null,
+  // matrice m solo di rotazione nello shader program
+  shaderMRMatrix: null,
   // isFlat nello shader program
   shaderIsFlat: null,
   // flag se la texture è abilitata
   shaderIsTexture: null,
   // isLight nello shader program
   shaderIsLight: null,
-  // matrice m solo di rotazione nello shader program
-  shaderMRMatrix: null,
   // camera position nello shader program
   shaderCameraPosition: null,
   // posizione della luce nello shader program

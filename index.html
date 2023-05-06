@@ -167,6 +167,7 @@
     uniform mat4 PMatrix;
     uniform mat4 VMatrix;
     uniform mat4 MMatrix;
+    uniform mat4 MRMatrix;
 
     varying vec3 fragmentSurfaceNormal;
     varying vec3 fragmentNormal;
@@ -174,8 +175,8 @@
     varying vec2 fragmentTexture;
 
     void main() {
-      fragmentSurfaceNormal = vertexSurfaceNormal;
-      fragmentNormal = vertexNormal;
+      fragmentSurfaceNormal = (MRMatrix * vec4(vertexSurfaceNormal, 1)).xyz;
+      fragmentNormal = (MRMatrix * vec4(vertexNormal, 1)).xyz;
       fragmentColor = vertexColor;
       fragmentTexture = vertexTexture;
       
@@ -190,7 +191,6 @@
     uniform bool isFlat;
     uniform bool isTexture;
     uniform bool isLight;
-    uniform mat4 MRMatrix;
     uniform vec3 cameraPosition;
     uniform vec3 lightPosition;
     uniform vec4 lightColor;
@@ -212,8 +212,8 @@
       // normalizzazione dei vettori utili al calcolo
       vec3 cameraPositionNormalized = normalize(cameraPosition);
       vec3 lightPositionNormalized = normalize(lightPosition);
-      vec3 fragmentSurfaceNormalNormalized = normalize((MRMatrix * vec4(fragmentSurfaceNormal, 0)).xyz);
-      vec3 fragmentNormalNormalized = normalize((MRMatrix * vec4(fragmentNormal, 0)).xyz);
+      vec3 fragmentSurfaceNormalNormalized = normalize(fragmentSurfaceNormal);
+      vec3 fragmentNormalNormalized = normalize(fragmentNormal);
       // selezione della normale in base alla caratteristiche dell'oggetto da illuminare se piatto o smussato
       vec3 diffuseNormal = (isFlat ? fragmentSurfaceNormalNormalized : fragmentNormalNormalized);
       // selezione della fonte del colore se da texture o da colore fisso

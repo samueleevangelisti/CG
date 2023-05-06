@@ -250,11 +250,11 @@ window.addEventListener('load', (event) => {
       globals.shaderPMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'PMatrix');
       globals.shaderVMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'VMatrix');
       globals.shaderMMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MMatrix');
+      globals.shaderMRMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MRMatrix');
 
       globals.shaderIsFlat = globals.gl.getUniformLocation(globals.shaderProgram, 'isFlat');
       globals.shaderIsTexture = globals.gl.getUniformLocation(globals.shaderProgram, 'isTexture');
       globals.shaderIsLight = globals.gl.getUniformLocation(globals.shaderProgram, 'isLight');
-      globals.shaderMRMatrix = globals.gl.getUniformLocation(globals.shaderProgram, 'MRMatrix');
       globals.shaderCameraPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'cameraPosition');
       globals.shaderLightPosition = globals.gl.getUniformLocation(globals.shaderProgram, 'lightPosition');
       globals.shaderLightColor = globals.gl.getUniformLocation(globals.shaderProgram, 'lightColor');
@@ -289,7 +289,6 @@ window.addEventListener('load', (event) => {
 
         // matrice M inizialmente come identità
         let mMatrix = m4.identity();
-
         // matrice M con solo le rotazioni
         let mRMatrix = m4.identity();
 
@@ -319,16 +318,16 @@ window.addEventListener('load', (event) => {
           mMatrix = m4.yRotate(mMatrix, value.yRotationAngle);
           mMatrix = m4.translate(mMatrix, -value.center[0], -value.center[1], -value.center[2]);
 
-          globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
-
           mRMatrix = m4.identity();
           mRMatrix = m4.xRotate(mRMatrix, value.xRotationAngle);
           mRMatrix = m4.zRotate(mRMatrix, value.zRotationAngle);
           mRMatrix = m4.yRotate(mRMatrix, value.yRotationAngle);
 
+          globals.gl.uniformMatrix4fv(globals.shaderMMatrix, false, mMatrix);
+          globals.gl.uniformMatrix4fv(globals.shaderMRMatrix, false, mRMatrix);
+
           globals.gl.uniform1i(globals.shaderIsFlat, value.isFlat);
           globals.gl.uniform1i(globals.shaderIsTexture, value.isTexture);
-          globals.gl.uniformMatrix4fv(globals.shaderMRMatrix, false, mRMatrix);
           globals.gl.uniform3fv(globals.shaderMaterialEmissive, value.materialEmissive);
           globals.gl.uniform3fv(globals.shaderMaterialAmbient, value.materialAmbient);
           globals.gl.uniform3fv(globals.shaderMaterialDiffuse, value.materialDiffuse);
