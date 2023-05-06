@@ -209,13 +209,17 @@
     varying vec2 fragmentTexture;
 
     void main() {
+      // normalizzazione dei vettori utili al calcolo
       vec3 cameraPositionNormalized = normalize(cameraPosition);
       vec3 lightPositionNormalized = normalize(lightPosition);
       vec3 fragmentSurfaceNormalNormalized = normalize((MRMatrix * vec4(fragmentSurfaceNormal, 0)).xyz);
       vec3 fragmentNormalNormalized = normalize((MRMatrix * vec4(fragmentNormal, 0)).xyz);
+      // selezione della normale in base alla caratteristiche dell'oggetto da illuminare se piatto o smussato
       vec3 diffuseNormal = (isFlat ? fragmentSurfaceNormalNormalized : fragmentNormalNormalized);
+      // selezione della fonte del colore se da texture o da colore fisso
       vec4 color = (isTexture ? texture2D(texture, fragmentTexture) : fragmentColor);
 
+      // TODO DSE nel calcolo bisogna tenere conto della posizione della luce rispetto agli oggetti e non la sua normale assoluta
       vec3 emissive = materialEmissive;
       vec3 ambient = materialAmbient * color.rgb * lightAmbient.rgb;
       vec3 diffuse = materialDiffuse * color.rgb * lightColor.rgb * clamp(dot(lightPositionNormalized, diffuseNormal), 0.0, 1.0);
