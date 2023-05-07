@@ -36,18 +36,8 @@ function elementFromConfigObj(configObj) {
 ////////////////////////////////////////////////////////////////////////////////
 
 var utils = {
-  center: function(pointArr) {
-    return [
-      pointArr.reduce((returnValue, currentValue) => {
-        return returnValue + currentValue[0];
-      }, 0) / pointArr.length,
-        pointArr.reduce((returnValue, currentValue) => {
-        return returnValue + currentValue[1];
-      }, 0) / pointArr.length,
-      pointArr.reduce((returnValue, currentValue) => {
-        return returnValue + currentValue[2];
-      }, 0) / pointArr.length
-    ];
+  fixFloat: function(f) {
+    return parseFloat(f.toFixed(2));
   },
   // credit: CG
   degToRad: function(d) {
@@ -60,6 +50,19 @@ var utils = {
   // credit: CG
   isPowerOf2: function(value) {
     return (value & (value - 1)) === 0;
+  },
+  center: function(pointArr) {
+    return [
+      pointArr.reduce((returnValue, currentValue) => {
+        return returnValue + currentValue[0];
+      }, 0) / pointArr.length,
+        pointArr.reduce((returnValue, currentValue) => {
+        return returnValue + currentValue[1];
+      }, 0) / pointArr.length,
+      pointArr.reduce((returnValue, currentValue) => {
+        return returnValue + currentValue[2];
+      }, 0) / pointArr.length
+    ];
   },
   // credit: CG
   loadTexture: function(index, textureSource) {
