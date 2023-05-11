@@ -179,7 +179,7 @@ window.addEventListener('load', (event) => {
 
       setters.setLightPosition([5, 5, 5]);
       setters.setLightColor([1, 1, 1, 1]);
-      setters.setLightAmbient([0.2, 0.2, 0.2, 1]);
+      setters.setLightAmbient(20);
 
       globals.textureSourceArr.forEach((textureSource, index) => {
         setters.setTextureSource(index, textureSource);
@@ -301,7 +301,9 @@ window.addEventListener('load', (event) => {
         globals.gl.uniform1i(globals.shaderIsLight, false);
         globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
         globals.gl.uniform4fv(globals.shaderLightColor, globals.lightColor);
-        globals.gl.uniform4fv(globals.shaderLightAmbient, globals.lightAmbient);
+        globals.gl.uniform4fv(globals.shaderLightAmbient, globals.lightColor.map((e) => {
+          return e / 100 * globals.lightAmbient;
+        }));
         globals.gl.uniform1i(globals.shaderTexture, 0);
 
         globals.gl.drawArrays(globals.gl.LINES, 0, 6);

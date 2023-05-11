@@ -78,7 +78,7 @@ var globals = {
   // colore della luce
   lightColor: [0, 0, 0, 0],
   // luce ambientale
-  lightAmbient: [0, 0, 0, 0],
+  lightAmbient: 0,
 
   // ---------- shader program ----------
 

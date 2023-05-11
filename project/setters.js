@@ -116,17 +116,14 @@ var setters = {
   lightAmbientInputElement: document.getElementById('light-ambient-input'),
   setLightAmbient: function(newLightAmbient) {
     logUtils.debug('(setters.setLightAmbient)', newLightAmbient);
-    newLightAmbient = newLightAmbient.map((e) => {
-      e = utils.fixFloat(e);
-      if(e > 1) {
-        e = 1;
-      } else if(e < 0) {
-        e = 0;
-      }
-      return e;
-    });
+    newLightAmbient = utils.fixFloat(newLightAmbient);
+    if(newLightAmbient > 100) {
+      newLightAmbient = 100;
+    } else if(newLightAmbient < 0) {
+      newLightAmbient = 0;
+    }
     globals.lightAmbient = newLightAmbient;
-    setters.lightAmbientInputElement.value = JSON.stringify(newLightAmbient);
+    setters.lightAmbientInputElement.value = newLightAmbient;
   },
   setTextureSource: function(index, newTextureSource) {
     logUtils.debug('(setters.setTextureSource)', {
