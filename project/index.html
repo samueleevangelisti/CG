@@ -230,7 +230,7 @@
       vec3 specular = (isFragmentLight ? materialSpecular * lightColor.rgb * pow(clamp(dot(reflect(-lightDirectionNormalized, effectiveNormal), cameraPositionNormalized), 0.0, 1.0), shininess) : vec3(0, 0, 0));
       float opacityColor = opacity * color.a;
 
-      gl_FragColor = (isLight ? vec4(emissive + ambient + diffuse + specular, opacityColor) : color);
+      gl_FragColor = clamp((isLight ? vec4(emissive + ambient + diffuse + specular, opacityColor) : color), 0.0, 1.0);
     }
   </script>
 

@@ -301,9 +301,12 @@ window.addEventListener('load', (event) => {
         globals.gl.uniform1i(globals.shaderIsLight, false);
         globals.gl.uniform3fv(globals.shaderCameraPosition, globals.cameraPosition);
         globals.gl.uniform4fv(globals.shaderLightColor, globals.lightColor);
-        globals.gl.uniform4fv(globals.shaderLightAmbient, globals.lightColor.map((e) => {
-          return e / 100 * globals.lightAmbient;
-        }));
+        globals.gl.uniform4fv(globals.shaderLightAmbient, [
+          ...globals.lightColor.slice(0, 3).map((e) => {
+            return e / 100 * globals.lightAmbient;
+          }),
+          globals.lightColor[4]
+        ]);
         globals.gl.uniform1i(globals.shaderTexture, 0);
 
         globals.gl.drawArrays(globals.gl.LINES, 0, 6);
